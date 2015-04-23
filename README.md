@@ -6,4 +6,4 @@ Nom des packages :
 - polyFever.module.affichage
 - polyFever.module.menu
 - polyFever.module.evenements
-- polyFever.module.reseau (comming soon !)
+- polyFever.module.reseau (coming soon !)
