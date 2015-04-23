@@ -7,3 +7,5 @@ Nom des packages :
 - polyFever.module.menu
 - polyFever.module.evenements
 - polyFever.module.reseau (coming soon !)
+
+- Cool ça marche !! :D (This message has been commited from Eclipse)
