@@ -12,5 +12,5 @@ Project realised by engineering students of Polytech'Nantes (French engineering 
 - polyFever.module.menu
 - polyFever.module.evenements
 - polyFever.module.reseau (coming soon !)
-- Test
+
 
