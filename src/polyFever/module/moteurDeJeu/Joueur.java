@@ -9,6 +9,9 @@ public class Joueur {
 	private String etat;
 	private String role;
 	private Ligne ligne;
+	private int positionX;
+	private int positionY;
+	private int direction;
 	
 	// Constructeur
 	public Joueur()	// Par défaut

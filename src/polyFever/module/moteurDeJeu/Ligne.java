@@ -102,7 +102,8 @@ public class Ligne {
 	public void tracerTrou()
 	{
 		/* Méthode calculant le moment pour un joueur de tracer un trou
-		 * 
+		 * Si trace trou ne pas écrire dans le tableau des coordonnées des lignes !
+		 * Juste changer les coordonnées pos_x et pos_y du joueur
 		 */
 	}
 	

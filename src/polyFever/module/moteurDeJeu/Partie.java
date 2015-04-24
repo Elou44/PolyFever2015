@@ -76,7 +76,7 @@ public class Partie {
 		 */
 	}
 	
-	public void calculerTaillePlateau()
+	public void calculTaillePlateau()
 	{
 		/* Calculer la taille du plateau selon le nombre de joueurs
 		 * Changer la valeur des attributs de l'obhet plateau
