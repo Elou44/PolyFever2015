@@ -1,0 +1,6 @@
+# =============== #
+# Ignored Files   #
+# =============== #
+
+# Libraries path
+.classpath 
