@@ -6,8 +6,8 @@ public class Joueur {
 	private String toucheG;
 	private String toucheD;
 	private int score;
-	private String etat;
-	private String role;
+	private String etat; // A changé en enum (Elou) 
+	private String role; // A changé en enum (Elou) 
 	private Ligne ligne;
 	private int positionX;
 	private int positionY;
@@ -20,8 +20,8 @@ public class Joueur {
 		this.toucheG = "FLECHE_GAUCHE";
 		this.toucheD = "FLECHE_DROITE";
 		this.score = 0;
-		this.etat = "Vivant";
-		this.role = "Client";
+		this.etat = "Vivant"; // A changé en enum (Elou) 
+		this.role = "Client"; // A changé en enum (Elou) 
 	}
 	
 	public Joueur(String pseudo, String toucheG, String toucheD, String role)	// Avec paramètres
