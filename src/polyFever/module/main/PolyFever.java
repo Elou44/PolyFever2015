@@ -19,9 +19,12 @@ public class PolyFever {
  
     // The window handle
     private long window;
+    
+    public static final int WIDTH = 300; // Largeur de la fenetre
+    public static final int HEIGHT = 300; // Hauteur de la fenetre
  
     public void run() {
-        System.out.println("Hello LWJGL " + Sys.getVersion() + "!");
+        System.out.println("LWJGL " + Sys.getVersion() + "!");
  
         try {
             init();
@@ -51,11 +54,9 @@ public class PolyFever {
         glfwWindowHint(GLFW_VISIBLE, GL_FALSE); // the window will stay hidden after creation
         glfwWindowHint(GLFW_RESIZABLE, GL_TRUE); // the window will be resizable
  
-        int WIDTH = 300;
-        int HEIGHT = 300;
  
         // Create the window
-        window = glfwCreateWindow(WIDTH, HEIGHT, "Hello World!", NULL, NULL);
+        window = glfwCreateWindow(WIDTH, HEIGHT, "PolyFever - Prototype 1 (Alpha Early Access)", NULL, NULL);
         if ( window == NULL )
             throw new RuntimeException("Failed to create the GLFW window");
         
