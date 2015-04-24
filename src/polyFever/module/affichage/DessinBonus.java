@@ -1,5 +1,11 @@
 package polyFever.module.affichage;
 
-public class DessinBonus extends DessinPlateau {
+public class DessinBonus {
+	
+	
+	public void dessiner()
+	{
+		System.out.println("			dessiner dBonus");
+	}
 
 }
