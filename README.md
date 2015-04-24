@@ -14,8 +14,8 @@ Project realised by engineering students of Polytech'Nantes (French engineering 
 - polyFever.module.reseau (coming soon !)
 
 ### Paramétrer le projet pour LWJGL
-1 - Télécharger la version Stable de LWJGL -> http://www.lwjgl.org/download 
-2 - Dans les propiétés du projet : Java build Path -> onglet Libraries -> Cliquer sur "Add External JARs" -> Sélectionner lwjgl.jar 
-3 - Dans les propiétés du projet : Java build Path -> onglet Libraries -> Etendre l'entrée "lwjgl.jar - ... " -> Cliquer sur "Native Library Location" -> Cliquer sur Edit -> Sélectionner le dossier "native/windows/x86"
-4 - Dans les propiétés du projet : Java Compiler -> Cocher "Enable Project Specific settings" -> Mettre "Compiler compliance Level" à 1.7 -> "Apply"
-5 - Enjoy !
+-1 - Télécharger la version Stable de LWJGL -> http://www.lwjgl.org/download 
+-2 - Dans les propiétés du projet : Java build Path -> onglet Libraries -> Cliquer sur "Add External JARs" -> Sélectionner lwjgl.jar 
+-3 - Dans les propiétés du projet : Java build Path -> onglet Libraries -> Etendre l'entrée "lwjgl.jar - ... " -> Cliquer sur "Native Library Location" -> Cliquer sur Edit -> Sélectionner le dossier "native/windows/x86"
+-4 - Dans les propiétés du projet : Java Compiler -> Cocher "Enable Project Specific settings" -> Mettre "Compiler compliance Level" à 1.7 -> "Apply"
+-5 - Enjoy !
