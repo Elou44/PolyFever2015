@@ -7,6 +7,7 @@ Project realised by engineering students of Polytech'Nantes (French engineering 
 - Pour commit : clic droit sur un fichier -> Team -> Commit 
 
 ### Nom des packages : 
+- polyFever.module.main 
 - polyFever.module.moteurDeJeu
 - polyFever.module.affichage
 - polyFever.module.menu
