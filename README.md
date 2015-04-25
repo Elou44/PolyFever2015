@@ -20,3 +20,6 @@ Project realised by engineering students of Polytech'Nantes (French engineering 
 - 3 - Dans les propiétés du projet : Java build Path -> onglet Libraries -> Etendre l'entrée "lwjgl.jar - ... " -> Cliquer sur "Native Library Location" -> Cliquer sur Edit -> Sélectionner le dossier "native/windows/x86"
 - 4 - Dans les propiétés du projet : Java Compiler -> Cocher "Enable Project Specific settings" -> Mettre "Compiler compliance Level" à 1.7 -> "Apply"
 - 5 - Enjoy !
+
+### Tutoriels
+- https://github.com/ra4king/LWJGL-OpenGl-Tutorials (OpenGL)
