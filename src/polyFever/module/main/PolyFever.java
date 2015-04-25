@@ -79,9 +79,17 @@ public class PolyFever {
             (GLFWvidmode.width(vidmode) - WIDTH) / 2,
             (GLFWvidmode.height(vidmode) - HEIGHT) / 2
         );
+        
+
  
         // Make the OpenGL context current
         glfwMakeContextCurrent(window);
+        
+        /*glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(0, WIDTH, HEIGHT, 0, 1, -1);
+        glMatrixMode(GL_MODELVIEW);*/
+        
         // Enable v-sync
         glfwSwapInterval(1);
  
@@ -96,6 +104,12 @@ public class PolyFever {
         // creates the ContextCapabilities instance and makes the OpenGL
         // bindings available for use.
         GLContext.createFromCurrent();
+        
+        /*glBegin(GL_LINES);
+    		glVertex2i(100, 100);
+    		glVertex2i(200, 200);
+    	glEnd();*/
+
  
         // Set the clear color
         glClearColor(1.0f, 0.5f, 0.0f, 0.5f);
@@ -106,7 +120,8 @@ public class PolyFever {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
  
             glfwSwapBuffers(window); // swap the color buffers
- 
+            
+
             // Poll for window events. The key callback above will only be
             // invoked during this call.
             glfwPollEvents();
