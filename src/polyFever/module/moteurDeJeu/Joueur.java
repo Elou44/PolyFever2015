@@ -1,42 +1,58 @@
 package polyFever.module.moteurDeJeu;
 
+/* 
+ * Classe stockant les informations liés à un joueur
+ * Et gérant les paramètres du joueur
+ */
+
 public class Joueur {
 
-	public String pseudo;
-	private String toucheG;
-	private String toucheD;
-	public int score;
-	public String etat;
-	private String role;
-	public Ligne ligne;
-	public int positionX;
-	public int positionY;
-	// OU
-	//public Vector position;
-	public int direction;
+	public String pseudo;			// Pseudo du joueur
+	// ??? TYPE DES TOUCHES
+	private String toucheG;			// Sa touche de jeu, tournant à gauche
+	private String toucheD;			// Sa touche de jeu, tournant à droite
+	public int score;				// Score du joueur, sur une partie
+	public String etat;				// Etat du joueur (mort, vivant, quitté la partie)
+	private enum Role				// Enumération des différents role d'un joueur, soit hote de la partie ou simple client
+	{
+		HOTE,
+		CLIENT,
+	}
+	// COMMENT DEFINIR LE ROLE ??? QUELLE INFORMATION JE VAIS RECEVOIR ? QUEL TYPE ?
+	private Role type;				// Variable définissant le role du joueur, accueillant l'énumération
+	public Ligne ligne;				// Objet Ligne controlée par le joueur
+	public Vector2 position;		// Vector2 donnant la position actuelle du point du joueur
+	public int direction;			// Direction du point du joueur
 	
 	// Constructeur
 	public Joueur()	// Par défaut
 	{
+		System.out.println("Instanciation d'un objet Joueur (sp)...");
 		this.pseudo = null;
 		this.toucheG = "FLECHE_GAUCHE";
 		this.toucheD = "FLECHE_DROITE";
 		this.score = 0;
 		this.etat = "Vivant";
-		this.role = "Client";
+		this.type = Role.CLIENT;
+		this.position = new Vector2();
+		this.direction = 0;
 	}
 	
-	public Joueur(String pseudo, String toucheG, String toucheD, String role)	// Avec paramètres
+	public Joueur(String pseudo, String toucheG, String toucheD)	// Avec paramètres
 	{
+		super();
+		System.out.println("Instanciation d'un objet Joueur (ap)...");
 		this.pseudo = pseudo;
 		this.toucheG = toucheG;
 		this.toucheD = toucheD;
-		this.score = 0;
-		this.etat = "Vivant";
-		this.role = role;
 	}
 
 	// Méthodes
+	
+	/* 
+	 * Assesseurs et mutateurs
+	 */
+	
 	public String getPseudo() {
 		return pseudo;
 	}
@@ -77,13 +93,41 @@ public class Joueur {
 		this.etat = etat;
 	}
 
-	public String getRole() {
-		return role;
+	public Role getType() {
+		return type;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setType(Role type) {
+		this.type = type;
 	}
+
+	public Ligne getLigne() {
+		return ligne;
+	}
+
+	public void setLigne(Ligne ligne) {
+		this.ligne = ligne;
+	}
+
+	public Vector2 getPosition() {
+		return position;
+	}
+
+	public void setPosition(Vector2 position) {
+		this.position = position;
+	}
+
+	public int getDirection() {
+		return direction;
+	}
+
+	public void setDirection(int direction) {
+		this.direction = direction;
+	}
+	
+	/* 
+	 * Autres méthodes de gestion des joueurs
+	 */
 	
 	public void mettrePause()	// Mise en pause d'une partie
 	{
@@ -99,6 +143,14 @@ public class Joueur {
 		 * Si non : - changer l'état du joueur en mort
 		 * 			- ne plus envoyer d'informations par rapport à ce joueur (liste joueur ayant quittés?)
 		 * 
+		 */
+	}
+	
+	public void priseBonus()
+	{
+		/* Vérifier si les coordonnées de la ligne touchent les coordonnées d'un bonus
+		 * Faire disparaitre le bonus du plateau
+		 * Changer les paramètres du joueur concerné
 		 */
 	}
 		

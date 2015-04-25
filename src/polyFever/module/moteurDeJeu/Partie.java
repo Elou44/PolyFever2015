@@ -1,24 +1,37 @@
 package polyFever.module.moteurDeJeu;
 
+/* 
+ * Classe stockant les informations liés à une partie
+ * Et gérant les paramètres de la partie
+ */
+
+import java.util.*;
+
 public class Partie {
 
-	public int scoreMax;
-	private int nbJoueurs;
-	//public Hashset<int> joueurs;
-	public int longueurPlateau;
-	public int largeurPlateau;
-	public Bonus bonusPresents;	// Liste des bonus présents sur le plateau de jeu (liste normale peut y avoir des doublons)
+	public int scoreMax;				// Score à atteindre pour terminer une partie
+	private int nbJoueurs;				// Nombre de joueurs présents dans la partie
+	public Set<Joueur> joueurs;			// Liste des joueurs de la partie (objet Joueur)
+	public int dimensionPlateau;		// Dimensions du plateau de jeu
+	public List<Bonus> bonusPresents;	// Liste des bonus présents sur le plateau de jeu
 	
 	// Constructeur
 	public Partie()	// Par défaut
 	{
-		this.scoreMax = 0;
-		this.nbJoueurs = 0;
-		this.longueurPlateau = 980;
-		this.largeurPlateau = 980;
+		System.out.println("Instanciation d'un objet Partie...");
+		this.scoreMax = 0;								// Score max initialiser à 0 mais à calculer
+		this.nbJoueurs = 0;								// Nombre de joueurs initialisé à 0
+		this.joueurs = new HashSet<Joueur>();			// Création de la liste des joueurs
+		this.dimensionPlateau = 0;						// Création du vecteur des dimensions du plateau
+		this.bonusPresents = new ArrayList<Bonus>();	// Création de la liste des bonus
 	}
 
 	// Méthodes
+	
+	/*
+	 * Assesseurs et mutateurs
+	 */
+	
 	public int getScoreMax() {
 		return scoreMax;
 	}
@@ -35,20 +48,49 @@ public class Partie {
 		this.nbJoueurs = nbJoueurs;
 	}
 
-	public int getLongueurPlateau() {
-		return longueurPlateau;
+	public Set<Joueur> getJoueurs() {
+		return joueurs;
 	}
 
-	public void setLongueurPlateau(int longueurPlateau) {
-		this.longueurPlateau = longueurPlateau;
+	public void setJoueurs(Set<Joueur> joueurs) {
+		this.joueurs = joueurs;
 	}
 
-	public int getLargeurPlateau() {
-		return largeurPlateau;
+	public int getDimensionPlateau() {
+		return dimensionPlateau;
 	}
 
-	public void setLargeurPlateau(int largeurPlateau) {
-		this.largeurPlateau = largeurPlateau;
+	public void setDimensionPlateau(int dimensionPlateau) {
+		this.dimensionPlateau = dimensionPlateau;
+	}
+
+	public List<Bonus> getBonusPresents() {
+		return bonusPresents;
+	}
+
+	public void setBonusPresents(List<Bonus> bonusPresents) {
+		this.bonusPresents = bonusPresents;
+	}
+	
+	/*
+	 * Autres méthodes de gestion de la partie
+	 */
+	
+	public void initialiserPartie()
+	{
+		System.out.println("Initialisation de la partie...");
+		// Calcul du scoreMax
+		scoreMax = (nbJoueurs-1) * 10;
+		
+		// Calcul des dimensions du plateau
+		dimensionPlateau = nbJoueurs * 100;
+		
+		// Calcul des positions de base des joueurs		
+		for(Joueur e : joueurs)		// Boucle de parcours de la liste des joueurs
+		{
+			e.position.x = (int) Math.random() * dimensionPlateau;	// Calcul de la position en x
+			e.position.y = (int) Math.random() * dimensionPlateau;	// Calcul de la position en y
+		}
 	}
 	
 	public void repererCollisions()
@@ -58,28 +100,6 @@ public class Partie {
 		 * Collisison avec un autre tracé
 		 * 		- Si collision : - changer l'état du joueur mort
 		 * 						 - 
-		 */
-	}
-	
-	public void calculScoreMax()
-	{
-		/* Calculer le score maximum à atteindre selon le nombre de joueurs
-		 * Changer valeur de l'attribut scoreMax
-		 */
-	}
-	
-	public void definitionPositionsBase()
-	{
-		/* Calculer les positions de base des joueurs
-		 * Calculer un x et un y
-		 * Changer la valeur des coordonnées de chaque joueur
-		 */
-	}
-	
-	public void calculTaillePlateau()
-	{
-		/* Calculer la taille du plateau selon le nombre de joueurs
-		 * Changer la valeur des attributs de l'obhet plateau
 		 */
 	}
 	
