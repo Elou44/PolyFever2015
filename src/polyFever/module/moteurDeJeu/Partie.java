@@ -2,12 +2,12 @@ package polyFever.module.moteurDeJeu;
 
 public class Partie {
 
-	private int scoreMax;
+	public int scoreMax;
 	private int nbJoueurs;
-	private Hashset<int> joueurs;
-	private int longueurPlateau;
-	private int largeurPlateau;
-	private Bonus bonusPresents;	// Liste des bonus présents sur le plateau de jeu (liste normale peut y avoir des doublons)
+	//public Hashset<int> joueurs;
+	public int longueurPlateau;
+	public int largeurPlateau;
+	public Bonus bonusPresents;	// Liste des bonus présents sur le plateau de jeu (liste normale peut y avoir des doublons)
 	
 	// Constructeur
 	public Partie()	// Par défaut

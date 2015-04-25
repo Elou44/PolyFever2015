@@ -6,9 +6,9 @@ public class BonusVitesse extends Bonus{
 	public BonusVitesse()
 	{
 		this.nom = "vitesse";
-		this.couleur = "vert";
-		this.coordonnees = ;
-		this.joueur = 
+		//this.couleur = vert;
+		//this.coordonnees = 0;
+		//this.joueur = 
 	}
 	
 	public void modifierParametres()

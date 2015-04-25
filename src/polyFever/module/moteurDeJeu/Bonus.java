@@ -1,11 +1,17 @@
 package polyFever.module.moteurDeJeu;
 
+import java.util.List;
+
 public abstract class Bonus {
 
-	private String nom;
-	private enum couleur;
-	private ListArray<int> coordonnees;
-	private Joueur joueur;
+	protected String nom;
+	public enum couleur
+	{
+		rouge,
+		vert,
+	}
+	public List<Integer> coordonnees;
+	protected Joueur joueur;
 	
 	// Méthodes
 	public void modifierParametres(){};

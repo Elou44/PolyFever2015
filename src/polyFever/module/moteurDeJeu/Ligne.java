@@ -2,13 +2,13 @@ package polyFever.module.moteurDeJeu;
 
 public class Ligne {
 
-	private String couleur;
-	private Joueur joueur;
-	private int vitesse;
-	private int epaisseur;
-	private int courbe;
-	private int tpsEnVie;
-	//private List trace;
+	public String couleur;
+	public Joueur joueur;
+	public int vitesse;
+	public int epaisseur;
+	protected int courbe;
+	public int tpsEnVie;
+	//private List<Vector> trace;
 	
 	// Constructeur
 	public Ligne()	// Par défaut

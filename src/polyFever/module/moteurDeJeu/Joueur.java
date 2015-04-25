@@ -2,16 +2,18 @@ package polyFever.module.moteurDeJeu;
 
 public class Joueur {
 
-	private String pseudo;
+	public String pseudo;
 	private String toucheG;
 	private String toucheD;
-	private int score;
-	private String etat; // A changé en enum (Elou) 
-	private String role; // A changé en enum (Elou) 
-	private Ligne ligne;
-	private int positionX;
-	private int positionY;
-	private int direction;
+	public int score;
+	public String etat;
+	private String role;
+	public Ligne ligne;
+	public int positionX;
+	public int positionY;
+	// OU
+	//public Vector position;
+	public int direction;
 	
 	// Constructeur
 	public Joueur()	// Par défaut
@@ -20,8 +22,8 @@ public class Joueur {
 		this.toucheG = "FLECHE_GAUCHE";
 		this.toucheD = "FLECHE_DROITE";
 		this.score = 0;
-		this.etat = "Vivant"; // A changé en enum (Elou) 
-		this.role = "Client"; // A changé en enum (Elou) 
+		this.etat = "Vivant";
+		this.role = "Client";
 	}
 	
 	public Joueur(String pseudo, String toucheG, String toucheD, String role)	// Avec paramètres
@@ -83,14 +85,14 @@ public class Joueur {
 		this.role = role;
 	}
 	
-	public mettrePause()	// Mise en pause d'une partie
+	public void mettrePause()	// Mise en pause d'une partie
 	{
 		/* Il faut arrêter tous les traitements, ne plus envoyer d'informations pour tracer ou afficher
 		 * et attendre le signal pour enlever la pause
 		 */
 	}
 	
-	public quitterPartie()	// Quitter la partie par un joueur
+	public void quitterPartie()	// Quitter la partie par un joueur
 	{
 		/* Vérifier si le joueur quittant la partie est l'hébergeur de la partie
 		 * 		Si oui : il faut faire quitter tout le monde
