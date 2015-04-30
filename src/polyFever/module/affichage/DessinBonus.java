@@ -5,7 +5,7 @@ public class DessinBonus {
 	
 	public void dessiner()
 	{
-		System.out.println("			dessiner dBonus");
+		//System.out.println("			dessiner dBonus");
 	}
 
 }

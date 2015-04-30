@@ -6,19 +6,19 @@ public class DessinPlateau {
 	private DessinJoueur dJoueur;
 	private DessinLigne dLigne;
 	
-	public DessinPlateau()
+	public DessinPlateau(int width, int height)
 	{
 		dBonus = new DessinBonus();
 		dJoueur = new DessinJoueur();
-		dLigne = new DessinLigne();
+		dLigne = new DessinLigne(width, height);
 	}
 	
-	public void dessiner()
+	public void dessiner(int vbo)
 	{
-		System.out.println("		dessiner dPlateau");
+		//System.out.println("		dessiner dPlateau");
 		dBonus.dessiner();
 		dJoueur.dessiner();
-		dLigne.dessiner();
+		dLigne.dessiner(vbo);
 	}
 
 }

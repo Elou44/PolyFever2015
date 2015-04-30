@@ -19,7 +19,8 @@ import polyFever.module.util.Utils;
  */
 public abstract class PolyFever {
 	private int fps;
-	
+	private final int WIDTH;
+	private final int HEIGHT;
 	/**
 	 * Initializes the application in fullscreen mode.
 	 * 
@@ -27,7 +28,9 @@ public abstract class PolyFever {
 	 *        With v-sync off, there is no framerate cap and the gameloop will run as fast as the hardware can handle.
 	 *        A framerate can be set with the <code>setFPS(int fps)</code> method.
 	 */
-	public PolyFever(boolean vsync) {
+	public PolyFever(boolean vsync, int width, int height) {
+		this.WIDTH = width; 
+		this.HEIGHT = height;
 		try {
 			Display.setFullscreen(true);
 			Display.setVSyncEnabled(vsync);
@@ -36,6 +39,14 @@ public abstract class PolyFever {
 		}
 	}
 	
+	public int getWIDTH() {
+		return WIDTH;
+	}
+
+	public int getHEIGHT() {
+		return HEIGHT;
+	}
+
 	/**
 	 * Initializes a windowed application. The framerate is set to 60 and can be modified using <code>setFPS(int fps)</code>.
 	 * 
@@ -46,7 +57,8 @@ public abstract class PolyFever {
 	 */
 	public PolyFever(String name, int width, int height, boolean resizable) {
 		Display.setTitle(name);
-		
+		this.WIDTH = width; 
+		this.HEIGHT = height;
 		try {
 			Display.setDisplayMode(new DisplayMode(width, height));
 		} catch(Exception exc) {
@@ -55,7 +67,7 @@ public abstract class PolyFever {
 		
 		Display.setResizable(resizable);
 		
-		fps = 60;
+		fps = 60000;
 	}
 	
 	/**

@@ -6,16 +6,16 @@ public class DessinJeu {
 	private DessinScores dScores;
 	
 	
-	public DessinJeu()
+	public DessinJeu(int width, int height)
 	{
-		dPlateau = new DessinPlateau();
+		dPlateau = new DessinPlateau(width, height);
 		dScores = new DessinScores();
 	}
 	
-	public void dessiner()
+	public void dessiner(int vbo)
 	{
-		System.out.println("	dessiner dJeu");
-		dPlateau.dessiner();
+		//System.out.println("	dessiner dJeu");
+		dPlateau.dessiner(vbo);
 		dScores.dessiner();
 	}
 	

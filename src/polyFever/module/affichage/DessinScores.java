@@ -4,7 +4,7 @@ public class DessinScores {
 	
 	public void dessiner()
 	{
-		System.out.println("		dessiner dScores");
+		//System.out.println("		dessiner dScores");
 	}
 
 }

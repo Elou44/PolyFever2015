@@ -4,7 +4,7 @@ public class DessinMenu {
 	
 	public void dessiner()
 	{
-		System.out.println("	dessiner dMenu");
+		//System.out.println("	dessiner dMenu");
 	}
 
 }
