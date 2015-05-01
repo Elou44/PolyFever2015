@@ -6,5 +6,10 @@ public class DessinScores {
 	{
 		//System.out.println("		dessiner dScores");
 	}
+	
+	public void init()
+	{
+		
+	}
 
 }

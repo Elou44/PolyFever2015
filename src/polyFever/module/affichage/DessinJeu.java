@@ -1,4 +1,6 @@
 package polyFever.module.affichage;
+import polyFever.module.main.*;
+import polyFever.module.moteurDeJeu.*;
 
 public class DessinJeu {
 	
@@ -6,17 +8,23 @@ public class DessinJeu {
 	private DessinScores dScores;
 	
 	
-	public DessinJeu(int width, int height)
+	public DessinJeu(int width, int height, Affichage a, PolyFever p, Partie partie)
 	{
-		dPlateau = new DessinPlateau(width, height);
+		dPlateau = new DessinPlateau(width, height, a, p, partie);
 		dScores = new DessinScores();
 	}
 	
-	public void dessiner(int vbo)
+	public void dessiner()
 	{
 		//System.out.println("	dessiner dJeu");
-		dPlateau.dessiner(vbo);
+		dPlateau.dessiner();
 		dScores.dessiner();
+	}
+	
+	public void init()
+	{
+		dPlateau.init();
+		dScores.init();
 	}
 	
 }

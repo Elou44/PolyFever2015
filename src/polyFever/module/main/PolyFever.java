@@ -29,6 +29,7 @@ public abstract class PolyFever {
 	 *        A framerate can be set with the <code>setFPS(int fps)</code> method.
 	 */
 	public PolyFever(boolean vsync, int width, int height) {
+		System.out.println("Création du context openGL...");
 		this.WIDTH = width; 
 		this.HEIGHT = height;
 		try {
@@ -56,6 +57,7 @@ public abstract class PolyFever {
 	 * @param resizable Enables/disables the ability to resize the window.
 	 */
 	public PolyFever(String name, int width, int height, boolean resizable) {
+		System.out.println("Création du context openGL...");
 		Display.setTitle(name);
 		this.WIDTH = width; 
 		this.HEIGHT = height;
@@ -68,6 +70,8 @@ public abstract class PolyFever {
 		Display.setResizable(resizable);
 		
 		fps = 60000;
+		
+		
 	}
 	
 	/**
@@ -348,7 +352,7 @@ public abstract class PolyFever {
 	 * @param file The file path, relative to the user class extending GLProgram.
 	 * @return The entire contents of the file.
 	 */
-	protected String readFromFile(String file) {
+	public String readFromFile(String file) { 
 		try {
 			return Utils.readFully(getClass().getResourceAsStream(file));
 		} catch(Exception exc) {

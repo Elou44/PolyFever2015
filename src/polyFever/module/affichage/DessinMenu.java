@@ -6,5 +6,10 @@ public class DessinMenu {
 	{
 		//System.out.println("	dessiner dMenu");
 	}
+	
+	public void init()
+	{
+		
+	}
 
 }

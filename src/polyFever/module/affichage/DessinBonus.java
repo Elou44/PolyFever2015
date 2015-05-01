@@ -7,5 +7,10 @@ public class DessinBonus {
 	{
 		//System.out.println("			dessiner dBonus");
 	}
+	
+	public void init()
+	{
+		
+	}
 
 }

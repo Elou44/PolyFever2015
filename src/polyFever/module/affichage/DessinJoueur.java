@@ -7,5 +7,10 @@ public class DessinJoueur { // peut être instancier un tableau de DessinJoueur d
 	{
 		//System.out.println("			dessiner dJoueur");
 	}
+	
+	public void init()
+	{
+		
+	}
 
 }
