@@ -127,4 +127,49 @@ public class Partie {
 		 */
 	}
 	
+	public void ajouterJoueur(Joueur joueur)
+	{
+		// Incrémentation du nombre de joueurs
+		nbJoueurs = nbJoueurs + 1;
+		
+		// Ajout du joueur dans la liste des joueurs présents dans la partie
+		joueurs.add(joueur);
+		
+		Iterator<Joueur> i = joueurs.iterator();
+		
+		// Instanciation d'une ligne pour ce joueur
+		while(i.hasNext())
+		{
+			Joueur player = i.next();
+			if(player == joueur)
+			{
+				joueur.ligne = new Ligne();
+			}
+		}
+		System.out.println("\t\tANCIEN : "+joueur.ligne.toString());
+		/*
+		// Connection de la ligne avec le joueur
+		try {
+			joueur.ligne.setJoueur(joueur);
+		}
+		catch (StackOverflowError e)
+		{
+			e.printStackTrace();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		System.out.println("\t\t\tNEW : "+joueur.ligne.toString());*/
+
+	}
+
+	@Override
+	public String toString() {
+		return "Partie [scoreMax=" + scoreMax + ", nbJoueurs=" + nbJoueurs
+				+ ", joueurs=" + joueurs + ", dimensionPlateau="
+				+ dimensionPlateau + ", bonusPresents=" + bonusPresents + "]";
+	}
+	
 }

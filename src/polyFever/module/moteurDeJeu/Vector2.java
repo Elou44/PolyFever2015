@@ -7,16 +7,16 @@ package polyFever.module.moteurDeJeu;
 
 public class Vector2 {
     
-	public int x;
-	public int y;
+	public double x;
+	public double y;
 	
 	// Constructeur
 	public Vector2() {
-		this.x = 0;
-		this.y = 0;
+		this.x = 0.0;
+		this.y = 0.0;
 	}
 	
-	public Vector2(int x, int y) {
+	public Vector2(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}

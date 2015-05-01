@@ -22,7 +22,7 @@ public class Joueur {
 	private Role type;				// Variable définissant le role du joueur, accueillant l'énumération
 	public Ligne ligne;				// Objet Ligne controlée par le joueur
 	public Vector2 position;		// Vector2 donnant la position actuelle du point du joueur
-	public int direction;			// Direction du point du joueur
+	public double direction;		// Direction du point du joueur (en radians)
 	
 	// Constructeur
 	public Joueur()	// Par défaut
@@ -35,12 +35,12 @@ public class Joueur {
 		this.etat = "Vivant";
 		this.type = Role.CLIENT;
 		this.position = new Vector2();
-		this.direction = 0;
+		this.direction = 3*Math.PI/2;
 	}
 	
 	public Joueur(String pseudo, String toucheG, String toucheD)	// Avec paramètres
 	{
-		super();
+		this();
 		System.out.println("Instanciation d'un objet Joueur (ap)...");
 		this.pseudo = pseudo;
 		this.toucheG = toucheG;
@@ -117,11 +117,11 @@ public class Joueur {
 		this.position = position;
 	}
 
-	public int getDirection() {
+	public double getDirection() {
 		return direction;
 	}
 
-	public void setDirection(int direction) {
+	public void setDirection(double direction) {
 		this.direction = direction;
 	}
 	
@@ -153,5 +153,13 @@ public class Joueur {
 		 * Changer les paramètres du joueur concerné
 		 */
 	}
-		
+
+	@Override
+	public String toString() {
+		return "Joueur [pseudo=" + pseudo + ", toucheG=" + toucheG
+				+ ", toucheD=" + toucheD + ", score=" + score + ", etat="
+				+ etat + ", type=" + type + ", ligne=" + ligne + ", position.x="
+				+ position.x + ", position.y="+ position.y + ", direction=" + direction + "]";
+	}
+	
 }

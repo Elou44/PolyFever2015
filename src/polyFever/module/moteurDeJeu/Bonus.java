@@ -8,7 +8,7 @@ public abstract class Bonus {
 
 	// A VOIR SI C'EST UTILE OU NON
 	protected String nom;				// Nom du bonus
-	public enum Portee					// Enumération des différents types de portée d'un bonus, soit ROUGE = affecte les autres joueurs, soit VERT = affecte le joueur ayant activé ce bonus
+	protected enum Portee					// Enumération des différents types de portée d'un bonus, soit ROUGE = affecte les autres joueurs, soit VERT = affecte le joueur ayant activé ce bonus
 	{
 		ROUGE,
 		VERT,
