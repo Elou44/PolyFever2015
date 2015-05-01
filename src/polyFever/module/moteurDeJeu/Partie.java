@@ -9,11 +9,11 @@ import java.util.*;
 
 public class Partie {
 
-	public int scoreMax;				// Score à atteindre pour terminer une partie
+	private int scoreMax;				// Score à atteindre pour terminer une partie
 	private int nbJoueurs;				// Nombre de joueurs présents dans la partie
-	public Set<Joueur> joueurs;			// Liste des joueurs de la partie (objet Joueur)
-	public int dimensionPlateau;		// Dimensions du plateau de jeu
-	public List<Bonus> bonusPresents;	// Liste des bonus présents sur le plateau de jeu
+	private Set<Joueur> joueurs;		// Liste des joueurs de la partie (objet Joueur)
+	private int dimensionPlateau;		// Dimensions du plateau de jeu
+	private List<Bonus> bonusPresents;	// Liste des bonus présents sur le plateau de jeu
 	
 	// Constructeur
 	public Partie()	// Par défaut

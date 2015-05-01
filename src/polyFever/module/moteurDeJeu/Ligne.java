@@ -12,19 +12,19 @@ public class Ligne {
 
 	// LA COULEUR SOUS QUEL TYPE JE DOIS L'ENVOYER ???
 	// ENTIER DE 1 A 24 !!!!!!!!
-	public String couleur;				// Couleur de la ligne
-	public Joueur joueur;				// Joueur controlant la ligne
-	public int vitesse;					// Vitesse de la ligne (en pixels)
-	public int epaisseur;				// Epaisseur du trait
+	private int couleur;				// Couleur de la ligne
+	private Joueur joueur;				// Joueur controlant la ligne
+	private int vitesse;				// Vitesse de la ligne (en pixels)
+	private int epaisseur;				// Epaisseur du trait
 	private double courbe;				// Rayon de courbure de la ligne (en radians)
-	public int tpsEnVie;				// Temps passé en vie durant un round (en secondes)
+	private int tpsEnVie;				// Temps passé en vie durant un round (en secondes)
 	private List<Vector2> trace;		// Tableau de Vector2, donnant les coordonnées des points passés par la ligne, donnant ainsi le chemin parcouru
 	
 	// Constructeur
 	public Ligne()	// Par défaut
 	{
 		System.out.println("Instanciation d'un objet Ligne (sp)...");
-		this.couleur = "white";
+		this.couleur = 0;
 		this.joueur = null;
 		this.vitesse = 2;
 		this.epaisseur = 1;
@@ -33,7 +33,7 @@ public class Ligne {
 		this.trace = new ArrayList<Vector2>();
 	}
 	
-	public Ligne(String couleur)	// Avec paramètres
+	public Ligne(int couleur)	// Avec paramètres
 	{
 		this();
 		System.out.println("Instanciation d'un objet Ligne (ap)...");
@@ -46,11 +46,11 @@ public class Ligne {
 	 * Assesseurs et mutateurs
 	 */
 	
-	public String getCouleur() {
+	public int getCouleur() {
 		return couleur;
 	}
 
-	public void setCouleur(String couleur) {
+	public void setCouleur(int couleur) {
 		this.couleur = couleur;
 	}
 
