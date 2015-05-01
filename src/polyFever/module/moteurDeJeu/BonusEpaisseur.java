@@ -1,5 +1,7 @@
 package polyFever.module.moteurDeJeu;
 
+import polyFever.module.util.math.Vector2;
+
 /* 
  * Classe stockant les informations liés à un bonus augmentant l'épaisseur des joueurs adverses
  */
@@ -23,8 +25,8 @@ public class BonusEpaisseur extends Bonus{
 		 */
 		int ancienneEpaisseur;
 		
-		ancienneEpaisseur = joueur.ligne.getEpaisseur();
-		joueur.ligne.setEpaisseur(ancienneEpaisseur+1);
+		ancienneEpaisseur = joueur.getLigne().getEpaisseur();
+		joueur.getLigne().setEpaisseur(ancienneEpaisseur+1);
 	}
 	
 }

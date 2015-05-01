@@ -1,5 +1,7 @@
 package polyFever.module.moteurDeJeu;
 
+import polyFever.module.util.math.Vector2;
+
 /* 
  * Classe abstraite définissant les attributs et un prototype de méthode pour les bonus
  */
@@ -13,8 +15,8 @@ public abstract class Bonus {
 		ROUGE,
 		VERT,
 	}
-	public Portee couleur;				// Variable définissant la portée du bonus et donc la couleur lorsque le bonus est sur le plateau de jeu
-	public Vector2 coordonnees;			// Vector2 définissant la position sur le plateau de jeu du bonus
+	protected Portee couleur;				// Variable définissant la portée du bonus et donc la couleur lorsque le bonus est sur le plateau de jeu
+	protected Vector2 coordonnees;			// Vector2 définissant la position sur le plateau de jeu du bonus
 	// A VOIR SI C'EST UTILE OU NON
 	protected Joueur joueur;			// Objet joueur prenant le bonus
 	

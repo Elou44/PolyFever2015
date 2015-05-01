@@ -6,15 +6,17 @@ package polyFever.module.moteurDeJeu;
  */
 
 import java.util.*;
+import polyFever.module.util.math.Vector2;
 
 public class Ligne {
 
 	// LA COULEUR SOUS QUEL TYPE JE DOIS L'ENVOYER ???
+	// ENTIER DE 1 A 24 !!!!!!!!
 	public String couleur;				// Couleur de la ligne
 	public Joueur joueur;				// Joueur controlant la ligne
 	public int vitesse;					// Vitesse de la ligne (en pixels)
 	public int epaisseur;				// Epaisseur du trait
-	private double courbe;			// Rayon de courbure de la ligne (en radians)
+	private double courbe;				// Rayon de courbure de la ligne (en radians)
 	public int tpsEnVie;				// Temps passé en vie durant un round (en secondes)
 	private List<Vector2> trace;		// Tableau de Vector2, donnant les coordonnées des points passés par la ligne, donnant ainsi le chemin parcouru
 	
@@ -121,84 +123,89 @@ public class Ligne {
 		 * Envoyer ces coordonnées à l'affichage
 		 */
 		
-		System.out.println("TOURNE DROITE / direction : "+joueur.direction+" direction-courbe : "+(joueur.direction-courbe));
+		System.out.println("TOURNE DROITE / direction : "+joueur.getDirection()+" direction-courbe : "+(joueur.getDirection()-courbe));
 		double angleRotation = 0;
-		Vector2 nouvPosition = new Vector2();
+		double nouvPositionX = 0;
+		double nouvPositionY = 0;
 		
 		// Calcul de l'angle de rotation
-		if( ((joueur.direction - courbe) >= 0) && ((joueur.direction - courbe) <= (Math.PI/2)) )
+		if( ((joueur.getDirection() - courbe) >= 0) && ((joueur.getDirection() - courbe) <= (Math.PI/2)) )
 		{
 			System.out.println("Cas 1");
-			angleRotation = Math.abs(joueur.direction - courbe);
+			angleRotation = Math.abs(joueur.getDirection() - courbe);
 		}
-		else if( ((joueur.direction - courbe) > (Math.PI/2)) && ((joueur.direction - courbe) <= Math.PI) )
+		else if( ((joueur.getDirection() - courbe) > (Math.PI/2)) && ((joueur.getDirection() - courbe) <= Math.PI) )
 		{
 			System.out.println("Cas 2");
-			angleRotation = Math.PI - (joueur.direction - courbe);
+			angleRotation = Math.PI - (joueur.getDirection() - courbe);
 		}
-		else if( ((joueur.direction - courbe) > Math.PI) && ((joueur.direction - courbe) <= (3*Math.PI/2)) )
+		else if( ((joueur.getDirection() - courbe) > Math.PI) && ((joueur.getDirection() - courbe) <= (3*Math.PI/2)) )
 		{
 			System.out.println("Cas 3");
-			angleRotation = (joueur.direction - courbe) - Math.PI;
+			angleRotation = (joueur.getDirection() - courbe) - Math.PI;
 		}
-		else if( ((joueur.direction - courbe) > (3*Math.PI/2)))
+		else if( ((joueur.getDirection() - courbe) > (3*Math.PI/2)))
 		{
 			System.out.println("Cas 4");
-			angleRotation = 2*Math.PI - (joueur.direction - courbe);
+			angleRotation = 2*Math.PI - (joueur.getDirection() - courbe);
 		}
-		else if((joueur.direction - courbe) < 0)
+		else if((joueur.getDirection() - courbe) < 0)
 		{
 			System.out.println("Cas 5");
-			angleRotation = courbe - joueur.direction;
+			angleRotation = courbe - joueur.getDirection();
 		}
 		System.out.println("Angle de Rotation =  "+angleRotation);
 		
 		
 		// Calcul de la nouvelle position en x
-		if( (((joueur.direction - courbe) >= 0) && ((joueur.direction - courbe) <= (Math.PI/2))) || ((joueur.direction - courbe) >= (3*Math.PI/2)) || ((joueur.direction - courbe) < 0) )
+		if( (((joueur.getDirection() - courbe) >= 0) && ((joueur.getDirection() - courbe) <= (Math.PI/2))) || ((joueur.getDirection() - courbe) >= (3*Math.PI/2)) || ((joueur.getDirection() - courbe) < 0) )
 		{
 			System.out.println("Calcul 1");
-			nouvPosition.x = joueur.position.x + (vitesse * Math.cos(angleRotation));
+			nouvPositionX = joueur.getPosition().x() + (vitesse * Math.cos(angleRotation));
+			joueur.getPosition().x((float)nouvPositionX);
 		}
-		else if( ((joueur.direction - courbe) > (Math.PI/2)) && ((joueur.direction - courbe) < (3*Math.PI/2)) )
+		else if( ((joueur.getDirection() - courbe) > (float)(Math.PI/2)) && ((joueur.getDirection() - courbe) < (float)(3*Math.PI/2)) )
 		{
 			System.out.println("Calcul 2");
-			nouvPosition.x = joueur.position.x - (vitesse * Math.cos(angleRotation));
+			nouvPositionX = joueur.getPosition().x() - (vitesse * Math.cos(angleRotation));
+			
 		}
-		System.out.println("nouvPos x =  "+nouvPosition.x);
+		System.out.println("nouvPos x =  "+nouvPositionX);
 		
 		
 		// Calcul de la nouvelle position en y
-		if( (((joueur.direction - courbe) >= Math.PI) && ((joueur.direction - courbe) <= (2*Math.PI)))  || ((joueur.direction - courbe) < 0)  )
+		if( (((joueur.getDirection() - courbe) >= Math.PI) && ((joueur.getDirection() - courbe) <= (2*Math.PI)))  || ((joueur.getDirection() - courbe) < 0)  )
 		{
 			System.out.println("Calcul 1");
-			nouvPosition.y = joueur.position.y - (vitesse * Math.sin(angleRotation));
+			nouvPositionY = joueur.getPosition().y() - (vitesse * Math.sin(angleRotation));
 		}
-		else if( ((joueur.direction - courbe) >= 0) && ((joueur.direction - courbe) < Math.PI) )
+		else if( ((joueur.getDirection() - courbe) >= 0) && ((joueur.getDirection() - courbe) < Math.PI) )
 		{
 			System.out.println("Calcul 2");
-			nouvPosition.y = joueur.position.y + (vitesse * Math.sin(angleRotation));
+			nouvPositionY = joueur.getPosition().y() + (vitesse * Math.sin(angleRotation));
+			
 		}
-		System.out.println("nouvPos y =  "+nouvPosition.y);
+		System.out.println("nouvPos y =  "+nouvPositionY);
 		
-		
-		// Affectation des nouvelles positions
-		joueur.position.x = nouvPosition.x;
-		joueur.position.y = nouvPosition.y;
+		// Affectation de la nouvelle position du joueur
+		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY);
 		
 		// Remplissage du tableau des tracés
-		trace.add(nouvPosition);
+		trace.add(joueur.getPosition());
+		
+		// Stockage de l'ancien angle direction pour la construction du rectangle formant le tracé
+		joueur.setAngleRectangle((float)joueur.getDirection());
 		
 		// Mise à jour de la direction
-		if((joueur.direction - courbe) < 0)
+		if((joueur.getDirection() - courbe) < 0)
 		{
-			joueur.direction = (2*Math.PI) - angleRotation;
+			joueur.setDirection((2*Math.PI) - angleRotation);
 		}
 		else
 		{
-			joueur.direction = joueur.direction - courbe;
+			joueur.setDirection(joueur.getDirection() - courbe);
 		}
-		System.out.println("MAJ direction : "+joueur.direction);
+		System.out.println("MAJ direction : "+joueur.getDirection());
 		
 	}
 	
@@ -210,103 +217,90 @@ public class Ligne {
 		 */
 		
 		double angleRotation = 0;
-		Vector2 nouvPosition = new Vector2();
-		nouvPosition.x = 0;
-		nouvPosition.y = 0;
+		double nouvPositionX = 0;
+		double nouvPositionY = 0;
 		
-		System.out.println("TOURNE GAUCHE / direction : "+joueur.direction);
+		System.out.println("TOURNE GAUCHE / direction : "+joueur.getDirection());
 		
 		// Calcul de l'angle de rotation
-		if(joueur.direction == 0.0)
+		if(joueur.getDirection() == 0.0)
 		{
 			angleRotation = courbe;
 			System.out.println("Cas 1");			
 		}
-		else if( ((joueur.direction + courbe) >= 0) && ((joueur.direction + courbe) <= (Math.PI/2)) )
+		else if( ((joueur.getDirection() + courbe) >= 0) && ((joueur.getDirection() + courbe) <= (Math.PI/2)) )
 		{
-			angleRotation = joueur.direction + courbe;
+			angleRotation = joueur.getDirection() + courbe;
 			System.out.println("Cas 2");
 		}
-		else if( ((joueur.direction + courbe) > (Math.PI/2)) && ((joueur.direction + courbe) <= Math.PI) )
+		else if( ((joueur.getDirection() + courbe) > (Math.PI/2)) && ((joueur.getDirection() + courbe) <= Math.PI) )
 		{
-			angleRotation = Math.PI - (joueur.direction + courbe);
+			angleRotation = Math.PI - (joueur.getDirection() + courbe);
 			System.out.println("Cas 3");
 		}
-		else if( ((joueur.direction + courbe) > Math.PI) && ((joueur.direction + courbe) <= (3*Math.PI/2)) )
+		else if( ((joueur.getDirection() + courbe) > Math.PI) && ((joueur.getDirection() + courbe) <= (3*Math.PI/2)) )
 		{
-			angleRotation = Math.PI - (2*Math.PI - (joueur.direction + courbe));
+			angleRotation = Math.PI - (2*Math.PI - (joueur.getDirection() + courbe));
 			System.out.println("Cas 4");
 		}
-		else if( ((joueur.direction + courbe) > (3*Math.PI/2)) && ((joueur.direction + courbe) <= (2*Math.PI)) )
+		else if( ((joueur.getDirection() + courbe) > (3*Math.PI/2)) && ((joueur.getDirection() + courbe) <= (2*Math.PI)) )
 		{
-			angleRotation = 2*Math.PI - (joueur.direction + courbe);
+			angleRotation = 2*Math.PI - (joueur.getDirection() + courbe);
 			System.out.println("Cas 5");
 		}
-		else if((joueur.direction + courbe) > (2*Math.PI))
+		else if((joueur.getDirection() + courbe) > (2*Math.PI))
 		{
-			angleRotation = (joueur.direction + courbe) - (2*Math.PI);
+			angleRotation = (joueur.getDirection() + courbe) - (2*Math.PI);
 			System.out.println("Cas 6");
 		}
 		
 		System.out.println("Angle de Rotation =  "+angleRotation);
 		
 		// Calcul de la nouvelle position en x
-		if( (((joueur.direction + courbe) >= (Math.PI/2)) && ((joueur.direction + courbe) <= (3*Math.PI/2))))
+		if( (((joueur.getDirection() + courbe) >= (float)(Math.PI/2)) && ((joueur.getDirection() + courbe) <= (3*Math.PI/2))))
 		{
 			System.out.println("Calcul 1");
-			nouvPosition.x = joueur.position.x - (vitesse * Math.cos(angleRotation));
+			nouvPositionX = joueur.getPosition().x() - (vitesse * Math.cos(angleRotation));
 		}
-		else if( (((joueur.direction + courbe) >= 0) && ((joueur.direction + courbe) < (Math.PI/2))) || (((joueur.direction + courbe) > (3*Math.PI/2)) && ((joueur.direction + courbe) <= (2*Math.PI)))  || ((joueur.direction + courbe) > (2*Math.PI)))
+		else if( (((joueur.getDirection() + courbe) >= 0) && ((joueur.getDirection() + courbe) < (Math.PI/2))) || (((joueur.getDirection() + courbe) > (3*Math.PI/2)) && ((joueur.getDirection() + courbe) <= (2*Math.PI)))  || ((joueur.getDirection() + courbe) > (2*Math.PI)))
 		{
 			System.out.println("Calcul 2");
-			try
-			{
-				nouvPosition.x = joueur.position.x + (vitesse * Math.cos(angleRotation));
-			}
-			catch (NullPointerException e)
-			{
-				e.printStackTrace();
-			}
+			nouvPositionX = joueur.getPosition().x() + (vitesse * Math.cos(angleRotation));
 		}
-		System.out.println("nouvPos x =  "+nouvPosition.x);
+		System.out.println("nouvPos x =  "+nouvPositionX);
 		
 		// Calcul de la nouvelle position en y
-		if( ((joueur.direction + courbe) >= Math.PI) && ((joueur.direction + courbe) <= (2*Math.PI)) )
+		if( ((joueur.getDirection() + courbe) >= Math.PI) && ((joueur.getDirection() + courbe) <= (2*Math.PI)) )
 		{
 			System.out.println("Calcul 1");
-			nouvPosition.y = joueur.position.y - (vitesse * Math.sin(angleRotation));
+			nouvPositionY = joueur.getPosition().y() - (vitesse * Math.sin(angleRotation));
 		}
-		else if( (((joueur.direction + courbe) >= 0) && ((joueur.direction + courbe) < Math.PI))   || ((joueur.direction + courbe) > (2*Math.PI)))
+		else if( (((joueur.getDirection() + courbe) >= 0) && ((joueur.getDirection() + courbe) < Math.PI))   || ((joueur.getDirection() + courbe) > (2*Math.PI)))
 		{
 			System.out.println("Calcul 2");
-			try
-			{
-				nouvPosition.y = joueur.position.y + (vitesse * Math.sin(angleRotation));
-			}
-			catch (NullPointerException e)
-			{
-				e.printStackTrace();
-			}
+			nouvPositionY = joueur.getPosition().y() + (vitesse * Math.sin(angleRotation));
 		}
-		System.out.println("nouvPos y =  "+nouvPosition.y);
+		System.out.println("nouvPos y =  "+nouvPositionY);
 		
-		// Affectation des nouvelles positions
-		joueur.position.x = nouvPosition.x;
-		joueur.position.y = nouvPosition.y;
+		// Affectation de la nouvelle position du joueur
+		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY);
 		
 		// Remplissage du tableau des tracés
-		trace.add(nouvPosition);
+		trace.add(joueur.getPosition());
+		
+		// Stockage de l'ancien angle direction pour la construction du rectangle formant le tracé
+		joueur.setAngleRectangle((float)joueur.getDirection());
 		
 		// Mise à jour de la direction
-		if((joueur.direction + courbe) > (2*Math.PI))
+		if((joueur.getDirection() + courbe) > (2*Math.PI))
 		{
-			joueur.direction = angleRotation;
+			joueur.setDirection(angleRotation);
 		}
 		else
 		{
-			joueur.direction = joueur.direction + courbe;
+			joueur.setDirection(joueur.getDirection() + courbe);
 		}
-		System.out.println("MAJ direction : "+joueur.direction);
+		System.out.println("MAJ direction : "+joueur.getDirection());
 		
 	}
 	
@@ -318,71 +312,70 @@ public class Ligne {
 		 */
 		
 		double angleRotation = 0;
-		Vector2 nouvPosition = new Vector2();
+		double nouvPositionX = 0;
+		double nouvPositionY = 0;
 		
-		System.out.println("PAS TOURNER / direction : "+joueur.direction);
+		System.out.println("PAS TOURNER / direction : "+joueur.getDirection());
 		
 		// Calcul de l'angle de rotation
-		if( (joueur.direction >= 0) && (joueur.direction <= (Math.PI/2)) )
+		if( (joueur.getDirection() >= 0) && (joueur.getDirection() <= (Math.PI/2)) )
 		{
 			System.out.println("Cas 1");
-			angleRotation = joueur.direction;
+			angleRotation = joueur.getDirection();
 		}
-		else if( (joueur.direction > (Math.PI/2)) && (joueur.direction <= Math.PI) )
+		else if( (joueur.getDirection() > (Math.PI/2)) && (joueur.getDirection() <= Math.PI) )
 		{
 			System.out.println("Cas 2");
-			angleRotation = Math.PI - joueur.direction;
+			angleRotation = Math.PI - joueur.getDirection();
 		}
-		else if( (joueur.direction > Math.PI) && (joueur.direction <= (3*Math.PI/2)) )
+		else if( (joueur.getDirection() > Math.PI) && (joueur.getDirection() <= (3*Math.PI/2)) )
 		{
 			System.out.println("Cas 3");
-			angleRotation = Math.abs(- Math.PI - joueur.direction);
+			angleRotation = Math.abs(- Math.PI - joueur.getDirection());
 		}
-		else if( (joueur.direction > (3*Math.PI/2)) && (joueur.direction <= (2*Math.PI)) )
+		else if( (joueur.getDirection() > (3*Math.PI/2)) && (joueur.getDirection() <= (2*Math.PI)) )
 		{
 			System.out.println("Cas 4");
-			angleRotation = (2*Math.PI) - joueur.direction;
+			angleRotation = (2*Math.PI) - joueur.getDirection();
 		}
 		System.out.println("Angle de Rotation =  "+angleRotation);
 		
 		
 		
 		// Calcul de la nouvelle position en x
-		if( ((joueur.direction) > (Math.PI/2)) && ((joueur.direction) <= (3*Math.PI/2)) )
+		if( ((joueur.getDirection()) > (Math.PI/2)) && ((joueur.getDirection()) <= (3*Math.PI/2)) )
 		{
 			System.out.println("Calcul 1");
-			nouvPosition.x = joueur.position.x - (vitesse * Math.cos(angleRotation));
+			nouvPositionX = joueur.getPosition().x() - (vitesse * Math.cos(angleRotation));
 		}
-		else if( (((joueur.direction) >= 0) && ((joueur.direction) <= (Math.PI/2))) || (((joueur.direction) > (3*Math.PI/2)) && ((joueur.direction) <= (2*Math.PI))) )
+		else if( (((joueur.getDirection()) >= 0) && ((joueur.getDirection()) <= (Math.PI/2))) || (((joueur.getDirection()) > (3*Math.PI/2)) && ((joueur.getDirection()) <= (2*Math.PI))) )
 		{
 			System.out.println("Calcul 2");
-			nouvPosition.x = joueur.position.x + (vitesse * Math.cos(angleRotation));
+			nouvPositionX = joueur.getPosition().x() + (vitesse * Math.cos(angleRotation));
 		}
-		System.out.println("nouvPos x =  "+nouvPosition.x);
+		System.out.println("nouvPos x =  "+nouvPositionX);
 		
-		
+		// Affectation de la nouvelle position du joueur
+		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY);
 		
 		// Calcul de la nouvelle position en y
-		if( ((joueur.direction) >= Math.PI) && ((joueur.direction) <= (2*Math.PI)) )
+		if( ((joueur.getDirection()) >= Math.PI) && ((joueur.getDirection()) <= (2*Math.PI)) )
 		{
 			System.out.println("Calcul 1");
-			nouvPosition.y = joueur.position.y - (vitesse * Math.sin(angleRotation));
+			nouvPositionY = joueur.getPosition().y() - (vitesse * Math.sin(angleRotation));
 		}
-		else if( ((joueur.direction) >= 0) && ((joueur.direction) < Math.PI) )
+		else if( ((joueur.getDirection()) >= 0) && ((joueur.getDirection()) < Math.PI) )
 		{
 			System.out.println("Calcul 2");
-			nouvPosition.y = joueur.position.y + (vitesse * Math.sin(angleRotation));
+			nouvPositionY = joueur.getPosition().y() + (vitesse * Math.sin(angleRotation));
 		}
-		System.out.println("nouvPos y =  "+nouvPosition.y);
-		
-		
-		// Affectation des nouvelles positions
-		joueur.position.x = nouvPosition.x;
-		joueur.position.y = nouvPosition.y;
-		System.out.println("Nouvelle position : x= "+nouvPosition.x+" ; y= "+nouvPosition.y);
+		System.out.println("nouvPos y =  "+nouvPositionY);
 		
 		// Remplissage du tableau des tracés
-		trace.add(nouvPosition);
+		trace.add(joueur.getPosition());
+
+		// Stockage de l'ancien angle direction pour la construction du rectangle formant le tracé
+		joueur.setAngleRectangle((float)joueur.getDirection());
 		
 		// Pas de mise à jour de la direction, vu qu'elle ne change pas
 		

@@ -88,8 +88,7 @@ public class Partie {
 		// Calcul des positions de base des joueurs		
 		for(Joueur e : joueurs)		// Boucle de parcours de la liste des joueurs
 		{
-			e.position.x = (int) Math.random() * dimensionPlateau;	// Calcul de la position en x
-			e.position.y = (int) Math.random() * dimensionPlateau;	// Calcul de la position en y
+			e.getPosition().set((float) Math.random() * dimensionPlateau, (float) Math.random() * dimensionPlateau);	// Calcul de la position en x et y
 		}
 	}
 	
@@ -143,10 +142,10 @@ public class Partie {
 			Joueur player = i.next();
 			if(player == joueur)
 			{
-				joueur.ligne = new Ligne();
+				joueur.setLigne(new Ligne());
 			}
 		}
-		System.out.println("\t\tANCIEN : "+joueur.ligne.toString());
+		System.out.println("\t\tANCIEN : "+joueur.getLigne().toString());
 		/*
 		// Connection de la ligne avec le joueur
 		try {

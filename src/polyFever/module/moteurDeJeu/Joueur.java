@@ -1,5 +1,7 @@
 package polyFever.module.moteurDeJeu;
 
+import polyFever.module.util.math.Vector2;
+
 /* 
  * Classe stockant les informations liés à un joueur
  * Et gérant les paramètres du joueur
@@ -7,12 +9,12 @@ package polyFever.module.moteurDeJeu;
 
 public class Joueur {
 
-	public String pseudo;			// Pseudo du joueur
+	private String pseudo;			// Pseudo du joueur
 	// ??? TYPE DES TOUCHES
 	private String toucheG;			// Sa touche de jeu, tournant à gauche
 	private String toucheD;			// Sa touche de jeu, tournant à droite
-	public int score;				// Score du joueur, sur une partie
-	public String etat;				// Etat du joueur (mort, vivant, quitté la partie)
+	private int score;				// Score du joueur, sur une partie
+	private String etat;			// Etat du joueur (mort, vivant, quitté la partie)
 	private enum Role				// Enumération des différents role d'un joueur, soit hote de la partie ou simple client
 	{
 		HOTE,
@@ -20,9 +22,10 @@ public class Joueur {
 	}
 	// COMMENT DEFINIR LE ROLE ??? QUELLE INFORMATION JE VAIS RECEVOIR ? QUEL TYPE ?
 	private Role type;				// Variable définissant le role du joueur, accueillant l'énumération
-	public Ligne ligne;				// Objet Ligne controlée par le joueur
-	public Vector2 position;		// Vector2 donnant la position actuelle du point du joueur
-	public double direction;		// Direction du point du joueur (en radians)
+	private Ligne ligne;			// Objet Ligne controlée par le joueur
+	private Vector2 position;		// Vector2 donnant la position actuelle du point du joueur
+	private float angleRectangle;	// Angle utilisé pour l'affichage des rectangles du tracé de la ligne
+	private double direction;		// Direction du point du joueur (en radians)
 	
 	// Constructeur
 	public Joueur()	// Par défaut
@@ -124,6 +127,14 @@ public class Joueur {
 	public void setDirection(double direction) {
 		this.direction = direction;
 	}
+
+	public float getAngleRectangle() {
+		return angleRectangle;
+	}
+
+	public void setAngleRectangle(float angleRectangle) {
+		this.angleRectangle = angleRectangle;
+	}
 	
 	/* 
 	 * Autres méthodes de gestion des joueurs
@@ -159,7 +170,7 @@ public class Joueur {
 		return "Joueur [pseudo=" + pseudo + ", toucheG=" + toucheG
 				+ ", toucheD=" + toucheD + ", score=" + score + ", etat="
 				+ etat + ", type=" + type + ", ligne=" + ligne + ", position.x="
-				+ position.x + ", position.y="+ position.y + ", direction=" + direction + "]";
+				+ position.x() + ", position.y="+ position.y() + ", direction=" + direction + "]";
 	}
 	
 }

@@ -1,5 +1,7 @@
 package polyFever.module.moteurDeJeu;
 
+import polyFever.module.util.math.Vector2;
+
 /* 
  * Classe stockant les informations liés à un bonus augmentant la vitesse du joueur ayant activé ce bonus
  */
@@ -22,8 +24,8 @@ public class BonusVitesse extends Bonus{
 		 */
 		int ancienneVitesse;
 		
-		ancienneVitesse = joueur.ligne.getVitesse();
-		joueur.ligne.setEpaisseur(ancienneVitesse+1);
+		ancienneVitesse = joueur.getLigne().getVitesse();
+		joueur.getLigne().setEpaisseur(ancienneVitesse+1);
 	}
 	
 }
