@@ -15,6 +15,7 @@ import java.nio.IntBuffer;
 
 
 
+
 import org.lwjgl.BufferUtils;
 
 
@@ -22,31 +23,41 @@ import org.lwjgl.BufferUtils;
 public class DessinLigne  { // peut être instancier un tableau de DessinLigne dans DessinPlateau (1 par joueur)
 	
 	private int nbVertex;
+
 	private Affichage affichage;
 	private PolyFever polyFever;
 	private Partie partie;
-	private List<Float> tabVertex;
-	private float monTab[];
+	
 	private int program, ebo,vbo, uniColor;
+	
+	private float tabVertex[];
 	private int elements[];
+	private int lenTabV;
+	private int lenTabE;
+	private int indexTabE;
+	
+	
 	private long t_start;
 	
 	public DessinLigne(int width, int height, Affichage a, PolyFever p, Partie partie)
 	{
-		this.nbVertex = 6;
+		this.nbVertex = 0;
 		this.affichage = a;
 		this.polyFever = p;
 		this.partie = partie;
-		this.tabVertex = new ArrayList<Float>();
-		this.monTab = new float[]{ 
+		this.lenTabV = 0;
+		this.lenTabE = 0;
+		this.indexTabE = 0;
+		this.tabVertex = new float[10000];/*{ 
 				-0.75f, 0.0f,
 				0.0f, 0.0f,
 				0.0f, -0.75f,
 				-0.75f, -0.75f				
 				};
+		*/
+		this.elements = new int[10000];
+	};
 		
-		};
-			
 	
 	public void init()
 	{
@@ -76,14 +87,9 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 			System.err.println("Failure in compiling fragment shader. Error log:\n" + glGetShaderInfoLog(fs, glGetShaderi(fs, GL_INFO_LOG_LENGTH)));
 			polyFever.destroy();
 		}
-		
-		
-		
+				
 		
 		program = glCreateProgram(); // Création du programme auquel sera rattaché les shaders
-		
-		
-		
 		
 		glAttachShader(program, vs); // On attache le vs au programme
 		glAttachShader(program, fs); // On attache le fs au programme
@@ -108,23 +114,38 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		glDeleteShader(vs);
 		glDeleteShader(fs);
 		
+		this.addRectangle(new Vector2(0.0f,0.0f), 0.78f, 200.0f, 50.0f);
+		this.addRectangle(new Vector2(0.0f,0.0f), 0.57f, 500.0f, 10.0f);
+		this.addRectangle(new Vector2(0.0f,0.0f), 0.0f, 500.0f, 10.0f);
+		
+		//this.addRectangle(new Vector2(0.5f,0.0f), 1.7f, 200.0f, 50.0f);
+		for(int i = 0; i<this.lenTabV; i++)
+		{
+			System.out.println("i: ".concat(String.valueOf(tabVertex[i])));
+		}
+		
+		for(int i = 0; i<this.lenTabE; i++)
+		{
+			System.out.println("e: ".concat(String.valueOf(elements[i])));
+		}
+		
 		
 		vbo = glGenBuffers(); // ebo : Elements Buffer Object (plus adapté que les vbo (vertex buffer object pour le dessin de multiple objets)
 		
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);  // Fait en sorte que le ebo soit l'objet actif
 		
-		glBufferData(GL_ARRAY_BUFFER, (FloatBuffer)BufferUtils.createFloatBuffer(this.monTab.length).put(this.monTab).flip(), GL_STREAM_DRAW); // Est appliqué sur le vbo actif
-		
+		glBufferData(GL_ARRAY_BUFFER, (FloatBuffer)BufferUtils.createFloatBuffer(this.tabVertex.length).put(this.tabVertex).flip(), GL_STREAM_DRAW); // Est appliqué sur le vbo actif
+		//glBufferData(GL_ARRAY_BUFFER, this.tabVertex.size(),this.tabVertex, GL_STREAM_DRAW);
 		
 		
 		
 		ebo = glGenBuffers(); // ebo : Elements Buffer Object (plus adapté que les vbo (vertex buffer object pour le dessin de multiple objets)
 		
-		this.elements = new int[]{
+		/*this.elements = {
 				0, 1, 2,
 				2, 3 ,0
-		};
-		
+		};*/
+
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);  // Fait en sorte que le ebo soit l'objet actif
 		
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (IntBuffer)BufferUtils.createIntBuffer(this.elements.length).put(this.elements).flip(), GL_STREAM_DRAW); // Est appliqué sur le vbo actif
@@ -152,7 +173,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		glUseProgram(program);
 		
 		
-		double newColor = Math.sin(time/1000 + 4.0f);
+		double newColor = Math.sin(time/100 + 4.0f);
 		//System.out.println(time);
 		glUniform3f(uniColor, (float) newColor, 0.0f, 0.0f); // change la couleur du triangle en rouge
 		
@@ -161,7 +182,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0); // 0 : position a la location 0 par défaut.  A l'appelle de cette fonction les infos vont être stockées dans le VAO courant. 
 		
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // essayer avec glDrawElements (https://open.gl/drawing)
+		glDrawElements(GL_TRIANGLES, this.nbVertex, GL_UNSIGNED_INT, 0); // essayer avec glDrawElements (https://open.gl/drawing)
 		
 		glDisableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -169,47 +190,54 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		glUseProgram(0);
 	}
 	
-	private void addRectangle(Vector4 v, float angle, float w, float h) // v : point d'encrage (milieu du bord supérieur)
+	private void addRectangle(Vector2 v, float angle, float w, float h) // v : point d'encrage (milieu du bord supérieur)
 	{
 		
 		w = w*affichage.getRATIOPIXWIDTH(); // conversion pixel vers float
 		h = h*affichage.getRATIOPIXHEIGHT(); // conversion pixel vers float
 		
-		Vector4 p1 = new Vector4();
+
 		
-		double xd =  v.x() + (w/2)*Math.cos(angle);
+		Vector2 p1 = new Vector2();
+		
+		double xd =  v.x() + (w/2)*Math.cos((Math.PI/2)-angle);
 		float x = (float) xd;
-		double yd =  v.y() + (w/2)*Math.sin(angle);
+		double yd =  v.y() - (w/2)*Math.sin((Math.PI/2)-angle);
 		float y = (float) yd;
-		p1.set( x, y, 0.0f, 1.0f);
+		p1.set( x, y);
 		
+		System.out.println("p1x: ".concat(String.valueOf(p1.x())));
+		System.out.println("p1y: ".concat(String.valueOf(p1.y())));	
 		
-		Vector4 p2 = new Vector4();	
+		Vector2 p2 = new Vector2();	
 		
 		xd =  p1.x() - h*Math.cos(Math.PI-angle);
 		x = (float) xd;
-		yd =  p1.y() + h*Math.sin(Math.PI-angle);
+		yd =  p1.y() - h*Math.sin(Math.PI-angle);
 		y = (float) yd;
-		p2.set( x, y, 0.0f, 1.0f);
+		p2.set(x, y);
 		
 		
-		Vector4 p4 = new Vector4();
-		xd =  v.x() - (w/2)*Math.cos(angle);
+		Vector2 p4 = new Vector2();
+		xd =  v.x() - (w/2)*Math.cos((Math.PI/2)-angle);
 		x = (float) xd;
-		yd =  v.y() - (w/2)*Math.sin(angle);
+		yd =  v.y() + (w/2)*Math.sin((Math.PI/2)-angle);
 		y = (float) yd;
-		p4.set( x, y, 0.0f, 1.0f);
+		p4.set( x, y);
+		
+		System.out.println("p4x: ".concat(String.valueOf(p4.x())));
+		System.out.println("p4y: ".concat(String.valueOf(p4.y())));	
 		
 		
-		Vector4 p3 = new Vector4();
+		Vector2 p3 = new Vector2();
 		
 		xd =  p4.x() - h*Math.cos(Math.PI-angle);
 		x = (float) xd;
-		yd =  p4.y() + h*Math.sin(Math.PI-angle);
+		yd =  p4.y() - h*Math.sin(Math.PI-angle);
 		y = (float) yd;
-		p3.set( x, y, 0.0f, 1.0f);
+		p3.set( x, y);
 		
-		ajouterVector4Rect(tabVertex, p1, p2, p3, p4);
+		ajouterVector2Rect(p1, p2, p3, p4);
 		this.nbVertex += 6;
 		
 		// Peut etre utiliser matrice de rotation ? 
@@ -217,39 +245,33 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 	}
 	
-	private void ajouterVector4Rect(List<Float> tab, Vector4 p1, Vector4 p2, Vector4 p3, Vector4 p4)
+	private void ajouterVector2Rect(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4)
 	{
 
-		tab.add(p1.x());
-		tab.add(p1.y());
-		tab.add(p1.z()); // A modifier pour opti ? tab.add(1.0f);
-		tab.add(p1.w()); // A modifier pour opti ? tab.add(0.0f);
+		this.tabVertex[this.lenTabV] = p4.x(); // Top Left
+		this.tabVertex[this.lenTabV+1] = p4.y(); 
 		
-		tab.add(p3.x());
-		tab.add(p3.y());
-		tab.add(p3.z());
-		tab.add(p3.w());
+		this.tabVertex[this.lenTabV+2] = p1.x(); // Top Right
+		this.tabVertex[this.lenTabV+3] = p1.y();
+
+		this.tabVertex[this.lenTabV+4] = p2.x(); // Bottom Right
+		this.tabVertex[this.lenTabV+5] = p2.y();
+
+		this.tabVertex[this.lenTabV+6] = p3.x(); // Bottom Left
+		this.tabVertex[this.lenTabV+7] = p3.y();
 		
-		tab.add(p4.x());
-		tab.add(p4.y());
-		tab.add(p4.z());
-		tab.add(p4.w());
+		this.lenTabV += 8;
 		
+		this.elements[this.lenTabE] = this.indexTabE;
+		this.elements[this.lenTabE+1] = this.indexTabE+1;
+		this.elements[this.lenTabE+2] = this.indexTabE+2;
 		
-		tab.add(p1.x());
-		tab.add(p1.y());
-		tab.add(p1.z());
-		tab.add(p1.w());
+		this.elements[this.lenTabE+3] = this.indexTabE+2;
+		this.elements[this.lenTabE+4] = this.indexTabE+3;
+		this.elements[this.lenTabE+5] = this.indexTabE;
 		
-		tab.add(p2.x());
-		tab.add(p2.y());
-		tab.add(p2.z());
-		tab.add(p2.w());
-		
-		tab.add(p3.x());
-		tab.add(p3.y());
-		tab.add(p3.z());
-		tab.add(p3.w());
+		this.indexTabE += 4;
+		this.lenTabE += 6;
 		
 	}
 
