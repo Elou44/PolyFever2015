@@ -48,14 +48,14 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		this.lenTabV = 0;
 		this.lenTabE = 0;
 		this.indexTabE = 0;
-		this.tabVertex = new float[10000];/*{ 
+		this.tabVertex = new float[1000000];/*{ 
 				-0.75f, 0.0f,
 				0.0f, 0.0f,
 				0.0f, -0.75f,
 				-0.75f, -0.75f				
 				};
 		*/
-		this.elements = new int[10000];
+		this.elements = new int[1000000];
 	};
 		
 	
@@ -114,12 +114,16 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		glDeleteShader(vs);
 		glDeleteShader(fs);
 		
-		this.addRectangle(new Vector2(0.0f,0.0f), 0.78f, 200.0f, 50.0f);
-		this.addRectangle(new Vector2(0.0f,0.0f), 0.57f, 500.0f, 10.0f);
-		this.addRectangle(new Vector2(0.0f,0.0f), 0.0f, 500.0f, 10.0f);
+		for(int i = 0; i<60; i++)
+		{
+			this.addRectangle(new Vector2(0.0f,(i/30.0f)-1.0f), 1.57f-1.57f*(i/60.0f), 10.0f, 3.0f);
+		}
+		//this.addRectangle(new Vector2(0.0f,0.0f), 0.78f, 200.0f, 50.0f);
+		this.addRectangle(new Vector2(0.0f,0.0f), 1.57f, 500.0f, 1.0f);
+		this.addRectangle(new Vector2(0.0f,0.0f), 0.0f, 500.0f, 1.0f);
 		
 		//this.addRectangle(new Vector2(0.5f,0.0f), 1.7f, 200.0f, 50.0f);
-		for(int i = 0; i<this.lenTabV; i++)
+		/*for(int i = 0; i<this.lenTabV; i++)
 		{
 			System.out.println("i: ".concat(String.valueOf(tabVertex[i])));
 		}
@@ -127,7 +131,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		for(int i = 0; i<this.lenTabE; i++)
 		{
 			System.out.println("e: ".concat(String.valueOf(elements[i])));
-		}
+		}*/
 		
 		
 		vbo = glGenBuffers(); // ebo : Elements Buffer Object (plus adapté que les vbo (vertex buffer object pour le dessin de multiple objets)
@@ -196,7 +200,10 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		w = w*affichage.getRATIOPIXWIDTH(); // conversion pixel vers float
 		h = h*affichage.getRATIOPIXHEIGHT(); // conversion pixel vers float
 		
-
+		System.out.println("w: ".concat(String.valueOf(w)));
+		System.out.println("h: ".concat(String.valueOf(h)));	
+		
+		System.out.println("lenTabV: ".concat(String.valueOf(this.lenTabV)));
 		
 		Vector2 p1 = new Vector2();
 		
@@ -206,16 +213,19 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		float y = (float) yd;
 		p1.set( x, y);
 		
-		System.out.println("p1x: ".concat(String.valueOf(p1.x())));
-		System.out.println("p1y: ".concat(String.valueOf(p1.y())));	
+		//System.out.println("p1x: ".concat(String.valueOf(p1.x())));
+		//System.out.println("p1y: ".concat(String.valueOf(p1.y())));	
 		
 		Vector2 p2 = new Vector2();	
 		
-		xd =  p1.x() - h*Math.cos(Math.PI-angle);
+		xd =  p1.x() - h*Math.cos(angle);
 		x = (float) xd;
-		yd =  p1.y() - h*Math.sin(Math.PI-angle);
+		yd =  p1.y() - h*Math.sin(angle);
 		y = (float) yd;
 		p2.set(x, y);
+		
+		//System.out.println("p2x: ".concat(String.valueOf(p2.x())));
+		//System.out.println("p2y: ".concat(String.valueOf(p2.y())));	
 		
 		
 		Vector2 p4 = new Vector2();
@@ -225,15 +235,15 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		y = (float) yd;
 		p4.set( x, y);
 		
-		System.out.println("p4x: ".concat(String.valueOf(p4.x())));
-		System.out.println("p4y: ".concat(String.valueOf(p4.y())));	
+		//System.out.println("p4x: ".concat(String.valueOf(p4.x())));
+		//System.out.println("p4y: ".concat(String.valueOf(p4.y())));	
 		
 		
 		Vector2 p3 = new Vector2();
 		
-		xd =  p4.x() - h*Math.cos(Math.PI-angle);
+		xd =  p4.x() - h*Math.cos(angle);
 		x = (float) xd;
-		yd =  p4.y() - h*Math.sin(Math.PI-angle);
+		yd =  p4.y() - h*Math.sin(angle);
 		y = (float) yd;
 		p3.set( x, y);
 		
