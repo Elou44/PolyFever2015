@@ -274,12 +274,12 @@ public abstract class PolyFever {
 				
 				Display.update();
 				
-				frames++;/*
+				frames++;
 				if(System.nanoTime() - lastFPS >= 1e9) {
-					System.out.println("FPS: ".concat(String.valueOf(frames)));
+					System.out.println("FPS:                                                        ".concat(String.valueOf(frames)));
 					lastFPS += 1e9;
 					frames = 0;
-				}*/
+				}
 				
 				Display.sync(fps);
 			}
