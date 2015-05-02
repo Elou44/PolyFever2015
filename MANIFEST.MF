@@ -1,0 +1,2 @@
+Main-Class: Prototyp1
+Class-Path: \lwjgl\lwjgl_util.jar \lwjgl\lwjgl.jar
