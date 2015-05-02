@@ -165,9 +165,8 @@ public class Ligne {
 		{
 			//System.out.println("Calcul 1");
 			nouvPositionX = joueur.getPosition().x() + (vitesse * Math.cos(angleRotation));
-			joueur.getPosition().x((float)nouvPositionX);
 		}
-		else if( ((joueur.getDirection() - courbe) > (float)(Math.PI/2)) && ((joueur.getDirection() - courbe) < (float)(3*Math.PI/2)) )
+		else if( ((joueur.getDirection() - courbe) > (Math.PI/2)) && ((joueur.getDirection() - courbe) < (3*Math.PI/2)) )
 		{
 			//System.out.println("Calcul 2");
 			nouvPositionX = joueur.getPosition().x() - (vitesse * Math.cos(angleRotation));

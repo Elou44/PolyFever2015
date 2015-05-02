@@ -29,7 +29,7 @@ public class Main {
 		
 		System.out.println("\n\t3 - ***");
 		
-		game.ajouterJoueur(J1);
+		//game.ajouterJoueur(J1, );
 		
 		System.out.println(game.toString());
 		

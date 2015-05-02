@@ -4,6 +4,12 @@ import polyFever.lwgjl.*
 import java.util.*;
 import polyFever.module.moteurDeJeu.*;
 
+/* 
+ * POUR LES EVENEMENTS FAUDRAIT PEUT ETRE AVOIR PLUSIEURS CONSTRUCTEURS, GENRE 1 POUR CHAQUE TYPE DE GESTION
+ * C'EST A DIRE UNE GESTION POUR QUAND EN JEU
+ * UNE GESTION POUR QUAND DANS LE MENU
+ */
+
 public class Evenements {
 	private Set<Joueur> joueurs;
 	
