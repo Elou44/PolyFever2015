@@ -279,7 +279,7 @@ public abstract class PolyFever {
 
 				}
 				
-				if(Keyboard.next()== false)
+				if(Keyboard.next()== false && !isLeftHeld && !isRightHeld)
 				{
 					Iterator<Joueur> e = this.partie.getJoueurs().iterator();
 					while(e.hasNext())

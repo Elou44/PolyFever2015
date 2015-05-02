@@ -31,7 +31,7 @@ public class Ligne {
 		this.vitesse2 = 3;
 		this.vitesse = 3*p.getRATIOPIXWIDTH();
 		this.epaisseur = 5;
-		this.courbe = Math.PI / 10;
+		this.courbe = Math.PI / 30;
 		this.tpsEnVie = 0;
 		this.trace = new ArrayList<Vector2>();
 	}
