@@ -172,10 +172,10 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 		
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		//glBufferData(GL_ARRAY_BUFFER, (FloatBuffer)BufferUtils.createFloatBuffer(this.tabVertex.length).put(this.tabVertex).flip(), GL_STREAM_DRAW); // Est appliqué sur le vbo actif
+		glBufferSubData(GL_ARRAY_BUFFER, 0, (FloatBuffer)BufferUtils.createFloatBuffer(this.tabVertex.length).put(this.tabVertex).flip()); // Est appliqué sur le vbo actif
 		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-		//glBufferData(GL_ELEMENT_ARRAY_BUFFER, (IntBuffer)BufferUtils.createIntBuffer(this.elements.length).put(this.elements).flip(), GL_STREAM_DRAW); // Est appliqué sur le vbo actif
+		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, (IntBuffer)BufferUtils.createIntBuffer(this.elements.length).put(this.elements).flip()); // Est appliqué sur le vbo actif
 		
 		
 		Iterator<Joueur> e = this.partie.getJoueurs().iterator();
@@ -276,7 +276,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	
 	private void ajouterVector2Rect(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4)
 	{
-
+		
 		this.tabVertex[this.lenTabV] = p4.x(); // Top Left
 		this.tabVertex[this.lenTabV+1] = p4.y(); 
 		
