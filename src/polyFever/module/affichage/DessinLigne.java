@@ -173,7 +173,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 		
 		Iterator<Joueur> e = this.partie.getJoueurs().iterator();
-		while(e.hasNext())
+		while(e.hasNext()) // A déplacer dans Init();
 		{
 			j = e.next();
 			this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2());

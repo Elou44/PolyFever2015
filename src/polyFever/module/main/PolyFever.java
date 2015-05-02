@@ -30,6 +30,8 @@ public abstract class PolyFever {
 	private float RATIOPIXHEIGHT; // Hauteur d'un pixel en float
 	private Partie partie;
 	
+	boolean isLeftHeld, isRightHeld;
+	
 	/**
 	 * Initializes the application in fullscreen mode.
 	 * 
@@ -39,6 +41,11 @@ public abstract class PolyFever {
 	 */
 	public PolyFever(boolean vsync, int width, int height) {
 		System.out.println("Création du context openGL...");
+		
+		isLeftHeld = false;
+		isRightHeld = false;
+		
+		
 		this.partie = null;
 		this.WIDTH = width; 
 		this.HEIGHT = height;
@@ -281,6 +288,8 @@ public abstract class PolyFever {
 					}
 				}
 				
+				traitementEvenements(isLeftHeld, isRightHeld);
+				
 				update(deltaTime);
 				
 				Utils.checkGLError("update");
@@ -342,30 +351,24 @@ public abstract class PolyFever {
 	 */
 	public void keyPressed(int key, char c) {
 		
+		System.out.println(isLeftHeld);
+		System.out.println(isRightHeld);
+		
 		if(key == Keyboard.KEY_LEFT)
 		{
-			System.out.println("Gauche");
-			Iterator<Joueur> e = this.partie.getJoueurs().iterator();
-			while(e.hasNext())
-			{
-				e.next().getLigne().tournerGauche();
-			}
+			//System.out.println("Gauche");
+			isLeftHeld = true;
+			isRightHeld = false;
 			
 		}
 		else if(key == Keyboard.KEY_RIGHT)
 		{
-			System.out.println("Droite");
-			Iterator<Joueur> e = this.partie.getJoueurs().iterator();
-			while(e.hasNext())
-			{
-				e.next().getLigne().tournerDroite();
-			}
+			//System.out.println("Droite");	
+			isLeftHeld = false;
+			isRightHeld = true;
+			
 		}
-		
-	}
-	
-	public void keyDown(int key, char c)
-	{
+
 		
 	}
 	
@@ -375,7 +378,51 @@ public abstract class PolyFever {
 	 * @param key The @see org.lwjgl.input.Keyboard keycode of the released key.
 	 * @param c The literal character of the released key.
 	 */
-	public void keyReleased(int key, char c) {}
+	public void keyReleased(int key, char c) 
+	{
+		
+		if(key == Keyboard.KEY_LEFT)
+		{
+			System.out.println("Relaché Gauche");
+			isLeftHeld = false;
+			
+		}
+		else if(key == Keyboard.KEY_RIGHT)
+		{
+			System.out.println("Relaché Droite");
+			isRightHeld = false;
+			
+		}
+		
+	}
+	
+	public void traitementEvenements(boolean isLeftHeld, boolean isRightHeld)
+	{
+		
+		if(isLeftHeld && !isRightHeld)
+		{
+			//System.out.println("Gauche");
+			Iterator<Joueur> e = this.partie.getJoueurs().iterator();
+			while(e.hasNext())
+			{
+				e.next().getLigne().tournerGauche();
+			}
+		}
+		else if(isRightHeld && !isLeftHeld)
+		{
+			
+			//System.out.println("Droite");
+			Iterator<Joueur> e = this.partie.getJoueurs().iterator();
+			while(e.hasNext())
+			{
+				e.next().getLigne().tournerDroite();
+			}
+			
+		}
+		
+	}
+	
+
 	
 	/**
 	 * Called once per frame and given the elapsed time since the last call
