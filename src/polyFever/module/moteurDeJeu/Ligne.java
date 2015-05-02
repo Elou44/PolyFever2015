@@ -259,7 +259,7 @@ public class Ligne {
 		System.out.println("Angle de Rotation =  "+angleRotation);
 		
 		// Calcul de la nouvelle position en x
-		if( (((joueur.getDirection() + courbe) >= (float)(Math.PI/2)) && ((joueur.getDirection() + courbe) <= (3*Math.PI/2))))
+		if( (((joueur.getDirection() + courbe) >= (Math.PI/2)) && ((joueur.getDirection() + courbe) <= (3*Math.PI/2))))
 		{
 			System.out.println("Calcul 1");
 			nouvPositionX = joueur.getPosition().x() - (vitesse * Math.cos(angleRotation));
