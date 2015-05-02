@@ -216,7 +216,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	{
 		
 		w = w*affichage.getRATIOPIXWIDTH(); // conversion pixel vers float
-		h = h*affichage.getRATIOPIXHEIGHT(); // conversion pixel vers float
+		h = h*affichage.getRATIOPIXHEIGHT()+4*affichage.getRATIOPIXHEIGHT(); // conversion pixel vers float
 		
 		System.out.println("angle: ".concat(String.valueOf(angle)));
 		System.out.println("w: ".concat(String.valueOf(w)));
