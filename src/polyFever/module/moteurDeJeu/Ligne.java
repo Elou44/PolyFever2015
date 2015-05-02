@@ -10,8 +10,7 @@ import polyFever.module.util.math.Vector2;
 
 public class Ligne {
 
-	// LA COULEUR SOUS QUEL TYPE JE DOIS L'ENVOYER ???
-	// ENTIER DE 1 A 24 !!!!!!!!
+	// COULEUR AFFECTEE LORS DE L'INSTANCIATION D'UN JOUEUR
 	private int couleur;				// Couleur de la ligne
 	private Joueur joueur;				// Joueur controlant la ligne
 	private float vitesse2;				// Vitesse de la ligne (en pixels)

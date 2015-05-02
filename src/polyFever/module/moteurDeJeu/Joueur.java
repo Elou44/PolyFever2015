@@ -42,13 +42,14 @@ public class Joueur {
 		this.angleRectangle = (float) Math.PI/2; 
 	}
 	
-	public Joueur(String pseudo, String toucheG, String toucheD)	// Avec paramètres
+	public Joueur(String pseudo, String toucheG, String toucheD, int couleur)	// Avec paramètres
 	{
 		this();
 		System.out.println("Instanciation d'un objet Joueur (ap)...");
 		this.pseudo = pseudo;
 		this.toucheG = toucheG;
 		this.toucheD = toucheD;
+		this.ligne.setCouleur(couleur);
 	}
 
 	// Méthodes
