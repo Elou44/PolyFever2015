@@ -11,8 +11,7 @@ public class Affichage {
 	
 	private final int WIDTH; // Largeur de la fenetre en pixel
 	private final int HEIGHT; // Hauteur de la fenetre en pixel
-	private float RATIOPIXWIDTH; // Largeur d'un pixel en float
-	private float RATIOPIXHEIGHT; // Hauteur d'un pixel en float
+
 	
 
 
@@ -20,8 +19,7 @@ public class Affichage {
 	{
 		this.WIDTH = width;
 		this.HEIGHT = height;
-		RATIOPIXWIDTH = 2/(float) width;
-		RATIOPIXHEIGHT = 2/(float) height;	
+
 		
 		dJeu = new DessinJeu(width, height, this, p, partie);
 		dMenu = new DessinMenu();
@@ -37,15 +35,6 @@ public class Affichage {
 		return HEIGHT;
 	}
 	
-	public float getRATIOPIXWIDTH() {
-		return RATIOPIXWIDTH;
-	}
-
-
-	public float getRATIOPIXHEIGHT() {
-		return RATIOPIXHEIGHT;
-	}
-
 
 	public void dessiner()
 	{

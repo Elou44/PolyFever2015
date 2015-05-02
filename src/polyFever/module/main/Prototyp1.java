@@ -17,7 +17,7 @@ public class Prototyp1 extends PolyFever {
 		
 		Partie partie = new Partie(); // Devra etre instanciée par le Menu
 		Joueur j1 = new Joueur();
-		partie.ajouterJoueur(j1);
+		partie.ajouterJoueur(j1,this);
 		
 		this.affichage = new Affichage(super.getWIDTH(), super.getHEIGHT(), this, partie);
 		this.setPartie(partie); // Envoie de l'objet Partie à la classe PolyFever

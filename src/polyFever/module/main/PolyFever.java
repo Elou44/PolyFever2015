@@ -21,10 +21,15 @@ import polyFever.module.moteurDeJeu.*;
  * @author Roi Atalla
  */
 public abstract class PolyFever {
+	
+	
 	private int fps;
 	private final int WIDTH;
 	private final int HEIGHT;
+	private float RATIOPIXWIDTH; // Largeur d'un pixel en float
+	private float RATIOPIXHEIGHT; // Hauteur d'un pixel en float
 	private Partie partie;
+	
 	/**
 	 * Initializes the application in fullscreen mode.
 	 * 
@@ -37,6 +42,8 @@ public abstract class PolyFever {
 		this.partie = null;
 		this.WIDTH = width; 
 		this.HEIGHT = height;
+		this.RATIOPIXWIDTH = 2/(float) width;
+		this.RATIOPIXHEIGHT = 2/(float) height;	
 		try {
 			Display.setFullscreen(true);
 			Display.setVSyncEnabled(vsync);
@@ -72,6 +79,8 @@ public abstract class PolyFever {
 		Display.setTitle(name);
 		this.WIDTH = width; 
 		this.HEIGHT = height;
+		this.RATIOPIXWIDTH = 2/(float) width;
+		this.RATIOPIXHEIGHT = 2/(float) height;	
 		try {
 			Display.setDisplayMode(new DisplayMode(width, height));
 		} catch(Exception exc) {
@@ -85,6 +94,14 @@ public abstract class PolyFever {
 		
 	}
 	
+	public float getRATIOPIXWIDTH() {
+		return RATIOPIXWIDTH;
+	}
+
+	public float getRATIOPIXHEIGHT() {
+		return RATIOPIXHEIGHT;
+	}
+
 	/**
 	 * Sets the framerate of the game loop.
 	 * 

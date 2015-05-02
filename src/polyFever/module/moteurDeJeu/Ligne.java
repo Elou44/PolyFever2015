@@ -7,6 +7,7 @@ package polyFever.module.moteurDeJeu;
 
 import java.util.*;
 import polyFever.module.util.math.Vector2;
+import polyFever.module.main.*;
 
 public class Ligne {
 
@@ -20,23 +21,24 @@ public class Ligne {
 	private int tpsEnVie;				// Temps passé en vie durant un round (en secondes)
 	private List<Vector2> trace;		// Tableau de Vector2, donnant les coordonnées des points passés par la ligne, donnant ainsi le chemin parcouru
 	
+	
 	// Constructeur
-	public Ligne()	// Par défaut
+	public Ligne(PolyFever p)	// Par défaut
 	{
 		//System.out.println("Instanciation d'un objet Ligne (sp)...");
 		this.couleur = 0;
 		this.joueur = null;
 		this.vitesse2 = 3;
-		this.vitesse = 0.012f;
+		this.vitesse = 3*p.getRATIOPIXWIDTH();
 		this.epaisseur = 7;
 		this.courbe = Math.PI / 10;
 		this.tpsEnVie = 0;
 		this.trace = new ArrayList<Vector2>();
 	}
 	
-	public Ligne(int couleur)	// Avec paramètres
+	public Ligne(int couleur, PolyFever p)	// Avec paramètres
 	{
-		this();
+		this(p);
 		//System.out.println("Instanciation d'un objet Ligne (ap)...");
 		this.couleur = couleur;
 	}

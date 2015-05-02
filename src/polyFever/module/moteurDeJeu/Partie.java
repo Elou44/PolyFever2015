@@ -1,4 +1,5 @@
 package polyFever.module.moteurDeJeu;
+import polyFever.module.main.*;
 
 /* 
  * Classe stockant les informations liés à une partie
@@ -126,7 +127,7 @@ public class Partie {
 		 */
 	}
 	
-	public void ajouterJoueur(Joueur joueur)
+	public void ajouterJoueur(Joueur joueur, PolyFever p)
 	{
 		// Incrémentation du nombre de joueurs
 		nbJoueurs = nbJoueurs + 1;
@@ -142,7 +143,7 @@ public class Partie {
 			Joueur player = i.next();
 			if(player == joueur)
 			{
-				joueur.setLigne(new Ligne());
+				joueur.setLigne(new Ligne(p));
 			}
 		}
 		System.out.println("\t\tANCIEN : "+joueur.getLigne().toString());
