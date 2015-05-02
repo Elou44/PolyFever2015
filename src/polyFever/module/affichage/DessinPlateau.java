@@ -8,11 +8,11 @@ public class DessinPlateau {
 	private DessinJoueur dJoueur;
 	private DessinLigne dLigne;
 	
-	public DessinPlateau(int width, int height, Affichage a, PolyFever p, Partie partie)
+	public DessinPlateau(Affichage a, PolyFever p, Partie partie)
 	{
 		dBonus = new DessinBonus();
 		dJoueur = new DessinJoueur();
-		dLigne = new DessinLigne(width, height, a, p, partie);
+		dLigne = new DessinLigne(a, p, partie);
 	}
 	
 	public void dessiner()

@@ -8,9 +8,9 @@ public class DessinJeu {
 	private DessinScores dScores;
 	
 	
-	public DessinJeu(int width, int height, Affichage a, PolyFever p, Partie partie)
+	public DessinJeu(Affichage a, PolyFever p, Partie partie)
 	{
-		dPlateau = new DessinPlateau(width, height, a, p, partie);
+		dPlateau = new DessinPlateau(a, p, partie);
 		dScores = new DessinScores();
 	}
 	

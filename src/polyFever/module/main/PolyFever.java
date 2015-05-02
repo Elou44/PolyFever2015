@@ -245,7 +245,7 @@ public abstract class PolyFever {
 			
 			Utils.checkGLError("init");
 			
-			resized();
+			/*resized();*/
 			
 			Utils.checkGLError("resized");
 			
@@ -257,8 +257,8 @@ public abstract class PolyFever {
 				long deltaTime = System.nanoTime() - lastTime;
 				lastTime += deltaTime;
 				
-				if(Display.wasResized())
-					resized();
+				/*if(Display.wasResized())
+					resized();*/
 				
 				while(Keyboard.next()) {
 					if(Keyboard.getEventKeyState())
@@ -307,23 +307,7 @@ public abstract class PolyFever {
 		}
 	}
 	
-	/**
-	 * Returns the width of the window.
-	 * 
-	 * @return The width of the window.
-	 */
-	public int getWidth() {
-		return Display.getWidth();
-	}
-	
-	/**
-	 * Returns the height of the window.
-	 * 
-	 * @return The height of the window.
-	 */
-	public int getHeight() {
-		return Display.getHeight();
-	}
+
 	
 	/**
 	 * Called at most once after one of the <code>run</code> methods are called. This method
@@ -336,9 +320,9 @@ public abstract class PolyFever {
 	 * with custom code. Make sure to call <code>super.resized()</code> if overriding, or remember to manually update
 	 * the <code>glViewport</code>!
 	 */
-	public void resized() {
-		glViewport(0, 0, getWidth(), getHeight());
-	}
+	/*public void resized() {
+		glViewport(0, 0, getWIDTH(), getHEIGHT());
+	}*/
 	
 	/**
 	 * Consistently polled once per frame to test whether the game loop should stop. This

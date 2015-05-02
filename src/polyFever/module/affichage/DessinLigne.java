@@ -43,7 +43,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	
 	private long t_start;
 	
-	public DessinLigne(int width, int height, Affichage a, PolyFever p, Partie partie)
+	public DessinLigne(Affichage a, PolyFever p, Partie partie)
 	{
 		this.nbVertex = 0;
 		this.affichage = a;

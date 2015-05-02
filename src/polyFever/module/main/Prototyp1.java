@@ -19,7 +19,7 @@ public class Prototyp1 extends PolyFever {
 		Joueur j1 = new Joueur();
 		partie.ajouterJoueur(j1,this);
 		
-		this.affichage = new Affichage(super.getWIDTH(), super.getHEIGHT(), this, partie);
+		this.affichage = new Affichage(this, partie);
 		this.setPartie(partie); // Envoie de l'objet Partie à la classe PolyFever
 	}
 	
