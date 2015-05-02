@@ -12,7 +12,7 @@ public class Partie {
 	private int scoreMax;				// Score à atteindre pour terminer une partie
 	private int nbJoueurs;				// Nombre de joueurs présents dans la partie
 	private Set<Joueur> joueurs;		// Liste des joueurs de la partie (objet Joueur)
-	private int dimensionPlateau;		// Dimensions du plateau de jeu
+	private float dimensionPlateau;		// Dimensions du plateau de jeu
 	private List<Bonus> bonusPresents;	// Liste des bonus présents sur le plateau de jeu
 	
 	// Constructeur
@@ -22,7 +22,7 @@ public class Partie {
 		this.scoreMax = 0;								// Score max initialiser à 0 mais à calculer
 		this.nbJoueurs = 0;								// Nombre de joueurs initialisé à 0
 		this.joueurs = new HashSet<Joueur>();			// Création de la liste des joueurs
-		this.dimensionPlateau = 0;						// Création du vecteur des dimensions du plateau
+		this.dimensionPlateau = 0.0f;						// Création du vecteur des dimensions du plateau
 		this.bonusPresents = new ArrayList<Bonus>();	// Création de la liste des bonus
 	}
 
@@ -56,11 +56,11 @@ public class Partie {
 		this.joueurs = joueurs;
 	}
 
-	public int getDimensionPlateau() {
+	public float getDimensionPlateau() {
 		return dimensionPlateau;
 	}
 
-	public void setDimensionPlateau(int dimensionPlateau) {
+	public void setDimensionPlateau(float dimensionPlateau) {
 		this.dimensionPlateau = dimensionPlateau;
 	}
 
@@ -146,10 +146,10 @@ public class Partie {
 			}
 		}
 		System.out.println("\t\tANCIEN : "+joueur.getLigne().toString());
-		/*
+		
 		// Connection de la ligne avec le joueur
 		try {
-			joueur.ligne.setJoueur(joueur);
+			joueur.getLigne().setJoueur(joueur);
 		}
 		catch (StackOverflowError e)
 		{
@@ -160,7 +160,7 @@ public class Partie {
 			e.printStackTrace();
 		}
 		
-		System.out.println("\t\t\tNEW : "+joueur.ligne.toString());*/
+		System.out.println("\t\t\tNEW : "+joueur.getLigne().toString());
 
 	}
 

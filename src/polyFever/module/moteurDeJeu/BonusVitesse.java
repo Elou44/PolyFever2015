@@ -22,7 +22,7 @@ public class BonusVitesse extends Bonus{
 		/* Changer la vitesse du joueur affecté
 		 * 
 		 */
-		int ancienneVitesse;
+		float ancienneVitesse;
 		
 		ancienneVitesse = joueur.getLigne().getVitesse();
 		joueur.getLigne().setEpaisseur(ancienneVitesse+1);

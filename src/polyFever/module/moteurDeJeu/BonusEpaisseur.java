@@ -23,7 +23,7 @@ public class BonusEpaisseur extends Bonus{
 		/* Changer l'épaisseur du joueur affecté
 		 * 
 		 */
-		int ancienneEpaisseur;
+		float ancienneEpaisseur;
 		
 		ancienneEpaisseur = joueur.getLigne().getEpaisseur();
 		joueur.getLigne().setEpaisseur(ancienneEpaisseur+1);

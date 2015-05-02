@@ -14,8 +14,8 @@ public class Ligne {
 	// ENTIER DE 1 A 24 !!!!!!!!
 	private int couleur;				// Couleur de la ligne
 	private Joueur joueur;				// Joueur controlant la ligne
-	private int vitesse;				// Vitesse de la ligne (en pixels)
-	private int epaisseur;				// Epaisseur du trait
+	private float vitesse;				// Vitesse de la ligne (en pixels)
+	private float epaisseur;			// Epaisseur du trait
 	private double courbe;				// Rayon de courbure de la ligne (en radians)
 	private int tpsEnVie;				// Temps passé en vie durant un round (en secondes)
 	private List<Vector2> trace;		// Tableau de Vector2, donnant les coordonnées des points passés par la ligne, donnant ainsi le chemin parcouru
@@ -62,19 +62,19 @@ public class Ligne {
 		this.joueur = joueur;
 	}
 
-	public int getVitesse() {
+	public float getVitesse() {
 		return vitesse;
 	}
 
-	public void setVitesse(int vitesse) {
+	public void setVitesse(float vitesse) {
 		this.vitesse = vitesse;
 	}
 
-	public int getEpaisseur() {
+	public float getEpaisseur() {
 		return epaisseur;
 	}
 
-	public void setEpaisseur(int epaisseur) {
+	public void setEpaisseur(float epaisseur) {
 		this.epaisseur = epaisseur;
 	}
 
@@ -116,7 +116,7 @@ public class Ligne {
 		trace.add(coordonnees);
 	}
 	
-	public void tournerDroite(Joueur joueur)	// Méthode calculant la prochaine position, si le joueur veut tourner à droite
+	public void tournerDroite()	// Méthode calculant la prochaine position, si le joueur veut tourner à droite
 	{
 		/* Calculer les nouvelles coordonnées
 		 * Ajouter les nouvelles coordonnées au tableau des coord
@@ -209,7 +209,7 @@ public class Ligne {
 		
 	}
 	
-	public void tournerGauche(Joueur joueur)	// Méthode calculant la prochaine position, si le joueur veut tourner à droite
+	public void tournerGauche()	// Méthode calculant la prochaine position, si le joueur veut tourner à droite
 	{
 		/* Calculer les nouvelles coordonnées
 		 * Ajouter les nouvelles coordonnées au tableau des coord
@@ -304,7 +304,7 @@ public class Ligne {
 		
 	}
 	
-	public void pasTourner(Joueur joueur)
+	public void pasTourner()
 	{
 		/* Calculer les nouvelles coordonnées
 		 * Ajouter les nouvelles coordonnées au tableau des coord
@@ -355,9 +355,6 @@ public class Ligne {
 		}
 		System.out.println("nouvPos x =  "+nouvPositionX);
 		
-		// Affectation de la nouvelle position du joueur
-		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY);
-		
 		// Calcul de la nouvelle position en y
 		if( ((joueur.getDirection()) >= Math.PI) && ((joueur.getDirection()) <= (2*Math.PI)) )
 		{
@@ -370,6 +367,9 @@ public class Ligne {
 			nouvPositionY = joueur.getPosition().y() + (vitesse * Math.sin(angleRotation));
 		}
 		System.out.println("nouvPos y =  "+nouvPositionY);
+		
+		// Affectation de la nouvelle position du joueur
+		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY);
 		
 		// Remplissage du tableau des tracés
 		trace.add(joueur.getPosition());
@@ -391,8 +391,7 @@ public class Ligne {
 
 	@Override
 	public String toString() {
-		return "Ligne [couleur=" + couleur + ", joueur=" + joueur
-				+ ", vitesse=" + vitesse + ", epaisseur=" + epaisseur
+		return "Ligne [couleur=" + couleur +", vitesse=" + vitesse + ", epaisseur=" + epaisseur
 				+ ", courbe=" + courbe + ", tpsEnVie=" + tpsEnVie + ", trace="
 				+ trace + "]";
 	}

@@ -37,11 +37,11 @@ public class Main {
 		
 		for(int i = 0; i < 3; i++)
 		{
-			J1.getLigne().pasTourner(J1);
+			J1.getLigne().pasTourner();
 			System.out.println("\n========================\n");
 			if(i == 1)
 			{
-				J1.getLigne().tournerDroite(J1);
+				J1.getLigne().tournerDroite();
 			}
 		}
 		
