@@ -37,8 +37,6 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	private int lenTabV;
 	private int lenTabE;
 	private int indexTabE;
-	FloatBuffer vboBuffer;
-	IntBuffer eboBuffer;
 	
 	
 	private long t_start;
@@ -52,7 +50,13 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		this.lenTabV = 0;
 		this.lenTabE = 0;
 		this.indexTabE = 0;
-		this.tabVertex = new float[1000000];
+		this.tabVertex = new float[1000000];/*{ 
+				-0.75f, 0.0f,
+				0.0f, 0.0f,
+				0.0f, -0.75f,
+				-0.75f, -0.75f				
+				};
+		*/
 		this.elements = new int[1000000];
 	};
 		
@@ -60,8 +64,8 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	public void init()
 	{
 		
-		
 		System.out.println("Initialisation pour traçage des Lignes...");
+		
 		t_start = System.currentTimeMillis();
 		
 		glClearColor(0, 0, 0, 0);
@@ -132,25 +136,24 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 			System.out.println("e: ".concat(String.valueOf(elements[i])));
 		}*/
 		
-		
+		this.addRectangle(new Vector2(0.0f,0.0f), 1.57f, 500.0f, 1.0f);
 		
 		vbo = glGenBuffers(); // ebo : Elements Buffer Object (plus adapté que les vbo (vertex buffer object pour le dessin de multiple objets)
-		vboBuffer = (FloatBuffer)BufferUtils.createFloatBuffer(this.tabVertex.length).put(this.tabVertex).flip();
+		
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);  // Fait en sorte que le ebo soit l'objet actif
 		
-		glBufferData(GL_ARRAY_BUFFER, vboBuffer, GL_STREAM_DRAW); // Est appliqué sur le vbo actif
+		glBufferData(GL_ARRAY_BUFFER, (FloatBuffer)BufferUtils.createFloatBuffer(this.tabVertex.length).put(this.tabVertex).flip(), GL_STREAM_DRAW); // Est appliqué sur le vbo actif
 		
 		
 		
 		
 		ebo = glGenBuffers(); // ebo : Elements Buffer Object (plus adapté que les vbo (vertex buffer object pour le dessin de multiple objets)
-		eboBuffer = (IntBuffer)BufferUtils.createIntBuffer(this.elements.length).put(this.elements).flip();
+
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);  // Fait en sorte que le ebo soit l'objet actif
 		
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, eboBuffer, GL_STREAM_DRAW); // Est appliqué sur le vbo actif
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (IntBuffer)BufferUtils.createIntBuffer(this.elements.length).put(this.elements).flip(), GL_STREAM_DRAW); // Est appliqué sur le vbo actif
 		
 
-		this.addRectangle(new Vector2(0.0f,0.0f), 1.57f, 500.0f, 0.01f);
 		
 		glBindVertexArray(glGenVertexArrays()); // Création d'un VAO : Vertex Array Object avec glGenVertexArrays() . le VAO stock les liens entre les attributs et les VBO
 		// le VAO contient une référence vers le VBO
@@ -168,7 +171,11 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		float time = t_now - t_start;
 		
 		
-
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, (FloatBuffer)BufferUtils.createFloatBuffer(this.tabVertex.length).put(this.tabVertex).flip()); // Est appliqué sur le vbo actif
+		
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, (IntBuffer)BufferUtils.createIntBuffer(this.elements.length).put(this.elements).flip()); // Est appliqué sur le vbo actif
 		
 		
 		Iterator<Joueur> e = this.partie.getJoueurs().iterator();
@@ -177,13 +184,6 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 			j = e.next();
 			this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2());
 		}
-		
-		
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, vboBuffer);
-		
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, eboBuffer);
 		
 		glClear(GL_COLOR_BUFFER_BIT);
 		
@@ -276,7 +276,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	
 	private void ajouterVector2Rect(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4)
 	{
-	
+		
 		this.tabVertex[this.lenTabV] = p4.x(); // Top Left
 		this.tabVertex[this.lenTabV+1] = p4.y(); 
 		
@@ -291,11 +291,6 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 		this.lenTabV += 8;
 		
-		this.vboBuffer.put(this.tabVertex); // On met a jour le buffer VBO 
-		this.vboBuffer.clear();
-		
-
-		
 		this.elements[this.lenTabE] = this.indexTabE;
 		this.elements[this.lenTabE+1] = this.indexTabE+1;
 		this.elements[this.lenTabE+2] = this.indexTabE+2;
@@ -307,8 +302,6 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		this.indexTabE += 4;
 		this.lenTabE += 6;
 		
-		this.eboBuffer.put(this.elements); // On met a jour le buffer EBO 
-		this.eboBuffer.clear();
 	}
 
 }
