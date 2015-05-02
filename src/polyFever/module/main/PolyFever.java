@@ -2,14 +2,17 @@ package polyFever.module.main;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import java.util.*;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
 
-import polyFever.module.util.Utils;
-
+import polyFever.module.moteurDeJeu.Partie;
+import polyFever.module.util.*;
+import polyFever.module.moteurDeJeu.*;
 /**
  * This class defines an entry point for OpenGL programs as it handles context creation and the game loop.
  * Entry point classes extend GLProgram and must implement the <code>init()</code> and <code>render()</code> methods.
@@ -21,6 +24,7 @@ public abstract class PolyFever {
 	private int fps;
 	private final int WIDTH;
 	private final int HEIGHT;
+	private Partie partie;
 	/**
 	 * Initializes the application in fullscreen mode.
 	 * 
@@ -30,6 +34,7 @@ public abstract class PolyFever {
 	 */
 	public PolyFever(boolean vsync, int width, int height) {
 		System.out.println("Création du context openGL...");
+		this.partie = null;
 		this.WIDTH = width; 
 		this.HEIGHT = height;
 		try {
@@ -47,6 +52,11 @@ public abstract class PolyFever {
 	public int getHEIGHT() {
 		return HEIGHT;
 	}
+	
+	public void setPartie(Partie p)
+	{
+		this.partie = p;
+	}
 
 	/**
 	 * Initializes a windowed application. The framerate is set to 60 and can be modified using <code>setFPS(int fps)</code>.
@@ -58,6 +68,7 @@ public abstract class PolyFever {
 	 */
 	public PolyFever(String name, int width, int height, boolean resizable) {
 		System.out.println("Création du context openGL...");
+		this.partie = null;
 		Display.setTitle(name);
 		this.WIDTH = width; 
 		this.HEIGHT = height;
@@ -69,7 +80,7 @@ public abstract class PolyFever {
 		
 		Display.setResizable(resizable);
 		
-		fps = 6000;
+		fps = 60;
 		
 		
 	}
@@ -236,7 +247,18 @@ public abstract class PolyFever {
 					if(Keyboard.getEventKeyState())
 						keyPressed(Keyboard.getEventKey(), Keyboard.getEventCharacter());
 					else
+					{
 						keyReleased(Keyboard.getEventKey(), Keyboard.getEventCharacter());
+						
+						Iterator<Joueur> e = this.partie.getJoueurs().iterator();
+						while(e.hasNext())
+						{
+							e.next().getLigne().pasTourner();
+						}
+					}
+
+						
+			
 				}
 				
 				update(deltaTime);
@@ -314,7 +336,34 @@ public abstract class PolyFever {
 	 * @param key The @see org.lwjgl.input.Keyboard keycode of the pressed key.
 	 * @param c The literal character of the pressed key.
 	 */
-	public void keyPressed(int key, char c) {}
+	public void keyPressed(int key, char c) {
+		
+		if(key == Keyboard.KEY_LEFT)
+		{
+			System.out.println("Gauche");
+			Iterator<Joueur> e = this.partie.getJoueurs().iterator();
+			while(e.hasNext())
+			{
+				e.next().getLigne().tournerGauche();
+			}
+			
+		}
+		else if(key == Keyboard.KEY_RIGHT)
+		{
+			System.out.println("Droite");
+			Iterator<Joueur> e = this.partie.getJoueurs().iterator();
+			while(e.hasNext())
+			{
+				e.next().getLigne().tournerDroite();
+			}
+		}
+		
+	}
+	
+	public void keyDown(int key, char c)
+	{
+		
+	}
 	
 	/**
 	 * Called when a key has been released.

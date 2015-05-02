@@ -1,7 +1,7 @@
 package polyFever.module.main;
 
 import polyFever.module.affichage.Affichage;
-import polyFever.module.moteurDeJeu.Partie;
+import polyFever.module.moteurDeJeu.*;
 
 public class Prototyp1 extends PolyFever {
 		
@@ -10,14 +10,17 @@ public class Prototyp1 extends PolyFever {
 	}
 	
 	private Affichage affichage; // Classe Affichage
-	private Partie partie;
+	
 
 	public Prototyp1() {
 		super("Prototyp1 (Early Access) WIP - Hello Rectangle Mother Fuckers !!!!!!", 500, 500, false); // on interdit le redimensionnement de la fenetre
 		
-		this.partie = new Partie(); // Devra etre instanciée par le Menu
+		Partie partie = new Partie(); // Devra etre instanciée par le Menu
+		Joueur j1 = new Joueur();
+		partie.ajouterJoueur(j1);
 		
 		this.affichage = new Affichage(super.getWIDTH(), super.getHEIGHT(), this, partie);
+		this.setPartie(partie); // Envoie de l'objet Partie à la classe PolyFever
 	}
 	
 	@Override

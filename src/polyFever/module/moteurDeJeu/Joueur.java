@@ -38,7 +38,8 @@ public class Joueur {
 		this.etat = "Vivant";
 		this.type = Role.CLIENT;
 		this.position = new Vector2();
-		this.direction = 3*Math.PI/2;
+		this.direction = Math.PI/2;
+		this.angleRectangle = (float) Math.PI/2; 
 	}
 	
 	public Joueur(String pseudo, String toucheG, String toucheD)	// Avec paramètres

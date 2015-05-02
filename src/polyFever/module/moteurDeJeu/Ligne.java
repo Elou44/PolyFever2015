@@ -14,7 +14,8 @@ public class Ligne {
 	// ENTIER DE 1 A 24 !!!!!!!!
 	private int couleur;				// Couleur de la ligne
 	private Joueur joueur;				// Joueur controlant la ligne
-	private float vitesse;				// Vitesse de la ligne (en pixels)
+	private float vitesse2;				// Vitesse de la ligne (en pixels)
+	private float vitesse;  			// Vitesse de la ligne en float
 	private float epaisseur;			// Epaisseur du trait
 	private double courbe;				// Rayon de courbure de la ligne (en radians)
 	private int tpsEnVie;				// Temps passé en vie durant un round (en secondes)
@@ -26,8 +27,9 @@ public class Ligne {
 		System.out.println("Instanciation d'un objet Ligne (sp)...");
 		this.couleur = 0;
 		this.joueur = null;
-		this.vitesse = 2;
-		this.epaisseur = 1;
+		this.vitesse2 = 3;
+		this.vitesse = 0.012f;
+		this.epaisseur = 7;
 		this.courbe = Math.PI / 6;
 		this.tpsEnVie = 0;
 		this.trace = new ArrayList<Vector2>();
@@ -62,8 +64,8 @@ public class Ligne {
 		this.joueur = joueur;
 	}
 
-	public float getVitesse() {
-		return vitesse;
+	public float getVitesse2() {
+		return vitesse2;
 	}
 
 	public void setVitesse(float vitesse) {

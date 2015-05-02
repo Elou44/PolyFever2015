@@ -16,6 +16,7 @@ import java.nio.IntBuffer;
 
 
 
+
 import org.lwjgl.BufferUtils;
 
 
@@ -27,6 +28,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	private Affichage affichage;
 	private PolyFever polyFever;
 	private Partie partie;
+	private Joueur j;
 	
 	private int program, ebo,vbo, uniColor;
 	
@@ -114,13 +116,14 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		glDeleteShader(vs);
 		glDeleteShader(fs);
 		
-		for(int i = 0; i<60; i++)
+		
+		/*for(int i = 0; i<60; i++)
 		{
-			this.addRectangle(new Vector2(0.0f,(i/30.0f)-1.0f), 1.57f-1.57f*(i/60.0f), 10.0f, 3.0f);
+			this.addRectangle(new Vector2(0.0f,(i/30.0f)-1.0f), 1.57f-1.57f*(i/30.0f), 50.0f, 3.0f);
 		}
 		//this.addRectangle(new Vector2(0.0f,0.0f), 0.78f, 200.0f, 50.0f);
-		this.addRectangle(new Vector2(0.0f,0.0f), 1.57f, 500.0f, 1.0f);
-		this.addRectangle(new Vector2(0.0f,0.0f), 0.0f, 500.0f, 1.0f);
+		
+		this.addRectangle(new Vector2(0.0f,0.0f), 0.0f, 500.0f, 1.0f);*/
 		
 		//this.addRectangle(new Vector2(0.5f,0.0f), 1.7f, 200.0f, 50.0f);
 		/*for(int i = 0; i<this.lenTabV; i++)
@@ -139,7 +142,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);  // Fait en sorte que le ebo soit l'objet actif
 		
 		glBufferData(GL_ARRAY_BUFFER, (FloatBuffer)BufferUtils.createFloatBuffer(this.tabVertex.length).put(this.tabVertex).flip(), GL_STREAM_DRAW); // Est appliqué sur le vbo actif
-		//glBufferData(GL_ARRAY_BUFFER, this.tabVertex.size(),this.tabVertex, GL_STREAM_DRAW);
+		
 		
 		
 		
@@ -172,6 +175,17 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		float time = t_now - t_start;
 		
 		
+		Iterator<Joueur> e = this.partie.getJoueurs().iterator();
+		while(e.hasNext())
+		{
+			j = e.next();
+			this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2());
+		}
+		
+		
+		this.addRectangle(new Vector2(0.0f,0.0f), 1.57f, 500.0f, 1.0f);
+		
+		
 		glClear(GL_COLOR_BUFFER_BIT);
 		
 		glUseProgram(program);
@@ -179,10 +193,14 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 		double newColor = Math.sin(time/100 + 4.0f);
 		//System.out.println(time);
-		glUniform3f(uniColor, (float) newColor, 0.0f, 0.0f); // change la couleur du triangle en rouge
+		glUniform3f(uniColor, 1.0f, 0.0f, 0.0f); // change la couleur du triangle en rouge
 		
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferData(GL_ARRAY_BUFFER, (FloatBuffer)BufferUtils.createFloatBuffer(this.tabVertex.length).put(this.tabVertex).flip(), GL_STREAM_DRAW); // Est appliqué sur le vbo actif
+		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, (IntBuffer)BufferUtils.createIntBuffer(this.elements.length).put(this.elements).flip(), GL_STREAM_DRAW); // Est appliqué sur le vbo actif
+		
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0); // 0 : position a la location 0 par défaut.  A l'appelle de cette fonction les infos vont être stockées dans le VAO courant. 
 		
@@ -200,10 +218,14 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		w = w*affichage.getRATIOPIXWIDTH(); // conversion pixel vers float
 		h = h*affichage.getRATIOPIXHEIGHT(); // conversion pixel vers float
 		
+		System.out.println("angle: ".concat(String.valueOf(angle)));
 		System.out.println("w: ".concat(String.valueOf(w)));
-		System.out.println("h: ".concat(String.valueOf(h)));	
+		System.out.println("h: ".concat(String.valueOf(h)));
 		
-		System.out.println("lenTabV: ".concat(String.valueOf(this.lenTabV)));
+		//System.out.println("w: ".concat(String.valueOf(w)));
+		//System.out.println("h: ".concat(String.valueOf(h)));	
+		
+		//System.out.println("lenTabV: ".concat(String.valueOf(this.lenTabV)));
 		
 		Vector2 p1 = new Vector2();
 		
@@ -215,6 +237,9 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 		//System.out.println("p1x: ".concat(String.valueOf(p1.x())));
 		//System.out.println("p1y: ".concat(String.valueOf(p1.y())));	
+		
+		System.out.println("vx: ".concat(String.valueOf(v.x())));
+		System.out.println("vy: ".concat(String.valueOf(v.y())));	
 		
 		Vector2 p2 = new Vector2();	
 		
