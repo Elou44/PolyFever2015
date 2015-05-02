@@ -30,7 +30,7 @@ public class Ligne {
 		this.vitesse2 = 3;
 		this.vitesse = 0.012f;
 		this.epaisseur = 7;
-		this.courbe = Math.PI / 20;
+		this.courbe = Math.PI / 10;
 		this.tpsEnVie = 0;
 		this.trace = new ArrayList<Vector2>();
 	}

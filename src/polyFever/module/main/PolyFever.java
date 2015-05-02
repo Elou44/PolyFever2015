@@ -80,7 +80,7 @@ public abstract class PolyFever {
 		
 		Display.setResizable(resizable);
 		
-		fps = 60;
+		fps = 30;
 		
 		
 	}
@@ -250,15 +250,18 @@ public abstract class PolyFever {
 					{
 						keyReleased(Keyboard.getEventKey(), Keyboard.getEventCharacter());
 						
-						Iterator<Joueur> e = this.partie.getJoueurs().iterator();
-						while(e.hasNext())
-						{
-							e.next().getLigne().pasTourner();
-						}
+						
 					}
 
-						
-			
+				}
+				
+				if(Keyboard.next()== false)
+				{
+					Iterator<Joueur> e = this.partie.getJoueurs().iterator();
+					while(e.hasNext())
+					{
+						e.next().getLigne().pasTourner();
+					}
 				}
 				
 				update(deltaTime);
@@ -271,12 +274,12 @@ public abstract class PolyFever {
 				
 				Display.update();
 				
-				frames++;
+				frames++;/*
 				if(System.nanoTime() - lastFPS >= 1e9) {
 					System.out.println("FPS: ".concat(String.valueOf(frames)));
 					lastFPS += 1e9;
 					frames = 0;
-				}
+				}*/
 				
 				Display.sync(fps);
 			}
