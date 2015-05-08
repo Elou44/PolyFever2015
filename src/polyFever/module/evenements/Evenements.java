@@ -1,6 +1,6 @@
 package polyFever.module.evenements;
 
-import polyFever.lwgjl.*
+import static org.lwjgl.opengl.GL11.*;
 import java.util.*;
 import polyFever.module.moteurDeJeu.*;
 
@@ -58,28 +58,21 @@ public class Evenements {
 			i.next();
 			
 			
-			//Deux versions : la version isKeyDown (vu que vous m'appelez à chaque frame ça doit être bon)
+			//On initialise les booleens en regardant si la touche est appuyée ou pas
+			//Cette valeur est remplacé par les observations des events
 			leftKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LEFT);		//Si le joueur appuie sur ses touches
 			rightKeyDown = Keyboard.isKeyDown(Keyboard.KEY_RIGHT);		//on le mémorise
 			
-			
-			/*
-			 * la version getEvent, j'ai vu qu'elle était meilleure et qu'elle empêchait de rater 
-			 * des appuis de touche trop rapides
-			 * par contre si vous voulez l'utiliser il me faut une variable dans Joueur pour stocker
-			 * si un joueur est appuyé ou pas
-			 * -> là je regarde quand la touche est appuyée, et quand elle est relachée, mais je sais pas
-			 * 		dans quelle état elle est si aucun des deux n'arrive
-			 
-			while(Keyboard.hasNext()) {		//On regarde les évènements
+			//Puis on regarde les évènements
+			//Re garder les évènements permet d'être plus réactif sur l'action quand on appuie/relache une touche
+			while(Keyboard.hasNext()) {		
 				if(Keyboard.getEventKey() == Keyboard.KEY_LEFT)	//Si l'évènement concerne les controles du joueurs
 					//getEvenState = true si on appuie la touche, false si on la relache
-					i.leftKeyDown = Keyboard.getEventState();
+					leftKeyDown = Keyboard.getEventState();
 				
 				if(Keyboard.getEventKey() == Keyboard.KEY_RIGHT)
-					i.rightKeyDown = Keyboard.getEventState();
+					rightKeyDown = Keyboard.getEventState();
 			}
-			*/
 			
 			if(leftKeyDown && !rightKeyDown)		//Le joueur tourne à droite
 				i.getLigne().tournerGauche();		//Appel de la fonction pour tourner à droite
