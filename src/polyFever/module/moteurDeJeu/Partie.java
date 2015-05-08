@@ -189,7 +189,7 @@ public class Partie {
 			Joueur player = i.next();
 			if(player == joueur)
 			{
-				joueur.setLigne(new Ligne(p));
+				joueur.setLigne(new Ligne(p)); // ça me semble inutile à priori , autant instancier la ligne dans le constructeur de Joueur, ça complique la compréhension por rien.
 			}
 		}
 		System.out.println("\t\tANCIEN : "+joueur.getLigne().toString());

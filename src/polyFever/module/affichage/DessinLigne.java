@@ -152,8 +152,8 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 
 		
-		this.addRectangle(new Vector3(0.0f,0.0f,1.0f), 1.57f, 500.0f, -3.0f);
-		this.addRectangle(new Vector3(0.0f,0.0f,1.0f), 0.0f, 500.0f, -3.0f);
+		this.addRectangle(new Vector3(0.0f,0.0f,1.0f), 1.57f,1000.0f, -3.0f);
+		this.addRectangle(new Vector3(0.0f,0.0f,1.0f), 0.0f, 1000.0f, -3.0f);
 		
 		
 		glBindVertexArray(glGenVertexArrays()); // Création d'un VAO : Vertex Array Object avec glGenVertexArrays() . le VAO stock les liens entre les attributs et les VBO

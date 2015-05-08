@@ -2,6 +2,7 @@ package polyFever.module.moteurDeJeu;
 
 import polyFever.module.util.math.Vector3;
 
+
 /* 
  * Classe stockant les informations liés à un joueur
  * Et gérant les paramètres du joueur
@@ -20,7 +21,6 @@ public class Joueur {
 	private Role type;				// Variable définissant le role du joueur, accueillant l'énumération
 	private Ligne ligne;			// Objet Ligne controlée par le joueur
 	private Vector3 position;		// Vector2 donnant la position actuelle du point du joueur
-	private float angleRectangle;	// Angle utilisé pour l'affichage des rectangles du tracé de la ligne
 	private double direction;		// Direction du point du joueur (en radians)
 	private boolean toucheGPresse;	// Booléen disant si la toucheG est enfoncée
 	private boolean toucheDPresse;	// Booléen disant si la toucheD est enfoncée
@@ -37,7 +37,6 @@ public class Joueur {
 		this.type = Role.CLIENT;
 		this.position = new Vector3();
 		this.direction = Math.PI/2;
-		this.angleRectangle = (float) Math.PI/2;
 		this.toucheDPresse = false;
 		this.toucheGPresse = false;
 	}
@@ -115,6 +114,7 @@ public class Joueur {
 	}
 
 	public Vector3 getPosition() {
+		// rafraichissement de la vitesse
 		return position;
 	}
 
@@ -131,11 +131,7 @@ public class Joueur {
 	}
 
 	public float getAngleRectangle() {
-		return angleRectangle;
-	}
-
-	public void setAngleRectangle(float angleRectangle) {
-		this.angleRectangle = angleRectangle;
+		return (float) direction;
 	}
 	
 	public boolean isToucheGPresse() {

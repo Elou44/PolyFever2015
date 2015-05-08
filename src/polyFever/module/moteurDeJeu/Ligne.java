@@ -21,7 +21,7 @@ public class Ligne {
 	private int tpsEnVie;				// Temps passé en vie durant un round (en secondes)
 	private float tpsTrou;				// Temps définissant le moment ou la ligne trace un trou (en secondes, entre 1.5 et 3.0 secondes)
 	private List<Vector3> trace;		// Tableau de Vector2, donnant les coordonnées des points passés par la ligne, donnant ainsi le chemin parcouru
-	
+	private PolyFever polyfever;
 	
 	// Constructeur
 	public Ligne(PolyFever p)	// Par défaut
@@ -31,8 +31,9 @@ public class Ligne {
 		this.joueur = null;
 		this.vitesse2 = 3;
 		this.vitesse = 3*p.getRATIOPIXWIDTH();
+		this.polyfever = p;
 		this.epaisseur = 5;
-		this.courbe = Math.PI / 30;
+		this.courbe = Math.PI / 35;
 		this.tpsEnVie = 0;
 		this.trace = new ArrayList<Vector3>();
 	}
@@ -69,9 +70,9 @@ public class Ligne {
 	public float getVitesse2() {
 		return vitesse2;
 	}
-
-	public void setVitesse(float vitesse) {
-		this.vitesse = vitesse;
+	
+	public float getVitesse() {
+		return vitesse;
 	}
 
 	public float getEpaisseur() {
@@ -114,6 +115,24 @@ public class Ligne {
 	 * Autres méthodes de gestion des lignes
 	 */
 	
+	public void majVitessesCourbe() {
+		/*
+		 * Mise à jour des Vitesses (vitesse et vitesse2) -> réalisé à chaque frame (sachant que les fps sont maj toutes les secondes, peu utile)
+		 */
+		float realFPS = (float) polyfever.getRealFPS();
+		if(realFPS == 0.0f) realFPS = (float) polyfever.getFPS();
+		
+		
+
+		this.vitesse = 3*polyfever.getRATIOPIXWIDTH()*(30.0f/realFPS); 
+		this.vitesse2 = 3*(30.0f/realFPS);
+		this.courbe = Math.PI/35*(30.0f/realFPS);
+		
+		System.out.println("vitesse: ".concat(String.valueOf(vitesse)));
+		System.out.println("vitesse2: ".concat(String.valueOf(vitesse2)));
+
+	}
+	
 	// VRAIMENT UTILE ????
 	public void ajoutCoord(int x, int y)	// Méthode ajoutant la position du point du joueur au tableau du tracé
 	{
@@ -130,6 +149,8 @@ public class Ligne {
 		 * Ajouter les nouvelles coordonnées au tableau des coord
 		 * Envoyer ces coordonnées à l'affichage
 		 */
+		
+		majVitessesCourbe(); // mise à jour des vitesses en fonction du frameRate
 		
 		////System.out.println("TOURNE DROITE / direction : "+joueur.getDirection()+" direction-courbe : "+(joueur.getDirection()-courbe));
 		double angleRotation = 0;
@@ -199,9 +220,7 @@ public class Ligne {
 		
 		// Remplissage du tableau des tracés
 		trace.add(joueur.getPosition());
-		
-		// Stockage de l'ancien angle direction pour la construction du rectangle formant le tracé
-		joueur.setAngleRectangle((float)joueur.getDirection());
+	
 		
 		// Mise à jour de la direction
 		if((joueur.getDirection() - courbe) < 0)
@@ -222,6 +241,8 @@ public class Ligne {
 		 * Ajouter les nouvelles coordonnées au tableau des coord
 		 * Envoyer ces coordonnées à l'affichage
 		 */
+		
+		majVitessesCourbe(); // mise à jour des vitesses en fonction du frameRate
 		
 		double angleRotation = 0;
 		double nouvPositionX = 0;
@@ -295,8 +316,6 @@ public class Ligne {
 		// Remplissage du tableau des tracés
 		trace.add(joueur.getPosition());
 		
-		// Stockage de l'ancien angle direction pour la construction du rectangle formant le tracé
-		joueur.setAngleRectangle((float)joueur.getDirection());
 		
 		// Mise à jour de la direction
 		if((joueur.getDirection() + courbe) > (2*Math.PI))
@@ -317,6 +336,8 @@ public class Ligne {
 		 * Ajouter les nouvelles coordonnées au tableau des coord
 		 * Envoyer ces coordonnées à l'affichage
 		 */
+		
+		majVitessesCourbe(); // mise à jour des vitesses en fonction du frameRate
 		
 		double angleRotation = 0;
 		double nouvPositionX = 0;
@@ -380,9 +401,6 @@ public class Ligne {
 		
 		// Remplissage du tableau des tracés
 		trace.add(joueur.getPosition());
-
-		// Stockage de l'ancien angle direction pour la construction du rectangle formant le tracé
-		joueur.setAngleRectangle((float)joueur.getDirection());
 		
 		// Pas de mise à jour de la direction, vu qu'elle ne change pas
 		
