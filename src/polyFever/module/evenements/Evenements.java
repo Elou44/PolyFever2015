@@ -1,7 +1,11 @@
 package polyFever.module.evenements;
 
 import static org.lwjgl.opengl.GL11.*;
+
 import java.util.*;
+
+import org.lwjgl.input.Keyboard;
+
 import polyFever.module.moteurDeJeu.*;
 
 /* 
@@ -33,7 +37,8 @@ public class Evenements {
 	}
 	
 	//Retourne les deux touches pour tourner entrées par un joueur, donc c'est un couple
-	public List<char> entreeControles() {
+	//Retourne les entiers KEY_xxx : utiliser Keyboard.getKeyName()
+	public List<int> entreeControles() {
 		//Renvoie les deux premiers caractères valides entrés par l'utilisateur
 	}
 	
@@ -41,10 +46,10 @@ public class Evenements {
 	//Pour le moment j'utilise directement LEFT et RIGHT, je reflechie encore à comment
 	//convertir un String en Keyboard.KEY_<insert key here>
 	public void gestionJeu(Partie partie) {
-		this.joueurs = this.setJoueurs(partie.getJoueurs());	//Récupérer la liste des joueurs
+		this.setJoueurs(partie.getJoueurs());	//Récupérer la liste des joueurs
 		boolean leftKeyDown, rightKeyDown;	//Savoir si le joueur est en train d'appuyer sur ses touches
 		
-		Iterator i = this.joueurs.listIterator();		//Pour parcourir la liste de joueurs
+		Iterator i = this.joueurs.iterator();		//Pour parcourir la liste de joueurs
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE))	//Si on appuie sur espace
 			partie.initialiserPartie();				//Lancer la partie
