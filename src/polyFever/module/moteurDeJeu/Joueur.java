@@ -138,10 +138,27 @@ public class Joueur {
 		this.angleRectangle = angleRectangle;
 	}
 	
+	public boolean isToucheGPresse() {
+		return toucheGPresse;
+	}
+
+	public void setToucheGPresse(boolean toucheGPresse) {
+		this.toucheGPresse = toucheGPresse;
+	}
+
+	public boolean isToucheDPresse() {
+		return toucheDPresse;
+	}
+
+	public void setToucheDPresse(boolean toucheDPresse) {
+		this.toucheDPresse = toucheDPresse;
+	}
+	
 	/* 
 	 * Autres méthodes de gestion des joueurs
 	 */
 	
+
 	public void mettrePause()	// Mise en pause d'une partie
 	{
 		/* Il faut arrêter tous les traitements, ne plus envoyer d'informations pour tracer ou afficher
