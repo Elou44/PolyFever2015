@@ -1,7 +1,5 @@
 package polyFever.module.evenements;
 
-import static org.lwjgl.opengl.GL11.*;
-
 import java.util.*;
 
 import org.lwjgl.input.Keyboard;
@@ -46,12 +44,13 @@ public class Evenements {
 	public void initControles(Partie p) {
 		this.partie = p;	//Récupérer la liste des joueurs
 		
+		Joueur j = new Joueur();
 		Iterator<Joueur> i = this.partie.getJoueurs().iterator();		//Pour parcourir la liste de joueurs
 		
 		while(i.hasNext()) {
-			i.next();
-			this.controles.put(i.toucheG, i);
-			this.controles.put(i.toucheD, i);
+			j = i.next();
+			this.controles.put(j.getToucheG(), j);
+			this.controles.put(j.getToucheG(), j);
 		}
 	}
 	
@@ -70,27 +69,27 @@ public class Evenements {
 			if(this.controles.containsKey(Keyboard.getEventKey())) {	//Si l'évènement concerne les controles d'un joueur
 				j = (Joueur) this.controles.get(Keyboard.getEventKey());
 				
-				if(Keyboard.getEventKey() == j.toucheG)
+				if(Keyboard.getEventKey() == j.getToucheG())
 				//getEventKeyState = true si on appuie la touche, false si on la relache
-					j.toucheGpresse = Keyboard.getEventKeyState();
+					j.setToucheGPresse(Keyboard.getEventKeyState());
 				
-				else if(Keyboard.getEventKey() == j.toucheD)
-					j.toucheDpresse = Keyboard.getEventKeyState();
+				else if(Keyboard.getEventKey() == j.getToucheD())
+					j.setToucheDPresse(Keyboard.getEventKeyState());
 			}
 		}
 		
-		Iterator<Joueur> i = this.joueurs.iterator();	//Pour parcourir la liste de joueurs
+		Iterator<Joueur> i = this.partie.getJoueurs().iterator();	//Pour parcourir la liste de joueurs
 		
 		while(i.hasNext()) {
-			i.next();
+			j = i.next();
 			
-			if(i.toucheGpresse && !toucheDpresse)		//Le joueur tourne à gauche
-				i.getLigne().tournerGauche();			//Appel de la fonction pour tourner à droite
+			if(j.isToucheGPresse() && !j.isToucheDPresse())		//Le joueur tourne à gauche
+				j.getLigne().tournerGauche();			//Appel de la fonction pour tourner à droite
 			
-			else if(toucheDpresse && !toucheGpresse)	//Le joueur tourne à droite
-				i.getLigne().tournerDroite();			//Appel de la fonction pour tourner à gauche
+			else if(j.isToucheDPresse() && !j.isToucheGPresse())	//Le joueur tourne à droite
+				j.getLigne().tournerDroite();			//Appel de la fonction pour tourner à gauche
 			
-			else i.getLigne().pasTourner();				//Sinon on tourne pas
+			else j.getLigne().pasTourner();				//Sinon on tourne pas
 			
 		}
 	}
