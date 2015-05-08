@@ -15,19 +15,19 @@ import polyFever.module.moteurDeJeu.*;
  */
 
 public class Evenements {
-	private Set<Joueur> joueurs;
+	private Partie partie;			//Partie
+	private Hashtable controles;	//Liste des touches associes aux joueurs
+	private StringBuilder entree;	//Entree utilisateur
 	
 	//Rappel : vous m'appelez pour les menus, donc vous m'initialiserez jamais directement avec la liste des joueurs
 	public Evenements() {
-		this.joueurs = new HashSet<Joueur>();
+		this.partie = new Partie();
+		this.controles = new Hashtable();
+		this.entree = new StringBuilder();
 	}
-	
-	public void setJoueurs(Set<Joueur> joueurs) {
-		this.joueurs = joueurs;
-	}
-	
+	/*
 	//Retourne les coordonnées du clic au menu, donc c'est un couple
-	public List<float> gestionMenu() {
+	public List<int> gestionMenu() {
 		//Renvoie les coordonnées de la souris quand l'utilisateur clic
 	}
 	
@@ -41,53 +41,58 @@ public class Evenements {
 	public List<int> entreeControles() {
 		//Renvoie les deux premiers caractères valides entrés par l'utilisateur
 	}
+	*/
+	//Initialiser les contrôles avec les joueurs au debut d'une partie
+	public void initControles(Partie p) {
+		this.partie = p;	//Récupérer la liste des joueurs
+		
+		Iterator<Joueur> i = this.partie.getJoueurs().iterator();		//Pour parcourir la liste de joueurs
+		
+		while(i.hasNext()) {
+			i.next();
+			this.controles.put(i.toucheG, i);
+			this.controles.put(i.toucheD, i);
+		}
+	}
 	
 	//Gestion des contrôles en partie
 	//Pour le moment j'utilise directement LEFT et RIGHT, je reflechie encore à comment
 	//convertir un String en Keyboard.KEY_<insert key here>
-	public void gestionJeu(Partie partie) {
-		this.setJoueurs(partie.getJoueurs());	//Récupérer la liste des joueurs
-		boolean leftKeyDown, rightKeyDown;	//Savoir si le joueur est en train d'appuyer sur ses touches
+	public void gestionJeu() {
+		Joueur j;
 		
-		Iterator i = this.joueurs.iterator();		//Pour parcourir la liste de joueurs
-		
-		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE))	//Si on appuie sur espace
-			partie.initialiserPartie();				//Lancer la partie
-		//Comment savoir si la partie n'est pas déjà initialisée !? sinon des qu'on appuie sur espace, ça reset...
-		
-		if(Keyboard.isKeyDown(Keyboard.Key_ESCAPE))	//Si on appuie sur echap
+		if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))	//Si on appuie sur echap
 													//Quitter la partie (à compléter)
 		
-		//Parcours des joueurs
+		//Puis on regarde les évènements
+		//Re garder les évènements permet d'être plus réactif sur l'action quand on appuie/relache une touche
+		while(Keyboard.next()) {
+			if(this.controles.containsKey(Keyboard.getEventKey())) {	//Si l'évènement concerne les controles d'un joueur
+				j = this.controles.get(Keyboard.getEventKey());
+				
+				if(Keyboard.getEventKey() == j.toucheG)
+				//getEventKeyState = true si on appuie la touche, false si on la relache
+					j.toucheGpresse = Keyboard.getEventKeyState();
+				
+				else if(Keyboard.getEventKey() == j.toucheD)
+					j.toucheDpresse = Keyboard.getEventKeyState();
+			}
+		}
+		
+		Iterator<Joueur> i = this.joueurs.iterator();	//Pour parcourir la liste de joueurs
+		
 		while(i.hasNext()) {
 			i.next();
 			
+			if(i.toucheGpresse && !toucheDpresse)		//Le joueur tourne à gauche
+				i.getLigne().tournerGauche();			//Appel de la fonction pour tourner à droite
 			
-			//On initialise les booleens en regardant si la touche est appuyée ou pas
-			//Cette valeur est remplacé par les observations des events
-			leftKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LEFT);		//Si le joueur appuie sur ses touches
-			rightKeyDown = Keyboard.isKeyDown(Keyboard.KEY_RIGHT);		//on le mémorise
+			else if(toucheDpresse && !toucheGpresse)	//Le joueur tourne à droite
+				i.getLigne().tournerDroite();			//Appel de la fonction pour tourner à gauche
 			
-			//Puis on regarde les évènements
-			//Re garder les évènements permet d'être plus réactif sur l'action quand on appuie/relache une touche
-			while(Keyboard.hasNext()) {		
-				if(Keyboard.getEventKey() == Keyboard.KEY_LEFT)	//Si l'évènement concerne les controles du joueurs
-					//getEvenState = true si on appuie la touche, false si on la relache
-					leftKeyDown = Keyboard.getEventState();
-				
-				if(Keyboard.getEventKey() == Keyboard.KEY_RIGHT)
-					rightKeyDown = Keyboard.getEventState();
-			}
+			else i.getLigne().pasTourner();				//Sinon on tourne pas
 			
-			if(leftKeyDown && !rightKeyDown)		//Le joueur tourne à droite
-				i.getLigne().tournerGauche();		//Appel de la fonction pour tourner à droite
-			
-			else if(rightKeyDown && !leftKeyDown)	//Le joueur tourne à gauche
-				i.getLigne().tournerDroite();		//Appel de la fonction pour tourner à gauche
-			
-			else i.getLigne().pasTourner();			//Sinon on tourne pas
 		}
-		
 	}
 	
 }

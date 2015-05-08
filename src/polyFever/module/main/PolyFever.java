@@ -29,7 +29,7 @@ public abstract class PolyFever {
 	private float RATIOPIXWIDTH; // Largeur d'un pixel en float
 	private float RATIOPIXHEIGHT; // Hauteur d'un pixel en float
 	private Partie partie;
-	private final int MSAA = 8; 
+	private final int MSAA = 0; 
 	
 	boolean isLeftHeld, isRightHeld;
 	
@@ -238,7 +238,7 @@ public abstract class PolyFever {
 	 */
 	public final void run(PixelFormat format, ContextAttribs attribs) {
 		try {
-			Display.create(format.withSamples(this.MSAA), attribs);
+			Display.create(format/*.withSamples(this.MSAA)*/, attribs);
 		} catch(Exception exc) {
 			exc.printStackTrace();
 			System.exit(1);
