@@ -1,6 +1,6 @@
 package polyFever.module.moteurDeJeu;
 
-import polyFever.module.util.math.Vector2;
+import polyFever.module.util.math.Vector3;
 
 /* 
  * Classe stockant les informations liés à un joueur
@@ -9,40 +9,40 @@ import polyFever.module.util.math.Vector2;
 
 public class Joueur {
 
+	// ATTRIBUT POUR NE PAS TRACER DANS JOUEUR OU LIGNE ????
 	private String pseudo;			// Pseudo du joueur
-	// ??? TYPE DES TOUCHES
-	private String toucheG;			// Sa touche de jeu, tournant à gauche
-	private String toucheD;			// Sa touche de jeu, tournant à droite
+	// ??? TYPE DES TOUCHES -> APPREMMENT PLUS DES INT ???
+	private int toucheG;			// Sa touche de jeu, tournant à gauche
+	private int toucheD;			// Sa touche de jeu, tournant à droite
 	private int score;				// Score du joueur, sur une partie
-	private String etat;			// Etat du joueur (mort, vivant, quitté la partie)
-	private enum Role				// Enumération des différents role d'un joueur, soit hote de la partie ou simple client
-	{
-		HOTE,
-		CLIENT,
-	}
+	private Etat etat;				// Etat du joueur
 	// COMMENT DEFINIR LE ROLE ??? QUELLE INFORMATION JE VAIS RECEVOIR ? QUEL TYPE ?
 	private Role type;				// Variable définissant le role du joueur, accueillant l'énumération
 	private Ligne ligne;			// Objet Ligne controlée par le joueur
-	private Vector2 position;		// Vector2 donnant la position actuelle du point du joueur
+	private Vector3 position;		// Vector2 donnant la position actuelle du point du joueur
 	private float angleRectangle;	// Angle utilisé pour l'affichage des rectangles du tracé de la ligne
 	private double direction;		// Direction du point du joueur (en radians)
+	private boolean toucheGPresse;	// Booléen disant si la toucheG est enfoncée
+	private boolean toucheDPresse;	// Booléen disant si la toucheD est enfoncée
 	
 	// Constructeur
 	public Joueur()	// Par défaut
 	{
 		System.out.println("Instanciation d'un objet Joueur (sp)...");
 		this.pseudo = null;
-		this.toucheG = "FLECHE_GAUCHE";
-		this.toucheD = "FLECHE_DROITE";
+		this.toucheG = 0;
+		this.toucheD = 0;
 		this.score = 0;
-		this.etat = "Vivant";
+		this.etat = Etat.VIVANT;
 		this.type = Role.CLIENT;
-		this.position = new Vector2();
+		this.position = new Vector3();
 		this.direction = Math.PI/2;
-		this.angleRectangle = (float) Math.PI/2; 
+		this.angleRectangle = (float) Math.PI/2;
+		this.toucheDPresse = false;
+		this.toucheGPresse = false;
 	}
 	
-	public Joueur(String pseudo, String toucheG, String toucheD, int couleur)	// Avec paramètres
+	public Joueur(String pseudo, int toucheG, int toucheD, int couleur)	// Avec paramètres
 	{
 		this();
 		System.out.println("Instanciation d'un objet Joueur (ap)...");
@@ -66,19 +66,19 @@ public class Joueur {
 		this.pseudo = pseudo;
 	}
 
-	public String getToucheG() {
+	public int getToucheG() {
 		return toucheG;
 	}
 
-	public void setToucheG(String toucheG) {
+	public void setToucheG(int toucheG) {
 		this.toucheG = toucheG;
 	}
 
-	public String getToucheD() {
+	public int getToucheD() {
 		return toucheD;
 	}
 
-	public void setToucheD(String toucheD) {
+	public void setToucheD(int toucheD) {
 		this.toucheD = toucheD;
 	}
 
@@ -90,11 +90,11 @@ public class Joueur {
 		this.score = score;
 	}
 
-	public String getEtat() {
+	public Etat getEtat() {
 		return etat;
 	}
 
-	public void setEtat(String etat) {
+	public void setEtat(Etat etat) {
 		this.etat = etat;
 	}
 
@@ -114,11 +114,11 @@ public class Joueur {
 		this.ligne = ligne;
 	}
 
-	public Vector2 getPosition() {
+	public Vector3 getPosition() {
 		return position;
 	}
 
-	public void setPosition(Vector2 position) {
+	public void setPosition(Vector3 position) {
 		this.position = position;
 	}
 
@@ -151,13 +151,17 @@ public class Joueur {
 	
 	public void quitterPartie()	// Quitter la partie par un joueur
 	{
-		/* Vérifier si le joueur quittant la partie est l'hébergeur de la partie
+		/* 
+		 * Vérifier si le joueur quittant la partie est l'hébergeur de la partie
 		 * 		Si oui : il faut faire quitter tout le monde
 		 * Si non : - changer l'état du joueur en mort
 		 * 			- ne plus envoyer d'informations par rapport à ce joueur (liste joueur ayant quittés?)
 		 * 
 		 */
+		
+		
 	}
+	
 	
 	public void priseBonus()
 	{

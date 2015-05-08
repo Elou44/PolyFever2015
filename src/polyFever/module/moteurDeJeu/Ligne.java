@@ -6,7 +6,7 @@ package polyFever.module.moteurDeJeu;
  */
 
 import java.util.*;
-import polyFever.module.util.math.Vector2;
+import polyFever.module.util.math.Vector3;
 import polyFever.module.main.*;
 
 public class Ligne {
@@ -19,7 +19,8 @@ public class Ligne {
 	private float epaisseur;			// Epaisseur du trait
 	private double courbe;				// Rayon de courbure de la ligne (en radians)
 	private int tpsEnVie;				// Temps passé en vie durant un round (en secondes)
-	private List<Vector2> trace;		// Tableau de Vector2, donnant les coordonnées des points passés par la ligne, donnant ainsi le chemin parcouru
+	private float tpsTrou;				// Temps définissant le moment ou la ligne trace un trou (en secondes, entre 1.5 et 3.0 secondes)
+	private List<Vector3> trace;		// Tableau de Vector2, donnant les coordonnées des points passés par la ligne, donnant ainsi le chemin parcouru
 	
 	
 	// Constructeur
@@ -33,7 +34,7 @@ public class Ligne {
 		this.epaisseur = 5;
 		this.courbe = Math.PI / 30;
 		this.tpsEnVie = 0;
-		this.trace = new ArrayList<Vector2>();
+		this.trace = new ArrayList<Vector3>();
 	}
 	
 	public Ligne(int couleur, PolyFever p)	// Avec paramètres
@@ -97,12 +98,16 @@ public class Ligne {
 		this.tpsEnVie = tpsEnVie;
 	}
 
-	public List<Vector2> getTrace() {
+	public List<Vector3> getTrace() {
 		return trace;
 	}
 
-	public void setTrace(List<Vector2> trace) {
+	public void setTrace(List<Vector3> trace) {
 		this.trace = trace;
+	}
+	
+	public void setTpsTrou (float temps) {
+		this.tpsTrou = temps;
 	}
 	
 	/*
@@ -115,7 +120,7 @@ public class Ligne {
 		/* Ajouter ces coordonnées au tableau des coordonnées
 		 */
 		//System.out.println("Ajout de coordonnées dans le tableau trace : x:"+x+" | y:"+y);
-		Vector2 coordonnees = new Vector2(x,y);
+		Vector3 coordonnees = new Vector3(x,y,1);
 		trace.add(coordonnees);
 	}
 	
@@ -190,7 +195,7 @@ public class Ligne {
 		//System.out.println("nouvPos y =  "+nouvPositionY);
 		
 		// Affectation de la nouvelle position du joueur
-		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY);
+		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1);
 		
 		// Remplissage du tableau des tracés
 		trace.add(joueur.getPosition());
@@ -285,7 +290,7 @@ public class Ligne {
 		//System.out.println("nouvPos y =  "+nouvPositionY);
 		
 		// Affectation de la nouvelle position du joueur
-		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY);
+		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1);
 		
 		// Remplissage du tableau des tracés
 		trace.add(joueur.getPosition());
@@ -371,7 +376,7 @@ public class Ligne {
 		//System.out.println("nouvPos y =  "+nouvPositionY);
 		
 		// Affectation de la nouvelle position du joueur
-		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY);
+		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1);
 		
 		// Remplissage du tableau des tracés
 		trace.add(joueur.getPosition());
@@ -385,10 +390,19 @@ public class Ligne {
 	
 	public void tracerTrou()
 	{
-		/* Méthode calculant le moment pour un joueur de tracer un trou
+		/* 
+		 * Méthode calculant le moment pour un joueur de tracer un trou
 		 * Si trace trou ne pas écrire dans le tableau des coordonnées des lignes !
 		 * Juste changer les coordonnées pos_x et pos_y du joueur
+		 * 
+		 * Principe :
+		 * A l'initialisation du joueur on définit un temps constant pour le reste de la partie
+		 * Ce temps définira tous les combiens un trou sera tracé
+		 * Ce temps sera aléatoire (sinon si tous les joueurs ont le même temps, ils traceraient des trous au même moment
+		 * Quand le temps vient, on change le dernier bit du Vector Position en 0 pour pas tracer
 		 */
+		
+		
 	}
 
 	@Override

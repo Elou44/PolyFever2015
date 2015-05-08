@@ -1,6 +1,5 @@
 package polyFever.module.moteurDeJeu;
 
-import polyFever.module.util.math.Vector2;
 
 /* 
  * Classe stockant les informations liés à un bonus augmentant la vitesse du joueur ayant activé ce bonus
@@ -9,14 +8,14 @@ import polyFever.module.util.math.Vector2;
 public class BonusVitesse extends Bonus{
 
 	// Constructeur
-	public BonusVitesse(Joueur joueur)
+	public BonusVitesse()
 	{
+		super();
 		this.nom = "vitesse";
 		this.couleur = Portee.VERT;
-		this.coordonnees = new Vector2();
-		this.joueur = joueur;
 	}
 	
+	// Méthode
 	public void modifierParametres()
 	{
 		/* Changer la vitesse du joueur affecté

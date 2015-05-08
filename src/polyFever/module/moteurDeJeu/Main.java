@@ -23,7 +23,7 @@ public class Main {
 		
 		System.out.println("\n\t2 - ***");
 		
-		Joueur J1 = new Joueur("Red", "GAUCHE", "DROITE", 2);
+		Joueur J1 = new Joueur();
 		
 		System.out.println(J1.toString());
 		

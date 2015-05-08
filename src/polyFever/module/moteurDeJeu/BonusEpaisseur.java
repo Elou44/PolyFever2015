@@ -1,6 +1,5 @@
 package polyFever.module.moteurDeJeu;
 
-import polyFever.module.util.math.Vector2;
 
 /* 
  * Classe stockant les informations liés à un bonus augmentant l'épaisseur des joueurs adverses
@@ -9,12 +8,11 @@ import polyFever.module.util.math.Vector2;
 public class BonusEpaisseur extends Bonus{
 
 	// Constructeur
-	public BonusEpaisseur(Joueur joueur)
+	public BonusEpaisseur()
 	{
+		super();
 		this.nom = "Epaisseur";
 		this.couleur = Portee.ROUGE;
-		this.coordonnees = new Vector2();
-		this.joueur = joueur;
 	}
 	
 	// Méthodes
