@@ -24,12 +24,14 @@ public abstract class PolyFever {
 	
 	
 	private int fps;
+	private int realFps;
 	private final int WIDTH;
 	private final int HEIGHT;
 	private float RATIOPIXWIDTH; // Largeur d'un pixel en float
 	private float RATIOPIXHEIGHT; // Hauteur d'un pixel en float
 	private Partie partie;
-	private final int MSAA = 8; 
+	private final int MSAA = 8; // AntiAliasing x8 
+	private String name;
 	
 	boolean isLeftHeld, isRightHeld;
 	
@@ -50,8 +52,7 @@ public abstract class PolyFever {
 		this.partie = null;
 		this.WIDTH = width; 
 		this.HEIGHT = height;
-		this.RATIOPIXWIDTH = 2/(float) width;
-		this.RATIOPIXHEIGHT = 2/(float) height;	
+		
 		try {
 			Display.setFullscreen(true);
 			Display.setVSyncEnabled(vsync);
@@ -61,11 +62,28 @@ public abstract class PolyFever {
 	}
 	
 	public int getWIDTH() {
-		return WIDTH;
+		
+		if(Display.getWidth() != WIDTH) // Si la fenetre a ete redimenssionne depuis la creation
+		{
+			return Display.getWidth();
+		}
+		else
+		{
+			return WIDTH;
+		}
+				
 	}
 
 	public int getHEIGHT() {
-		return HEIGHT;
+		
+		if(Display.getHeight() != HEIGHT) // Si la fenetre a ete redimenssionne depuis la creation
+		{
+			return Display.getHeight();
+		}
+		else
+		{
+			return HEIGHT;
+		}
 	}
 	
 	public void setPartie(Partie p)
@@ -83,8 +101,9 @@ public abstract class PolyFever {
 	 */
 	public PolyFever(String name, int width, int height, boolean resizable) {
 		System.out.println("Création du context openGL...");
+		this.name = name;
 		this.partie = null;
-		Display.setTitle(name);
+		Display.setTitle(this.name);
 		this.WIDTH = width; 
 		this.HEIGHT = height;
 		this.RATIOPIXWIDTH = 2/(float) width;
@@ -127,6 +146,14 @@ public abstract class PolyFever {
 	 */
 	public int getFPS() {
 		return fps;
+	}
+	
+	public int getRealFPS(){
+		return this.realFps;
+	}
+	
+	public void setRealFPS(int newFPS){
+		 this.realFps = newFPS;
 	}
 	
 	/**
@@ -253,7 +280,7 @@ public abstract class PolyFever {
 			
 			Utils.checkGLError("init");
 			
-			/*resized();*/
+			resized();
 			
 			Utils.checkGLError("resized");
 			
@@ -265,8 +292,8 @@ public abstract class PolyFever {
 				long deltaTime = System.nanoTime() - lastTime;
 				lastTime += deltaTime;
 				
-				/*if(Display.wasResized())
-					resized();*/
+				if(Display.wasResized())
+					resized();
 				
 				while(Keyboard.next()) {
 					if(Keyboard.getEventKeyState())
@@ -303,8 +330,10 @@ public abstract class PolyFever {
 				
 				frames++;
 				if(System.nanoTime() - lastFPS >= 1e9) {
-					System.out.println("FPS:                                                        ".concat(String.valueOf(frames)));
+					//System.out.println("FPS:                                                        ".concat(String.valueOf(frames)));
 					lastFPS += 1e9;
+					setRealFPS(frames);
+					Display.setTitle(this.name+" FPS:".concat(String.valueOf(getRealFPS())));
 					frames = 0;
 				}
 				
@@ -330,9 +359,13 @@ public abstract class PolyFever {
 	 * with custom code. Make sure to call <code>super.resized()</code> if overriding, or remember to manually update
 	 * the <code>glViewport</code>!
 	 */
-	/*public void resized() {
+	public void resized() {
 		glViewport(0, 0, getWIDTH(), getHEIGHT());
-	}*/
+		this.RATIOPIXWIDTH = 2/(float) getWIDTH();
+		this.RATIOPIXHEIGHT = 2/(float) getHEIGHT();
+		System.out.println("Resized RATIOPIXW: ".concat(String.valueOf(this.RATIOPIXWIDTH)));
+		System.out.println("Resized RATIOPIXH: ".concat(String.valueOf(this.RATIOPIXHEIGHT)));
+	}
 	
 	/**
 	 * Consistently polled once per frame to test whether the game loop should stop. This
@@ -352,8 +385,8 @@ public abstract class PolyFever {
 	 */
 	public void keyPressed(int key, char c) {
 		
-		System.out.println(isLeftHeld);
-		System.out.println(isRightHeld);
+		//System.out.println(isLeftHeld);
+		//System.out.println(isRightHeld);
 		
 		if(key == Keyboard.KEY_LEFT)
 		{
@@ -384,13 +417,13 @@ public abstract class PolyFever {
 		
 		if(key == Keyboard.KEY_LEFT)
 		{
-			System.out.println("Relaché Gauche");
+			//System.out.println("Relaché Gauche");
 			isLeftHeld = false;
 			
 		}
 		else if(key == Keyboard.KEY_RIGHT)
 		{
-			System.out.println("Relaché Droite");
+			//System.out.println("Relaché Droite");
 			isRightHeld = false;
 			
 		}

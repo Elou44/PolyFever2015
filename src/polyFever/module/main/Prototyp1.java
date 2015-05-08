@@ -13,7 +13,7 @@ public class Prototyp1 extends PolyFever {
 	
 
 	public Prototyp1() {
-		super("Prototyp1 (Early Access) WIP - Hello Rectangle Mother Fuckers !!!!!!", 500, 500, false); // on interdit le redimensionnement de la fenetre
+		super("Prototyp1", 1000, 1000, true); // on interdit le redimensionnement de la fenetre
 		
 		Partie partie = new Partie(); // Devra etre instanciée par le Menu
 		Joueur j1 = new Joueur();
