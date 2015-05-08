@@ -152,8 +152,8 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 
 		
-		this.addRectangle(new Vector2(0.0f,0.0f), 1.57f, 500.0f, -3.0f);
-		this.addRectangle(new Vector2(0.0f,0.0f), 0.0f, 500.0f, -3.0f);
+		this.addRectangle(new Vector3(0.0f,0.0f,1.0f), 1.57f, 500.0f, -3.0f);
+		this.addRectangle(new Vector3(0.0f,0.0f,1.0f), 0.0f, 500.0f, -3.0f);
 		
 		
 		glBindVertexArray(glGenVertexArrays()); // Création d'un VAO : Vertex Array Object avec glGenVertexArrays() . le VAO stock les liens entre les attributs et les VBO
@@ -179,7 +179,10 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		while(e.hasNext()) // A déplacer dans Init();
 		{
 			j = e.next();
-			this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2());
+			if(j.getPosition().z() == 1.0f)
+			{
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2());
+			}
 		}
 		
 		
@@ -212,7 +215,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		glUseProgram(0);
 	}
 	
-	private void addRectangle(Vector2 v, float angle, float w, float h) // v : point d'encrage (milieu du bord supérieur)
+	private void addRectangle(Vector3 v, float angle, float w, float h) // v : point d'encrage (milieu du bord supérieur)
 	{
 		
 		w = w*polyFever.getRATIOPIXWIDTH(); // conversion pixel vers float
