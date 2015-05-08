@@ -68,7 +68,7 @@ public class Evenements {
 		//Re garder les évènements permet d'être plus réactif sur l'action quand on appuie/relache une touche
 		while(Keyboard.next()) {
 			if(this.controles.containsKey(Keyboard.getEventKey())) {	//Si l'évènement concerne les controles d'un joueur
-				j = this.controles.get(Keyboard.getEventKey());
+				j = (Joueur) this.controles.get(Keyboard.getEventKey());
 				
 				if(Keyboard.getEventKey() == j.toucheG)
 				//getEventKeyState = true si on appuie la touche, false si on la relache
