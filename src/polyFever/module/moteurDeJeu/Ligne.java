@@ -5,7 +5,6 @@ package polyFever.module.moteurDeJeu;
  * Et gérant les paramètres de la ligne
  */
 
-import java.util.*;
 import polyFever.module.util.math.Vector3;
 import polyFever.module.main.*;
 
@@ -20,7 +19,6 @@ public class Ligne {
 	private double courbe;				// Rayon de courbure de la ligne (en radians)
 	private int tpsEnVie;				// Temps passé en vie durant un round (en secondes)
 	private float tpsTrou;				// Temps définissant le moment ou la ligne trace un trou (en secondes, entre 1.5 et 3.0 secondes)
-	private List<Vector3> trace;		// Tableau de Vector2, donnant les coordonnées des points passés par la ligne, donnant ainsi le chemin parcouru
 	private PolyFever polyfever;
 	
 	// Constructeur
@@ -35,7 +33,6 @@ public class Ligne {
 		this.epaisseur = 5;
 		this.courbe = Math.PI / 35;
 		this.tpsEnVie = 0;
-		this.trace = new ArrayList<Vector3>();
 	}
 	
 	public Ligne(int couleur, PolyFever p)	// Avec paramètres
@@ -50,6 +47,22 @@ public class Ligne {
 	/*
 	 * Assesseurs et mutateurs
 	 */
+	
+	public float getTpsTrou() {
+		return tpsTrou;
+	}
+
+	public PolyFever getPolyfever() {
+		return polyfever;
+	}
+
+	public void setVitesse2(float vitesse2) {
+		this.vitesse2 = vitesse2;
+	}
+
+	public void setVitesse(float vitesse) {
+		this.vitesse = vitesse;
+	}
 	
 	public int getCouleur() {
 		return couleur;
@@ -98,14 +111,6 @@ public class Ligne {
 	public void setTpsEnVie(int tpsEnVie) {
 		this.tpsEnVie = tpsEnVie;
 	}
-
-	public List<Vector3> getTrace() {
-		return trace;
-	}
-
-	public void setTrace(List<Vector3> trace) {
-		this.trace = trace;
-	}
 	
 	public void setTpsTrou (float temps) {
 		this.tpsTrou = temps;
@@ -114,6 +119,109 @@ public class Ligne {
 	/*
 	 * Autres méthodes de gestion des lignes
 	 */
+	
+	// Méthode ajoutant les coordonnées du curseur du joueur dans le tableau des traces de la sous grille correspondante à sa position
+	public void ajouterCoord(Vector3 coord)
+	{
+		// Si le curseur se situe dans la 0ème sous grille
+		if(coord.x() < -0.5 && coord.y() > 0.5)
+		{
+			// On ajoute les coordonnées dans le sous tableau correspondant
+			this.getJoueur().getPartie().getTrace().get(0).add(coord);
+			// Mise à jour de la sous grille actuelle ou se trouve le joueur
+			this.getJoueur().setGrille(0);
+		}
+		// Si le curseur se situe dans la 1ère sous grille
+		else if( (coord.x() > -0.5 && coord.x() < 0) && coord.y() > 0.5)
+		{
+			this.getJoueur().getPartie().getTrace().get(1).add(coord);
+			this.getJoueur().setGrille(1);
+		}
+		// Si le curseur se situe dans la 2ème sous grille
+		else if( (coord.x() > 0 && coord.x() < 0.5) && coord.y() > 0.5)
+		{
+			this.getJoueur().getPartie().getTrace().get(2).add(coord);
+			this.getJoueur().setGrille(2);
+		}
+		// Si le curseur se situe dans la 3ème sous grille
+		else if(coord.x() > 0.5 && coord.y() > 0.5)
+		{
+			this.getJoueur().getPartie().getTrace().get(3).add(coord);
+			this.getJoueur().setGrille(3);
+		}
+		// Si le curseur se situe dans la 4ème sous grille
+		else if(coord.x() < -0.5 && (coord.y() > 0 && coord.y() < 0.5) )
+		{
+			this.getJoueur().getPartie().getTrace().get(4).add(coord);
+			this.getJoueur().setGrille(4);
+		}
+		// Si le curseur se situe dans la 5ème sous grille
+		else if( (coord.x() > -0.5 && coord.x() < 0) && (coord.y() > 0 && coord.y() < 0.5) )
+		{
+			this.getJoueur().getPartie().getTrace().get(5).add(coord);
+			this.getJoueur().setGrille(5);
+		}
+		// Si le curseur se situe dans la 6ème sous grille
+		else if( (coord.x() > 0 && coord.x() < 0.5) && (coord.y() > 0 && coord.y() < 0.5) )
+		{
+			this.getJoueur().getPartie().getTrace().get(6).add(coord);
+			this.getJoueur().setGrille(6);
+		}
+		// Si le curseur se situe dans la 7ème sous grille
+		else if(coord.x() > 0.5 && (coord.y() > 0 && coord.y() < 0.5) )
+		{
+			this.getJoueur().getPartie().getTrace().get(7).add(coord);
+			this.getJoueur().setGrille(7);
+		}
+		// Si le curseur se situe dans la 8ème sous grille
+		else if(coord.x() < -0.5 && (coord.y() > -0.5 && coord.y() < 0) )
+		{
+			this.getJoueur().getPartie().getTrace().get(8).add(coord);
+			this.getJoueur().setGrille(8);
+		}
+		// Si le curseur se situe dans la 9ème sous grille
+		else if( (coord.x() > -0.5 && coord.x() < 0) && (coord.y() > -0.5 && coord.y() < 0) )
+		{
+			this.getJoueur().getPartie().getTrace().get(9).add(coord);
+			this.getJoueur().setGrille(9);
+		}
+		// Si le curseur se situe dans la 10ème sous grille
+		else if( (coord.x() > 0 && coord.x() < 0.5) && (coord.y() > -0.5 && coord.y() < 0) )
+		{
+			this.getJoueur().getPartie().getTrace().get(10).add(coord);
+			this.getJoueur().setGrille(10);
+		}
+		// Si le curseur se situe dans la 11ème sous grille
+		else if(coord.x() > 0.5 && (coord.y() > -0.5 && coord.y() < 0) )
+		{
+			this.getJoueur().getPartie().getTrace().get(11).add(coord);
+			this.getJoueur().setGrille(11);
+		}
+		// Si le curseur se situe dans la 12ème sous grille
+		else if(coord.x() < -0.5 && coord.y() < -0.5)
+		{
+			this.getJoueur().getPartie().getTrace().get(12).add(coord);
+			this.getJoueur().setGrille(12);
+		}
+		// Si le curseur se situe dans la 13ème sous grille
+		else if( (coord.x() > -0.5 && coord.x() < 0) && coord.y() < -0.5)
+		{
+			this.getJoueur().getPartie().getTrace().get(13).add(coord);
+			this.getJoueur().setGrille(13);
+		}
+		// Si le curseur se situe dans la 14ème sous grille
+		else if( (coord.x() > 0 && coord.x() < 0.5) && coord.y() < -0.5)
+		{
+			this.getJoueur().getPartie().getTrace().get(14).add(coord);
+			this.getJoueur().setGrille(14);
+		}
+		// Si le curseur se situe dans la 15ème sous grille
+		else if(coord.x() > 0.5 && coord.y() < -0.5)
+		{
+			this.getJoueur().getPartie().getTrace().get(15).add(coord);
+			this.getJoueur().setGrille(15);
+		}
+	}
 	
 	public void majVitessesCourbe() {
 		/*
@@ -131,16 +239,6 @@ public class Ligne {
 		System.out.println("vitesse: ".concat(String.valueOf(vitesse)));
 		System.out.println("vitesse2: ".concat(String.valueOf(vitesse2)));
 
-	}
-	
-	// VRAIMENT UTILE ????
-	public void ajoutCoord(int x, int y)	// Méthode ajoutant la position du point du joueur au tableau du tracé
-	{
-		/* Ajouter ces coordonnées au tableau des coordonnées
-		 */
-		//System.out.println("Ajout de coordonnées dans le tableau trace : x:"+x+" | y:"+y);
-		Vector3 coordonnees = new Vector3(x,y,1);
-		trace.add(coordonnees);
 	}
 	
 	public void tournerDroite()	// Méthode calculant la prochaine position, si le joueur veut tourner à droite
@@ -219,7 +317,8 @@ public class Ligne {
 		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1);
 		
 		// Remplissage du tableau des tracés
-		trace.add(joueur.getPosition());
+		// A VOIR SI LE Z DU VECTOR 3 EST 0 OU 1, SI 1 ON L'AJOUTE, SI 0, ON L'AJOUTE PAS
+		this.ajouterCoord(joueur.getPosition());
 	
 		
 		// Mise à jour de la direction
@@ -314,7 +413,8 @@ public class Ligne {
 		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1);
 		
 		// Remplissage du tableau des tracés
-		trace.add(joueur.getPosition());
+		// A VOIR SI LE Z DU VECTOR 3 EST 0 OU 1, SI 1 ON L'AJOUTE, SI 0, ON L'AJOUTE PAS
+		this.ajouterCoord(joueur.getPosition());
 		
 		
 		// Mise à jour de la direction
@@ -400,7 +500,8 @@ public class Ligne {
 		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1);
 		
 		// Remplissage du tableau des tracés
-		trace.add(joueur.getPosition());
+		// A VOIR SI LE Z DU VECTOR 3 EST 0 OU 1, SI 1 ON L'AJOUTE, SI 0, ON L'AJOUTE PAS
+		this.ajouterCoord(joueur.getPosition());
 		
 		// Pas de mise à jour de la direction, vu qu'elle ne change pas
 		
@@ -426,8 +527,7 @@ public class Ligne {
 	@Override
 	public String toString() {
 		return "Ligne [couleur=" + couleur +", vitesse=" + vitesse + ", epaisseur=" + epaisseur
-				+ ", courbe=" + courbe + ", tpsEnVie=" + tpsEnVie + ", trace="
-				+ trace + "]";
+				+ ", courbe=" + courbe + ", tpsEnVie=" + tpsEnVie +"]";
 	}
 	
 }

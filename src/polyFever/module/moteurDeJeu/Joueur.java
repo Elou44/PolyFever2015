@@ -10,9 +10,7 @@ import polyFever.module.util.math.Vector3;
 
 public class Joueur {
 
-	// ATTRIBUT POUR NE PAS TRACER DANS JOUEUR OU LIGNE ????
 	private String pseudo;			// Pseudo du joueur
-	// ??? TYPE DES TOUCHES -> APPREMMENT PLUS DES INT ???
 	private int toucheG;			// Sa touche de jeu, tournant à gauche
 	private int toucheD;			// Sa touche de jeu, tournant à droite
 	private int score;				// Score du joueur, sur une partie
@@ -24,9 +22,11 @@ public class Joueur {
 	private double direction;		// Direction du point du joueur (en radians)
 	private boolean toucheGPresse;	// Booléen disant si la toucheG est enfoncée
 	private boolean toucheDPresse;	// Booléen disant si la toucheD est enfoncée
+	private Partie partie;			// Objet Partie auquel est rattaché le joueur
+	private int grille;				// Entier donnant l'index de la sous grille du plateau de jeu ou se trouve actuellement le joueur
 	
 	// Constructeur
-	public Joueur()	// Par défaut
+	public Joueur(Partie partie)	// Par défaut
 	{
 		System.out.println("Instanciation d'un objet Joueur (sp)...");
 		this.pseudo = null;
@@ -39,11 +39,12 @@ public class Joueur {
 		this.direction = Math.PI/2;
 		this.toucheDPresse = false;
 		this.toucheGPresse = false;
+		this.partie = partie;
 	}
 	
-	public Joueur(String pseudo, int toucheG, int toucheD, int couleur)	// Avec paramètres
+	public Joueur(Partie partie, String pseudo, int toucheG, int toucheD, int couleur)	// Avec paramètres
 	{
-		this();
+		this(partie);
 		System.out.println("Instanciation d'un objet Joueur (ap)...");
 		this.pseudo = pseudo;
 		this.toucheG = toucheG;
@@ -57,6 +58,18 @@ public class Joueur {
 	 * Assesseurs et mutateurs
 	 */
 	
+	public int getGrille() {
+		return grille;
+	}
+
+	public void setGrille(int grille) {
+		this.grille = grille;
+	}
+	
+	public Partie getPartie() {
+		return partie;
+	}
+
 	public String getPseudo() {
 		return pseudo;
 	}
