@@ -183,7 +183,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		while(e.hasNext()) // A déplacer dans Init();
 		{
 			j = e.next();
-			if(j.getPosition().z() == 1.0f)
+			if(j.getPosition().z() == 1.0f && j.getEtat() == Etat.VIVANT)
 			{
 				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2());
 			}

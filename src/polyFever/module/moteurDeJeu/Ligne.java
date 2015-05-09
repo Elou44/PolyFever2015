@@ -236,8 +236,8 @@ public class Ligne {
 		this.vitesse2 = 3*(30.0f/realFPS);
 		this.courbe = Math.PI/35*(30.0f/realFPS);
 		
-		System.out.println("vitesse: ".concat(String.valueOf(vitesse)));
-		System.out.println("vitesse2: ".concat(String.valueOf(vitesse2)));
+		//System.out.println("vitesse: ".concat(String.valueOf(vitesse)));
+		//System.out.println("vitesse2: ".concat(String.valueOf(vitesse2)));
 
 	}
 	

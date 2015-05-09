@@ -12,8 +12,8 @@ public class DessinPlateau {
 	{
 		dBonus = new DessinBonus();
 		dJoueur = new DessinJoueur();
-		dLigneTab = new DessinLigne[6];
-		for(int i=0; i < 6; i++)
+		dLigneTab = new DessinLigne[1];
+		for(int i=0; i < 1; i++)
 		{
 			dLigneTab[i] = new DessinLigne(a, p, partie,i*0.03f);
 		}
@@ -25,7 +25,7 @@ public class DessinPlateau {
 		dBonus.dessiner();
 		dJoueur.dessiner();
 		
-		for(int i=0; i < 6; i++)
+		for(int i=0; i < 1; i++)
 		{
 			dLigneTab[i].dessiner();
 		}
@@ -38,7 +38,7 @@ public class DessinPlateau {
 	{
 		dBonus.init();
 		dJoueur.init();
-		for(int i=0; i < 6; i++)
+		for(int i=0; i < 1; i++)
 		{
 			dLigneTab[i].init();
 		}

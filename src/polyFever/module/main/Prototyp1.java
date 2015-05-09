@@ -13,13 +13,14 @@ public class Prototyp1 extends PolyFever {
 	}
 	
 	private Affichage affichage; // Classe Affichage
+	private Partie partie;
 	
 
 	public Prototyp1() {
 		super("Prototyp1", 1000, 1000, true); // on interdit le redimensionnement de la fenetre
 		
-		Partie partie = new Partie(); // Devra etre instanciée par le Menu
-		Joueur j1 = new Joueur();
+		partie = new Partie(); // Devra etre instanciée par le Menu
+		Joueur j1 = new Joueur(partie);
 		partie.ajouterJoueur(j1,this);
 		
 		this.affichage = new Affichage(this, partie);
@@ -38,7 +39,7 @@ public class Prototyp1 extends PolyFever {
 	public void render() {		
 		
 		affichage.dessiner();
-
+		partie.update();
 		
 	}
 }
