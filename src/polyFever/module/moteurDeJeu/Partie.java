@@ -174,21 +174,33 @@ public class Partie {
 		// Parmis tous les joueurs de la partie
 		for(Joueur e : joueurs)
 		{
+			System.out.println("Position du joueur x: "+e.getPosition().x()+" y: "+e.getPosition().y()+"\n");
 			// ### Collision plateau ###
 			// Si la position du joueur en x ou en y, est supérieure ou égale à 1 ou inférieure ou égale à -1
 			if( e.getPosition().x() >= 1 || e.getPosition().x() <= -1 || e.getPosition().y() >= 1 || e.getPosition().y() <= -1 )
 			{
+				System.out.println("==> Mort contre plateau \n");
 				// On modifie l'état du joueur concerné et on le passe à mort
 				this.modifierEtat(e);
 			}
 			
 			// ### Collision trace ###
+
+			System.out.println("CONTENU grille "+e.getGrille()+" : ");
+			Iterator<Vector3> it = this.getTrace().get(e.getGrille()).iterator();
+			
+			while(it.hasNext())
+			{
+				System.out.println("("+it.next().x()+","+it.next().y()+"), ");
+			}
+			
 			// Parmis tous les points présents dans le sous tableau de la grille correspondante à la position du joueur
 			for(Vector3 pointGrille : this.getTrace().get(e.getGrille()))
 			{
 				// Si la position du joueur est la même que la position du point tracé
 				if( (e.getPosition().x() == pointGrille.x()) && (e.getPosition().y() == pointGrille.y()) )
 				{
+					System.out.println("==> Mort contre une trace en position "+pointGrille.x()+" et "+pointGrille.y()+"\n");
 					// Alors on modifie l'état du joueur en "mort"
 					this.modifierEtat(e);
 					
@@ -310,6 +322,7 @@ public class Partie {
 		// OU ALORS C'EST DEJA FAIT DANS LE GAME LOOP ET FAUT PAS LE FAIRE LA ???
 		
 		// On repère si des joueurs sont en collision avec une trace ou un mur
+		System.out.println("\t##### UPDATE\n");
 		this.repererCollisions();	// Si collisions il y a, alors la méthode repererCollisions se charge de mettre à jour les scores et l'état des joueurs
 		
 		// On repère si des joueurs prennent un bonus

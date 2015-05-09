@@ -221,6 +221,14 @@ public class Ligne {
 			this.getJoueur().getPartie().getTrace().get(15).add(coord);
 			this.getJoueur().setGrille(15);
 		}
+		
+/*
+		System.out.println("Ajout de coordonnées en x: "+coord.x()+" y: "+coord.y()+" dans la grille "+this.getJoueur().getGrille()+"\n");
+		System.out.println("CONTENU 1 grille "+this.getJoueur().getGrille()+" : ");
+		for(int i = 0; i < this.getJoueur().getPartie().getTrace().get(this.getJoueur().getGrille()).size(); i++)
+		{
+			System.out.println("("+this.getJoueur().getPartie().getTrace().get(this.getJoueur().getGrille()).get(i).x()+","+this.getJoueur().getPartie().getTrace().get(this.getJoueur().getGrille()).get(i).y()+"), ");
+		}*/
 	}
 	
 	public void majVitessesCourbe() {
@@ -313,13 +321,12 @@ public class Ligne {
 		}
 		//System.out.println("nouvPos y =  "+nouvPositionY);
 		
-		// Affectation de la nouvelle position du joueur
-		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1);
-		
 		// Remplissage du tableau des tracés
 		// A VOIR SI LE Z DU VECTOR 3 EST 0 OU 1, SI 1 ON L'AJOUTE, SI 0, ON L'AJOUTE PAS
 		this.ajouterCoord(joueur.getPosition());
-	
+		
+		// Affectation de la nouvelle position du joueur
+		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1);
 		
 		// Mise à jour de la direction
 		if((joueur.getDirection() - courbe) < 0)
@@ -409,14 +416,13 @@ public class Ligne {
 		}
 		//System.out.println("nouvPos y =  "+nouvPositionY);
 		
-		// Affectation de la nouvelle position du joueur
-		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1);
-		
 		// Remplissage du tableau des tracés
 		// A VOIR SI LE Z DU VECTOR 3 EST 0 OU 1, SI 1 ON L'AJOUTE, SI 0, ON L'AJOUTE PAS
 		this.ajouterCoord(joueur.getPosition());
 		
-		
+		// Affectation de la nouvelle position du joueur
+		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1);
+	
 		// Mise à jour de la direction
 		if((joueur.getDirection() + courbe) > (2*Math.PI))
 		{
@@ -496,12 +502,12 @@ public class Ligne {
 		}
 		//System.out.println("nouvPos y =  "+nouvPositionY);
 		
-		// Affectation de la nouvelle position du joueur
-		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1);
-		
 		// Remplissage du tableau des tracés
 		// A VOIR SI LE Z DU VECTOR 3 EST 0 OU 1, SI 1 ON L'AJOUTE, SI 0, ON L'AJOUTE PAS
 		this.ajouterCoord(joueur.getPosition());
+				
+		// Affectation de la nouvelle position du joueur
+		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1);
 		
 		// Pas de mise à jour de la direction, vu qu'elle ne change pas
 		
