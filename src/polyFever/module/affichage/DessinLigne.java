@@ -30,6 +30,8 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	private Partie partie;
 	private Joueur j;
 	
+	private float decalage; // PROVISOIRE ONLY FOR TEST PURPOSE
+	
 	private int program, ebo,vbo, uniColor;
 	
 	private float tabVertex[];
@@ -44,8 +46,10 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	
 	private long t_start;
 	
-	public DessinLigne(Affichage a, PolyFever p, Partie partie)
+	public DessinLigne(Affichage a, PolyFever p, Partie partie, float d)
 	{
+		this.decalage = d; // PROVISOIRE
+		
 		this.nbVertex = 0;
 		this.affichage = a;
 		this.polyFever = p;
@@ -194,7 +198,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, eboBuffer);
 		
 		
-		glClear(GL_COLOR_BUFFER_BIT);
+		//glClear(GL_COLOR_BUFFER_BIT);
 		
 		glUseProgram(program);
 		
@@ -229,6 +233,8 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		//System.out.println("h: ".concat(String.valueOf(h)));	
 		
 		//System.out.println("lenTabV: ".concat(String.valueOf(this.lenTabV)));
+
+		//System.out.println("decalage: ".concat(String.valueOf(decalage)));
 		
 		Vector2 p1 = new Vector2();
 		
@@ -286,16 +292,16 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	private void ajouterVector2Rect(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4)
 	{
 	
-		this.tabVertex[this.lenTabV] = p4.x(); // Top Left
+		this.tabVertex[this.lenTabV] = p4.x()+decalage; // Top Left
 		this.tabVertex[this.lenTabV+1] = p4.y(); 
 		
-		this.tabVertex[this.lenTabV+2] = p1.x(); // Top Right
+		this.tabVertex[this.lenTabV+2] = p1.x()+decalage; // Top Right
 		this.tabVertex[this.lenTabV+3] = p1.y();
 
-		this.tabVertex[this.lenTabV+4] = p2.x(); // Bottom Right
+		this.tabVertex[this.lenTabV+4] = p2.x()+decalage; // Bottom Right
 		this.tabVertex[this.lenTabV+5] = p2.y();
 
-		this.tabVertex[this.lenTabV+6] = p3.x(); // Bottom Left
+		this.tabVertex[this.lenTabV+6] = p3.x()+decalage; // Bottom Left
 		this.tabVertex[this.lenTabV+7] = p3.y();
 		
 		this.lenTabV += 8;

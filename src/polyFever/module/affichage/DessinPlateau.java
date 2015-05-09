@@ -6,13 +6,17 @@ public class DessinPlateau {
 	
 	private DessinBonus dBonus;
 	private DessinJoueur dJoueur;
-	private DessinLigne dLigne;
+	private DessinLigne[] dLigneTab;
 	
 	public DessinPlateau(Affichage a, PolyFever p, Partie partie)
 	{
 		dBonus = new DessinBonus();
 		dJoueur = new DessinJoueur();
-		dLigne = new DessinLigne(a, p, partie);
+		dLigneTab = new DessinLigne[6];
+		for(int i=0; i < 6; i++)
+		{
+			dLigneTab[i] = new DessinLigne(a, p, partie,i*0.03f);
+		}
 	}
 	
 	public void dessiner()
@@ -20,14 +24,24 @@ public class DessinPlateau {
 		//System.out.println("		dessiner dPlateau");
 		dBonus.dessiner();
 		dJoueur.dessiner();
-		dLigne.dessiner();
+		
+		for(int i=0; i < 6; i++)
+		{
+			dLigneTab[i].dessiner();
+		}
+
+
+		
 	}
 	
 	public void init()
 	{
 		dBonus.init();
 		dJoueur.init();
-		dLigne.init();
+		for(int i=0; i < 6; i++)
+		{
+			dLigneTab[i].init();
+		}
 	}
 
 }

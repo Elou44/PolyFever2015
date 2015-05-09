@@ -1,5 +1,8 @@
 package polyFever.module.main;
 
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
 import polyFever.module.affichage.Affichage;
 import polyFever.module.moteurDeJeu.*;
 
@@ -21,6 +24,7 @@ public class Prototyp1 extends PolyFever {
 		
 		this.affichage = new Affichage(this, partie);
 		this.setPartie(partie); // Envoie de l'objet Partie à la classe PolyFever
+
 	}
 	
 	@Override
@@ -34,6 +38,7 @@ public class Prototyp1 extends PolyFever {
 	public void render() {		
 		
 		affichage.dessiner();
+
 		
 	}
 }
