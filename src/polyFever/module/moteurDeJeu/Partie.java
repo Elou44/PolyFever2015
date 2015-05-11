@@ -157,9 +157,11 @@ public class Partie {
 		// Calcul des positions de base des joueurs & définition du temps de traçage de trou
 		for(Joueur e : joueurs)		// Boucle de parcours de la liste des joueurs
 		{
-			e.getPosition().set((float) Math.random() * dimensionPlateau, (float) Math.random() * dimensionPlateau, 1);	// Calcul de la position en x et y
+			e.getPosition().set((float) (Math.random() * (0.5 + 0.5) - 0.5), (float) (Math.random() * (0.5 + 0.5) - 0.5), 1);	// Calcul de la position en x et y, entre -0.5 et 0.5
+			e.setDirection((double) (Math.random() * 2*Math.PI));	// Calcul d'une direction entre 0 et 2 PI
 			e.getLigne().setTpsTrou((float) (Math.random() * (3.0 - 1.5) + 1.5));	// Calcul du temps de traçage de trou
 		}
+		System.out.println("Score MAX = "+getScoreMax());
 	}
 	
 	public void repererCollisions()
@@ -174,7 +176,7 @@ public class Partie {
 		// Parmis tous les joueurs de la partie
 		for(Joueur e : joueurs)
 		{
-			System.out.println("Position du joueur x: "+e.getPosition().x()+" y: "+e.getPosition().y()+"\n");
+			System.out.println("Collisions - Position du joueur x: "+e.getPosition().x()+" y: "+e.getPosition().y());
 			// ### Collision plateau ###
 			// Si la position du joueur en x ou en y, est supérieure ou égale à 1 ou inférieure ou égale à -1
 			if( e.getPosition().x() >= 1 || e.getPosition().x() <= -1 || e.getPosition().y() >= 1 || e.getPosition().y() <= -1 )
@@ -186,21 +188,24 @@ public class Partie {
 			
 			// ### Collision trace ###
 
-			System.out.println("CONTENU grille "+e.getGrille()+" : ");
+			System.out.println("Collisions - CONTENU grille "+e.getGrille()+" de taille "+e.getPartie().getTrace().get(e.getGrille()).size()+": ");
 			Iterator<Vector3> it = this.getTrace().get(e.getGrille()).iterator();
 			
 			while(it.hasNext())
 			{
-				System.out.println("("+it.next().x()+","+it.next().y()+"), ");
+				Vector3 position = new Vector3();
+				position = it.next();
+				System.out.println("("+position.x()+","+position.y()+"), ");
 			}
 			
 			// Parmis tous les points présents dans le sous tableau de la grille correspondante à la position du joueur
 			for(Vector3 pointGrille : this.getTrace().get(e.getGrille()))
 			{
 				// Si la position du joueur est la même que la position du point tracé
-				if( (e.getPosition().x() == pointGrille.x()) && (e.getPosition().y() == pointGrille.y()) )
+				//if( ( ( (((float) ((int) ((e.getPosition().x())*100))) / 100) >= ( (((float) ((int) ((pointGrille.x())*100))) / 100) - 0.01 ) ) && ( (((float) ((int) ((e.getPosition().x())*100))) / 100) <= ( (((float) ((int) ((pointGrille.x())*100))) / 100) + 0.01 ) ) ) && ( ( (((float) ((int) ((e.getPosition().y())*100))) / 100) >= ( (((float) ((int) ((pointGrille.y())*100))) / 100) - 0.01 ) ) && ( (((float) ((int) ((e.getPosition().y())*100))) / 100) <= ( (((float) ((int) ((pointGrille.y())*100))) / 100) + 0.01 ) ) ) )
+				if( ( (((float) ((int) ((e.getPosition().x())*100))) / 100) == (((float) ((int) ((pointGrille.x())*100))) / 100) ) && ( (((float) ((int) ((e.getPosition().y())*100))) / 100) == (((float) ((int) ((pointGrille.y())*100))) / 100) ) )
 				{
-					System.out.println("==> Mort contre une trace en position "+pointGrille.x()+" et "+pointGrille.y()+"\n");
+					System.out.println("==> Mort contre une trace en position "+(((float) ((int) ((pointGrille.x())*100))) / 100)+" et "+(((float) ((int) ((pointGrille.y())*100))) / 100)+"\n");
 					// Alors on modifie l'état du joueur en "mort"
 					this.modifierEtat(e);
 					
@@ -236,6 +241,8 @@ public class Partie {
 		/* Modifier l'état d'un joueur
 		 * Pour passer de vivant | mort | quitté
 		 */
+		
+		System.out.println("Joueur mort "+mort.toString());
 		
 		// Parmis les joueurs dans la partie
 		for(Joueur e : joueurs)
@@ -285,7 +292,7 @@ public class Partie {
 				joueur.setLigne(new Ligne(p)); // ça me semble inutile à priori , autant instancier la ligne dans le constructeur de Joueur, ça complique la compréhension por rien.
 			}
 		}
-		System.out.println("\t\tANCIEN : "+joueur.getLigne().toString());
+		System.out.println("\t\tANCIEN : "+joueur.getLigne().toString()+"\n\t\tNB JOUEURS : "+joueurs.size());
 		
 		// Connection de la ligne avec le joueur
 		try {
@@ -300,7 +307,7 @@ public class Partie {
 			e.printStackTrace();
 		}
 		
-		System.out.println("\t\t\tNEW : "+joueur.getLigne().toString());
+		//System.out.println("\t\t\tNEW : "+joueur.getLigne().toString());
 
 	}
 	
@@ -322,7 +329,6 @@ public class Partie {
 		// OU ALORS C'EST DEJA FAIT DANS LE GAME LOOP ET FAUT PAS LE FAIRE LA ???
 		
 		// On repère si des joueurs sont en collision avec une trace ou un mur
-		System.out.println("\t##### UPDATE\n");
 		this.repererCollisions();	// Si collisions il y a, alors la méthode repererCollisions se charge de mettre à jour les scores et l'état des joueurs
 		
 		// On repère si des joueurs prennent un bonus
