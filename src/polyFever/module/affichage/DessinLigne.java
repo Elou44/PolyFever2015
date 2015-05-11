@@ -171,7 +171,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(0.0f,0.0f,1.0f));
 				this.decalage += 0.03f;
 				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,1.0f,1.0f));
-				this.decalage += 0.03f;
+				/*this.decalage += 0.03f;
 				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
 				this.decalage += 0.03f;
 				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
@@ -212,7 +212,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 				this.decalage += 0.03f;
 				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
 				
-				
+				*/
 				
 				this.decalage = 0 ;
 			}
@@ -241,17 +241,17 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 		glEnableVertexAttribArray(posAttrib);
 		//glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0); // 0 : position a la location 0 par défaut.  A l'appelle de cette fonction les infos vont être stockées dans le VAO courant. 
-		glVertexAttribPointer(0, 2, GL_FLOAT, false,5*4, 0);
+		glVertexAttribPointer(posAttrib, 2, GL_FLOAT, false,5*4, 0);
 		
 		glEnableVertexAttribArray(colAttrib);
-		glVertexAttribPointer(1, 3, GL_FLOAT, false,5*4, 2*4);
+		glVertexAttribPointer(colAttrib, 3, GL_FLOAT, false,5*4, 2*4);
 		
 		
 		glDrawElements(GL_TRIANGLES, this.nbVertex, GL_UNSIGNED_INT, 0); // essayer avec glDrawElements (https://open.gl/drawing)
 		//glDrawArrays(GL_TRIANGLES, 0, 3);
 		
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(posAttrib);
+		glDisableVertexAttribArray(colAttrib);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		
 		glUseProgram(0);
