@@ -32,7 +32,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	
 	private float decalage; // PROVISOIRE ONLY FOR TEST PURPOSE
 	
-	private int program, ebo,vbo, uniColor;
+	private int program, ebo,vbo, posAttrib, colAttrib, uniColor;
 	
 	private float tabVertex[];
 	private int elements[];
@@ -97,8 +97,6 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		glAttachShader(program, vs); // On attache le vs au programme
 		glAttachShader(program, fs); // On attache le fs au programme
 		
-		
-		
 		glLinkProgram(program);
 		
 						
@@ -107,57 +105,42 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 			polyFever.destroy();
 		}
 		
-		uniColor = glGetUniformLocation(program, "triangleColor");
+		uniColor = glGetUniformLocation(program, "Color");
+		posAttrib = glGetAttribLocation(program, "position");
+		colAttrib = glGetAttribLocation(program, "color");
+		System.out.println("posAttrib: ".concat(String.valueOf(posAttrib)));
+		System.out.println("colAttrib: ".concat(String.valueOf(colAttrib)));
+		
 		
 		glDetachShader(program, vs);
 		glDetachShader(program, fs);
 		
-		glBindAttribLocation(program, 0, "position");
+		glBindAttribLocation(program, posAttrib, "position"); // on bind l'attribut position à 0 // PB CERTAINEMENT ICI !!!!!!!!!!!!!!!!!!!!
+		glBindAttribLocation(program, colAttrib, "color"); // on bind l'attribut position à // PB CERTAINEMENT ICI !!!!!!!!!!!!!!!!!!!!
 		
 		glDeleteShader(vs);
 		glDeleteShader(fs);
 		
 		
-		/*for(int i = 0; i<60; i++)
-		{
-			this.addRectangle(new Vector2(0.0f,(i/30.0f)-1.0f), 1.57f-1.57f*(i/30.0f), 50.0f, 3.0f);
-		}
-		//this.addRectangle(new Vector2(0.0f,0.0f), 0.78f, 200.0f, 50.0f);
-		
-		this.addRectangle(new Vector2(0.0f,0.0f), 0.0f, 500.0f, 1.0f);*/
-		
-		//this.addRectangle(new Vector2(0.5f,0.0f), 1.7f, 200.0f, 50.0f);
-		/*for(int i = 0; i<this.lenTabV; i++)
-		{
-			System.out.println("i: ".concat(String.valueOf(tabVertex[i])));
-		}
-		
-		for(int i = 0; i<this.lenTabE; i++)
-		{
-			System.out.println("e: ".concat(String.valueOf(elements[i])));
-		}*/
-		
-		
-		
 		vbo = glGenBuffers(); // ebo : Elements Buffer Object (plus adapté que les vbo (vertex buffer object pour le dessin de multiple objets)
-		vboBuffer = (FloatBuffer)BufferUtils.createFloatBuffer(this.tabVertex.length).put(this.tabVertex).flip();
+		vboBuffer = (FloatBuffer)BufferUtils.createFloatBuffer(this.tabVertex.length).put(this.tabVertex).flip();  // IMPORTANT : TRACER LES JOUEURS AU DEBUT DU BUFFER DE VERTEX
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);  // Fait en sorte que le ebo soit l'objet actif
+
 		
 		glBufferData(GL_ARRAY_BUFFER, vboBuffer, GL_STREAM_DRAW); // Est appliqué sur le vbo actif
 		
-		
-		
-		
+
 		ebo = glGenBuffers(); // ebo : Elements Buffer Object (plus adapté que les vbo (vertex buffer object pour le dessin de multiple objets)
 		eboBuffer = (IntBuffer)BufferUtils.createIntBuffer(this.elements.length).put(this.elements).flip();
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);  // Fait en sorte que le ebo soit l'objet actif
 		
+		
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, eboBuffer, GL_STREAM_DRAW); // Est appliqué sur le vbo actif
 		
 
-		
-		this.addRectangle(new Vector3(0.0f,0.0f,1.0f), 1.57f,1000.0f, -3.0f);
-		this.addRectangle(new Vector3(0.0f,0.0f,1.0f), 0.0f, 1000.0f, -3.0f);
+		// On trace des axes
+		this.addRectangle(new Vector3(0.0f,0.0f,1.0f), 1.57f,1000.0f, -3.0f, new Vector3(1.0f,1.0f,1.0f));
+		this.addRectangle(new Vector3(0.0f,0.0f,1.0f), 0.0f, 1000.0f, -3.0f, new Vector3(1.0f,1.0f,1.0f));
 		
 		
 		glBindVertexArray(glGenVertexArrays()); // Création d'un VAO : Vertex Array Object avec glGenVertexArrays() . le VAO stock les liens entre les attributs et les VBO
@@ -175,17 +158,63 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		long t_now = System.currentTimeMillis();
 		float time = t_now - t_start;
 		
-		
-
-		
-		
 		Iterator<Joueur> e = this.partie.getJoueurs().iterator();
 		while(e.hasNext()) // A déplacer dans Init();
 		{
 			j = e.next();
 			if(j.getPosition().z() == 1.0f && j.getEtat() == Etat.VIVANT)
 			{
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2());
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,0.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(0.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,1.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.decalage += 0.03f;
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				
+				
+				
+				this.decalage = 0 ;
 			}
 		}
 		
@@ -198,28 +227,37 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, eboBuffer);
 		
 		
-		//glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT);
 		
 		glUseProgram(program);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo); //TEST
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo); //TEST
 		
-		
-		double newColor = Math.sin(time/100 + 4.0f);
+		//double newColor = Math.sin(time/100 + 4.0f);
 		//System.out.println(time);
-		glUniform3f(uniColor, 1.0f, 0.0f, 0.0f); // change la couleur du triangle en rouge
+		//glUniform3f(uniColor, 1.0f, 0.0f, 0.0f); // change la couleur du triangle en rouge
 		
 		
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0); // 0 : position a la location 0 par défaut.  A l'appelle de cette fonction les infos vont être stockées dans le VAO courant. 
+		glEnableVertexAttribArray(posAttrib);
+		//glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0); // 0 : position a la location 0 par défaut.  A l'appelle de cette fonction les infos vont être stockées dans le VAO courant. 
+		glVertexAttribPointer(0, 2, GL_FLOAT, false,5*4, 0);
+		
+		glEnableVertexAttribArray(colAttrib);
+		glVertexAttribPointer(1, 3, GL_FLOAT, false,5*4, 2*4);
+		
 		
 		glDrawElements(GL_TRIANGLES, this.nbVertex, GL_UNSIGNED_INT, 0); // essayer avec glDrawElements (https://open.gl/drawing)
+		//glDrawArrays(GL_TRIANGLES, 0, 3);
 		
 		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		
 		glUseProgram(0);
 	}
 	
-	private void addRectangle(Vector3 v, float angle, float w, float h) // v : point d'encrage (milieu du bord supérieur)
+	private void addRectangle(Vector3 v, float angle, float w, float h, Vector3 c) // v : point d'encrage (milieu du bord supérieur)
 	{
 		
 		w = w*polyFever.getRATIOPIXWIDTH(); // conversion pixel vers float
@@ -281,7 +319,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		y = (float) yd;
 		p3.set( x, y);
 		
-		ajouterVector2Rect(p1, p2, p3, p4);
+		ajouterVector2Rect(p1, p2, p3, p4, c);
 		this.nbVertex += 6;
 		
 		// Peut etre utiliser matrice de rotation ? 
@@ -289,22 +327,34 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 	}
 	
-	private void ajouterVector2Rect(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4)
+	private void ajouterVector2Rect(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector3 c)
 	{
 	
 		this.tabVertex[this.lenTabV] = p4.x()+decalage; // Top Left
-		this.tabVertex[this.lenTabV+1] = p4.y(); 
+		this.tabVertex[this.lenTabV+1] = p4.y(); 	
+		this.tabVertex[this.lenTabV+2] = c.x(); 
+		this.tabVertex[this.lenTabV+3] = c.y(); 
+		this.tabVertex[this.lenTabV+4] = c.z(); 
 		
-		this.tabVertex[this.lenTabV+2] = p1.x()+decalage; // Top Right
-		this.tabVertex[this.lenTabV+3] = p1.y();
+		this.tabVertex[this.lenTabV+5] = p1.x()+decalage; // Top Right
+		this.tabVertex[this.lenTabV+6] = p1.y();
+		this.tabVertex[this.lenTabV+7] = c.x(); 
+		this.tabVertex[this.lenTabV+8] = c.y(); 
+		this.tabVertex[this.lenTabV+9] = c.z(); 
 
-		this.tabVertex[this.lenTabV+4] = p2.x()+decalage; // Bottom Right
-		this.tabVertex[this.lenTabV+5] = p2.y();
+		this.tabVertex[this.lenTabV+10] = p2.x()+decalage; // Bottom Right
+		this.tabVertex[this.lenTabV+11] = p2.y();
+		this.tabVertex[this.lenTabV+12] = c.x(); 
+		this.tabVertex[this.lenTabV+13] = c.y(); 
+		this.tabVertex[this.lenTabV+14] = c.z(); 
 
-		this.tabVertex[this.lenTabV+6] = p3.x()+decalage; // Bottom Left
-		this.tabVertex[this.lenTabV+7] = p3.y();
+		this.tabVertex[this.lenTabV+15] = p3.x()+decalage; // Bottom Left
+		this.tabVertex[this.lenTabV+16] = p3.y();
+		this.tabVertex[this.lenTabV+17] = c.x(); 
+		this.tabVertex[this.lenTabV+18] = c.y(); 
+		this.tabVertex[this.lenTabV+19] = c.z(); 
 		
-		this.lenTabV += 8;
+		this.lenTabV += 20;
 		 // Essayer de rajouter les derniers points et de faire un clear();
 		this.vboBuffer.put(this.tabVertex); // On met a jour le buffer VBO 
 		this.vboBuffer.clear();
