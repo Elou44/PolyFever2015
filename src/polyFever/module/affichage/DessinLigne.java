@@ -171,7 +171,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(0.0f,0.0f,1.0f));
 				this.decalage += 0.03f;
 				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,1.0f,1.0f));
-				/*this.decalage += 0.03f;
+				this.decalage += 0.03f;
 				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
 				this.decalage += 0.03f;
 				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
@@ -212,7 +212,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 				this.decalage += 0.03f;
 				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
 				
-				*/
+				
 				
 				this.decalage = 0 ;
 			}
