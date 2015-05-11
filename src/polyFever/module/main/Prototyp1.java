@@ -39,7 +39,7 @@ public class Prototyp1 extends PolyFever {
 	
 	@Override
 	public void render() {		
-		System.out.println("\n\n=================== NOUVELLE BOUCLE ===================\n\n");
+		//System.out.println("\n\n=================== NOUVELLE BOUCLE ===================\n\n");
 		if(i == 1)
 		{
 			partie.initialiserPartie();

@@ -224,7 +224,7 @@ public class Ligne {
 			joueur.setGrille(15);
 		}
 		
-
+/*
 		System.out.println("Ligne - Ajout de coordonnées en ("+coord.x()+","+coord.y()+") dans la grille "+this.getJoueur().getGrille());
 		System.out.println("Ligne - CONTENU grille "+this.getJoueur().getGrille()+" de taille "+joueur.getPartie().getTrace().get(joueur.getGrille()).size()+" : ");
 		Iterator<Vector3> it = joueur.getPartie().getTrace().get(joueur.getGrille()).iterator();
@@ -234,12 +234,6 @@ public class Ligne {
 			Vector3 pos = new Vector3();
 			pos = it.next();
 			System.out.println("("+pos.x()+","+pos.y()+")");
-		}
-		
-		/*
-		for(int i = 0; i < joueur.getPartie().getTrace().get(joueur.getGrille()).size(); i++)
-		{
-			System.out.println("("+joueur.getPartie().getTrace().get(joueur.getGrille()).get(i).x()+","+joueur.getPartie().getTrace().get(joueur.getGrille()).get(i).y()+"), ");
 		}*/
 	}
 	
@@ -516,7 +510,7 @@ public class Ligne {
 		
 		// Remplissage du tableau des tracés
 		// A VOIR SI LE Z DU VECTOR 3 EST 0 OU 1, SI 1 ON L'AJOUTE, SI 0, ON L'AJOUTE PAS
-		System.out.println("Ligne - Demande ajout ("+joueur.getPosition().x()+","+joueur.getPosition().y()+")");
+		//System.out.println("Ligne - Demande ajout ("+joueur.getPosition().x()+","+joueur.getPosition().y()+")");
 		this.ajouterCoord(joueur.getPosition());
 				
 		// Affectation de la nouvelle position du joueur
