@@ -190,13 +190,13 @@ public class Partie {
 
 			//System.out.println("Collisions - CONTENU grille "+e.getGrille()+" de taille "+e.getPartie().getTrace().get(e.getGrille()).size()+": ");
 			Iterator<Vector3> it = this.getTrace().get(e.getGrille()).iterator();
-			
+			/*
 			while(it.hasNext())
 			{
 				Vector3 position = new Vector3();
 				position = it.next();
 				System.out.println("("+position.x()+","+position.y()+"), ");
-			}
+			}*/
 			
 			// Parmis tous les points présents dans le sous tableau de la grille correspondante à la position du joueur
 			for(Vector3 pointGrille : this.getTrace().get(e.getGrille()))
