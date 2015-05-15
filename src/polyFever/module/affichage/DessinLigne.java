@@ -41,6 +41,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	private int indexTabE;
 	FloatBuffer vboBuffer;
 	IntBuffer eboBuffer;
+	private float colDelta;
 
 	
 	
@@ -49,6 +50,8 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	public DessinLigne(Affichage a, PolyFever p, Partie partie, float d)
 	{
 		this.decalage = d; // PROVISOIRE
+		this.colDelta = 0.01f;
+		
 		
 		this.nbVertex = 0;
 		this.affichage = a;
@@ -65,6 +68,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	public void init()
 	{
 		
+		partie.envoyerTabVertex(tabVertex); // Envoie de la référence du tableau à l'objet partie
 		
 		System.out.println("Initialisation pour traçage des Lignes...");
 		t_start = System.currentTimeMillis();
@@ -139,8 +143,10 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 
 		// On trace des axes
-		this.addRectangle(new Vector3(0.0f,0.0f,1.0f), 1.57f,1000.0f, -3.0f, new Vector3(1.0f,1.0f,1.0f));
-		this.addRectangle(new Vector3(0.0f,0.0f,1.0f), 0.0f, 1000.0f, -3.0f, new Vector3(1.0f,1.0f,1.0f));
+		this.addRectangle(new Vector3(0.0f,-1.0f,1.0f), 1.57f,0.005f, -2.0f, new Vector3(1.0f,1.0f,1.0f));
+		this.addRectangle(new Vector3(-1.0f,0.0f,1.0f), 0.0f, 0.005f, -2.0f, new Vector3(1.0f,1.0f,1.0f));
+		
+		// Dessin des bords du plateau
 		
 		
 		glBindVertexArray(glGenVertexArrays()); // Création d'un VAO : Vertex Array Object avec glGenVertexArrays() . le VAO stock les liens entre les attributs et les VBO
@@ -260,9 +266,13 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	private void addRectangle(Vector3 v, float angle, float w, float h, Vector3 c) // v : point d'encrage (milieu du bord supérieur)
 	{
 		
-		w = w*polyFever.getRATIOPIXWIDTH(); // conversion pixel vers float
-		h = h*polyFever.getRATIOPIXHEIGHT()+4*polyFever.getRATIOPIXHEIGHT(); // conversion pixel vers float
+		this.colDelta += 0.001f;
+		if(colDelta > 1.0f) colDelta = 0.0f;
+		//System.out.println("colDelta: ".concat(String.valueOf(colDelta)));
 		
+		//w = w; // conversion pixel vers float
+		h = h+0.01f; // conversion pixel vers float
+		System.out.println("polyFever.getHEIGHT()/polyFever.getWIDTH(): ".concat(String.valueOf((float)polyFever.getHEIGHT()/(float)polyFever.getWIDTH())));
 		/*System.out.println("angle: ".concat(String.valueOf(angle)));
 		System.out.println("w: ".concat(String.valueOf(w)));
 		System.out.println("h: ".concat(String.valueOf(h)));*/
@@ -274,10 +284,14 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 
 		//System.out.println("decalage: ".concat(String.valueOf(decalage)));
 		
+		
+		// ECRASER LES DIMENSIONS SUR X
+		//v.set(v.x() *(float) polyFever.getHEIGHT()/ (float)polyFever.getWIDTH(),v.y(),v.z());
+		
 		Vector2 p1 = new Vector2();
 		
 		double xd =  v.x() + (w/2)*Math.cos((Math.PI/2)-angle);
-		float x = (float) xd;
+		float x = (float) xd/* *(float) polyFever.getHEIGHT()/ (float)polyFever.getWIDTH()*/; // redimenssionner tout le tableau une fois tracé 
 		double yd =  v.y() - (w/2)*Math.sin((Math.PI/2)-angle);
 		float y = (float) yd;
 		p1.set( x, y);
@@ -302,7 +316,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 		Vector2 p4 = new Vector2();
 		xd =  v.x() - (w/2)*Math.cos((Math.PI/2)-angle);
-		x = (float) xd;
+		x = (float) xd/* *(float) polyFever.getHEIGHT()/ (float)polyFever.getWIDTH()*/;
 		yd =  v.y() + (w/2)*Math.sin((Math.PI/2)-angle);
 		y = (float) yd;
 		p4.set( x, y);
@@ -333,25 +347,25 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		this.tabVertex[this.lenTabV] = p4.x()+decalage; // Top Left
 		this.tabVertex[this.lenTabV+1] = p4.y(); 	
 		this.tabVertex[this.lenTabV+2] = c.x(); 
-		this.tabVertex[this.lenTabV+3] = c.y(); 
+		this.tabVertex[this.lenTabV+3] = c.y()+colDelta; 
 		this.tabVertex[this.lenTabV+4] = c.z(); 
 		
 		this.tabVertex[this.lenTabV+5] = p1.x()+decalage; // Top Right
 		this.tabVertex[this.lenTabV+6] = p1.y();
 		this.tabVertex[this.lenTabV+7] = c.x(); 
-		this.tabVertex[this.lenTabV+8] = c.y(); 
+		this.tabVertex[this.lenTabV+8] = c.y()+colDelta; 
 		this.tabVertex[this.lenTabV+9] = c.z(); 
 
 		this.tabVertex[this.lenTabV+10] = p2.x()+decalage; // Bottom Right
 		this.tabVertex[this.lenTabV+11] = p2.y();
 		this.tabVertex[this.lenTabV+12] = c.x(); 
-		this.tabVertex[this.lenTabV+13] = c.y(); 
+		this.tabVertex[this.lenTabV+13] = c.y()+colDelta; 
 		this.tabVertex[this.lenTabV+14] = c.z(); 
 
 		this.tabVertex[this.lenTabV+15] = p3.x()+decalage; // Bottom Left
 		this.tabVertex[this.lenTabV+16] = p3.y();
 		this.tabVertex[this.lenTabV+17] = c.x(); 
-		this.tabVertex[this.lenTabV+18] = c.y(); 
+		this.tabVertex[this.lenTabV+18] = c.y()+colDelta; 
 		this.tabVertex[this.lenTabV+19] = c.z(); 
 		
 		this.lenTabV += 20;
@@ -381,5 +395,16 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 		
 	}
+	
+	
+	public void dessinerBordsPlateau(Vector2 p, float w)
+	{
+		this.addRectangle(new Vector3(0.0f,0.0f,1.0f), 0.0f, w, -3.0f, new Vector3(1.0f,1.0f,1.0f)); // TOP
+		this.addRectangle(new Vector3(0.0f,0.0f,1.0f), 1.57f, w, -3.0f, new Vector3(1.0f,1.0f,1.0f)); // BOTTOM
+		this.addRectangle(new Vector3(0.0f,0.0f,1.0f), 1.57f, w, -3.0f, new Vector3(1.0f,1.0f,1.0f)); // LEFT 
+		this.addRectangle(new Vector3(0.0f,0.0f,1.0f), 1.57f, w, -3.0f, new Vector3(1.0f,1.0f,1.0f)); // RIGHT
+	}
+	
+	
 
 }

@@ -29,10 +29,10 @@ public class Ligne {
 		//System.out.println("Instanciation d'un objet Ligne (sp)...");
 		this.couleur = 0;
 		this.joueur = null;
-		this.vitesse2 = 3;
-		this.vitesse = 3*p.getRATIOPIXWIDTH();
+		this.vitesse2 = 0.009f;
+		this.vitesse = 0.009f;
 		this.polyfever = p;
-		this.epaisseur = 5;
+		this.epaisseur = 0.1f;
 		this.courbe = Math.PI / 35;
 		this.tpsEnVie = 0;
 	}
@@ -241,13 +241,15 @@ public class Ligne {
 		/*
 		 * Mise à jour des Vitesses (vitesse et vitesse2) -> réalisé à chaque frame (sachant que les fps sont maj toutes les secondes, peu utile)
 		 */
+		
+		
 		float realFPS = (float) polyfever.getRealFPS();
 		if(realFPS == 0.0f) realFPS = (float) polyfever.getFPS();
 		
 		
 
-		this.vitesse = 3*polyfever.getRATIOPIXWIDTH()*(30.0f/realFPS); 
-		this.vitesse2 = 3*(30.0f/realFPS);
+		this.vitesse = 0.009f*(30.0f/realFPS); 
+		this.vitesse2 = 0.009f*(30.0f/realFPS);
 		this.courbe = Math.PI/35*(30.0f/realFPS);
 		
 		//System.out.println("vitesse: ".concat(String.valueOf(vitesse)));

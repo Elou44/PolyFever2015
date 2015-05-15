@@ -14,11 +14,11 @@ public class Prototyp1 extends PolyFever {
 	
 	private Affichage affichage; // Classe Affichage
 	private Partie partie;
-	private int i = 1;
+
 	
 
 	public Prototyp1() {
-		super("Prototyp1", 300, 300, true); // on interdit le redimensionnement de la fenetre
+		super("Prototyp1", 900, 600, true); // on interdit le redimensionnement de la fenetre
 
 		Partie partie = new Partie(); // Devra etre instanciée par le Menu
 		Joueur j1 = new Joueur(partie);
@@ -34,17 +34,13 @@ public class Prototyp1 extends PolyFever {
 	public void init() {
 		
 		affichage.init();
+		partie.initialiserPartie();
 		
 	}
 	
 	@Override
 	public void render() {		
 		//System.out.println("\n\n=================== NOUVELLE BOUCLE ===================\n\n");
-		if(i == 1)
-		{
-			partie.initialiserPartie();
-			i++;
-		}
 		affichage.dessiner();
 		try
 		{

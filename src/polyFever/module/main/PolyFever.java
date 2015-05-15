@@ -266,6 +266,7 @@ public abstract class PolyFever {
 	public final void run(PixelFormat format, ContextAttribs attribs) {
 		try {
 			Display.create(format.withSamples(this.MSAA), attribs);
+			
 		} catch(Exception exc) {
 			exc.printStackTrace();
 			System.exit(1);
@@ -361,6 +362,10 @@ public abstract class PolyFever {
 	 */
 	public void resized() {
 		glViewport(0, 0, getWIDTH(), getHEIGHT());
+		//glOrtho(0,getWIDTH(),getHEIGHT(),0,1,-1);
+		//gluOrtho2D(0.0, getWIDTH(), 0.0, getHEIGHT());
+		//glMatrixMode(GL_PROJECTION);
+		//glOrtho(0,getWIDTH(),getHEIGHT(),0,1,-1);
 		this.RATIOPIXWIDTH = 2/(float) getWIDTH();
 		this.RATIOPIXHEIGHT = 2/(float) getHEIGHT();
 		System.out.println("Resized RATIOPIXW: ".concat(String.valueOf(this.RATIOPIXWIDTH)));

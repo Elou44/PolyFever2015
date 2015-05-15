@@ -12,6 +12,8 @@ public class Partie {
 	private float dimensionPlateau;		// Dimensions du plateau de jeu
 	private List<Bonus> bonusPresents;	// Liste des bonus présents sur le plateau de jeu
 	private static long temps;			// Variable mesurant le temps d'une partie
+	private float tabVertex[];
+	
 	private List<List<Vector3>> trace;		// Tableau de tableau de Vector3, donnant les traces sur les 16 sous grilles du plateau
 	private List<Vector3> grille0;		// Tableau de Vector3, donnant les traces sur la sous grille 0
 	private List<Vector3> grille1;		// Tableau de Vector3, donnant les traces sur la sous grille 1
@@ -329,7 +331,9 @@ public class Partie {
 		// OU ALORS C'EST DEJA FAIT DANS LE GAME LOOP ET FAUT PAS LE FAIRE LA ???
 		
 		// On repère si des joueurs sont en collision avec une trace ou un mur
-		this.repererCollisions();	// Si collisions il y a, alors la méthode repererCollisions se charge de mettre à jour les scores et l'état des joueurs
+		
+		
+		// J'ai DESACTIVE les COLLISIONS ICI ----> //this.repererCollisions();	// Si collisions il y a, alors la méthode repererCollisions se charge de mettre à jour les scores et l'état des joueurs
 		
 		// On repère si des joueurs prennent un bonus
 		//this.repererBonus();	// Si bonus pris il y a, alors la méthode repererBonus se charge de modifier les paramètres des lignes concernées et de vider le tableau des bonus présents
@@ -340,6 +344,11 @@ public class Partie {
 		// Mettre à jour le traçage des trous pour chaque joueur
 		
 		
+	}
+	
+	public void envoyerTabVertex(float tab[])
+	{
+		this.tabVertex = tab;
 	}
 
 	@Override
