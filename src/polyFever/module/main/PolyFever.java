@@ -13,6 +13,8 @@ import org.lwjgl.opengl.PixelFormat;
 import polyFever.module.moteurDeJeu.Partie;
 import polyFever.module.util.*;
 import polyFever.module.moteurDeJeu.*;
+import polyFever.module.affichage.*;
+
 /**
  * This class defines an entry point for OpenGL programs as it handles context creation and the game loop.
  * Entry point classes extend GLProgram and must implement the <code>init()</code> and <code>render()</code> methods.
@@ -27,9 +29,12 @@ public abstract class PolyFever {
 	private int realFps;
 	private final int WIDTH;
 	private final int HEIGHT;
-	private float RATIOPIXWIDTH; // Largeur d'un pixel en float
-	private float RATIOPIXHEIGHT; // Hauteur d'un pixel en float
+	private float RATIO; // Largeur d'un pixel en float
+
+	
 	private Partie partie;
+	private GlOrtho glOrtho;
+	
 	private final int MSAA = 8; // AntiAliasing x8 
 	private String name;
 	
@@ -44,6 +49,8 @@ public abstract class PolyFever {
 	 */
 	public PolyFever(boolean vsync, int width, int height) {
 		System.out.println("Création du context openGL...");
+		
+		this.glOrtho = new GlOrtho(-1.0f*((float)width/(float)height),1.0f*((float)width/(float)height),-1.0f,1.0f,-1.0f,1.0f);
 		
 		isLeftHeld = false;
 		isRightHeld = false;
@@ -101,13 +108,17 @@ public abstract class PolyFever {
 	 */
 	public PolyFever(String name, int width, int height, boolean resizable) {
 		System.out.println("Création du context openGL...");
+		
+		
 		this.name = name;
 		this.partie = null;
 		Display.setTitle(this.name);
 		this.WIDTH = width; 
 		this.HEIGHT = height;
-		this.RATIOPIXWIDTH = 2/(float) width;
-		this.RATIOPIXHEIGHT = 2/(float) height;	
+		this.RATIO = (float) width/(float) height;
+		
+		this.glOrtho = new GlOrtho(-1.0f*RATIO,1.0f*RATIO,-1.0f,1.0f,-1.0f,1.0f);
+
 		try {
 			Display.setDisplayMode(new DisplayMode(width, height));
 		} catch(Exception exc) {
@@ -121,12 +132,15 @@ public abstract class PolyFever {
 		
 	}
 	
-	public float getRATIOPIXWIDTH() {
-		return RATIOPIXWIDTH;
+	public float getRATIO() {
+		return RATIO;
 	}
-
-	public float getRATIOPIXHEIGHT() {
-		return RATIOPIXHEIGHT;
+	
+	
+	public GlOrtho getGlOrtho() // Retourne l'objet glOrtho.
+	{
+		System.out.println("le pb est ici");
+		return(this.glOrtho);
 	}
 
 	/**
@@ -265,6 +279,7 @@ public abstract class PolyFever {
 	 */
 	public final void run(PixelFormat format, ContextAttribs attribs) {
 		try {
+			
 			Display.create(format.withSamples(this.MSAA), attribs);
 			
 		} catch(Exception exc) {
@@ -362,14 +377,12 @@ public abstract class PolyFever {
 	 */
 	public void resized() {
 		glViewport(0, 0, getWIDTH(), getHEIGHT());
-		//glOrtho(0,getWIDTH(),getHEIGHT(),0,1,-1);
-		//gluOrtho2D(0.0, getWIDTH(), 0.0, getHEIGHT());
-		//glMatrixMode(GL_PROJECTION);
-		//glOrtho(0,getWIDTH(),getHEIGHT(),0,1,-1);
-		this.RATIOPIXWIDTH = 2/(float) getWIDTH();
-		this.RATIOPIXHEIGHT = 2/(float) getHEIGHT();
-		System.out.println("Resized RATIOPIXW: ".concat(String.valueOf(this.RATIOPIXWIDTH)));
-		System.out.println("Resized RATIOPIXH: ".concat(String.valueOf(this.RATIOPIXHEIGHT)));
+
+		this.RATIO = (float) getWIDTH() / (float) getHEIGHT();
+		glOrtho.setGlOrtho(-1.0f*RATIO,1.0f*RATIO,-1.0f,1.0f,-1.0f,1.0f);
+		
+		System.out.println("Resized RATIO: ".concat(String.valueOf(this.RATIO)));
+
 	}
 	
 	/**

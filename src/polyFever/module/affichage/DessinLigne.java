@@ -32,7 +32,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	
 	private float decalage; // PROVISOIRE ONLY FOR TEST PURPOSE
 	
-	private int program, ebo,vbo, posAttrib, colAttrib, uniColor;
+	private int program, ebo,vbo, posAttrib, colAttrib, uniColor, projectionUniform;
 	
 	private float tabVertex[];
 	private int elements[];
@@ -42,6 +42,8 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	FloatBuffer vboBuffer;
 	IntBuffer eboBuffer;
 	private float colDelta;
+	
+	private FloatBuffer projectionMatrix;
 
 	
 	
@@ -52,7 +54,6 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		this.decalage = d; // PROVISOIRE
 		this.colDelta = 0.01f;
 		
-		
 		this.nbVertex = 0;
 		this.affichage = a;
 		this.polyFever = p;
@@ -62,11 +63,14 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		this.indexTabE = 0;
 		this.tabVertex = new float[1000000];
 		this.elements = new int[1000000];
+		
+		this.projectionMatrix = this.polyFever.getGlOrtho().getProjectionBuf();
 	};
 		
 	
 	public void init()
 	{
+		
 		
 		partie.envoyerTabVertex(tabVertex); // Envoie de la référence du tableau à l'objet partie
 		
@@ -76,7 +80,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		glClearColor(0, 0, 0, 0);
 		
 		int vs = glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(vs, polyFever.readFromFile("example1.1.vert")); // Chargement du vertex shader (vs)
+		glShaderSource(vs, polyFever.readFromFile("vert_shader.vert")); // Chargement du vertex shader (vs)
 		
 		glCompileShader(vs); // Compilation du vertex shader
 		
@@ -86,7 +90,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		}
 		
 		int fs = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(fs, polyFever.readFromFile("example1.1.frag")); // Chargement du fragment shader (fs)
+		glShaderSource(fs, polyFever.readFromFile("frag_shader.frag")); // Chargement du fragment shader (fs)
 		
 		glCompileShader(fs); // Compilation du fragment shader
 		
@@ -98,6 +102,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 		program = glCreateProgram(); // Création du programme auquel sera rattaché les shaders
 		
+	
 		glAttachShader(program, vs); // On attache le vs au programme
 		glAttachShader(program, fs); // On attache le fs au programme
 		
@@ -109,6 +114,10 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 			polyFever.destroy();
 		}
 		
+		projectionUniform = glGetUniformLocation(program, "Projection");
+		System.out.println(projectionUniform);
+		//glUniformMatrix4(projectionUniform, false, this.projectionMatrix);
+
 		uniColor = glGetUniformLocation(program, "Color");
 		posAttrib = glGetAttribLocation(program, "position");
 		colAttrib = glGetAttribLocation(program, "color");
@@ -154,7 +163,9 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 		//glBindBuffer(GL_ARRAY_BUFFER, 0);
 		
+		System.out.println("ça passe ...........");
 		
+
 	}
 	
 	
@@ -236,6 +247,10 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		glClear(GL_COLOR_BUFFER_BIT);
 		
 		glUseProgram(program);
+		
+		glUniformMatrix4(projectionUniform, false, (FloatBuffer)projectionMatrix);
+		
+		
 		glBindBuffer(GL_ARRAY_BUFFER, vbo); //TEST
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo); //TEST
@@ -272,7 +287,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 		//w = w; // conversion pixel vers float
 		h = h+0.01f; // conversion pixel vers float
-		System.out.println("polyFever.getHEIGHT()/polyFever.getWIDTH(): ".concat(String.valueOf((float)polyFever.getHEIGHT()/(float)polyFever.getWIDTH())));
+		//System.out.println("polyFever.getHEIGHT()/polyFever.getWIDTH(): ".concat(String.valueOf((float)polyFever.getHEIGHT()/(float)polyFever.getWIDTH())));
 		/*System.out.println("angle: ".concat(String.valueOf(angle)));
 		System.out.println("w: ".concat(String.valueOf(w)));
 		System.out.println("h: ".concat(String.valueOf(h)));*/
@@ -291,7 +306,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		Vector2 p1 = new Vector2();
 		
 		double xd =  v.x() + (w/2)*Math.cos((Math.PI/2)-angle);
-		float x = (float) xd/* *(float) polyFever.getHEIGHT()/ (float)polyFever.getWIDTH()*/; // redimenssionner tout le tableau une fois tracé 
+		float x = (float) xd; // redimenssionner tout le tableau une fois tracé 
 		double yd =  v.y() - (w/2)*Math.sin((Math.PI/2)-angle);
 		float y = (float) yd;
 		p1.set( x, y);
@@ -316,7 +331,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 		Vector2 p4 = new Vector2();
 		xd =  v.x() - (w/2)*Math.cos((Math.PI/2)-angle);
-		x = (float) xd/* *(float) polyFever.getHEIGHT()/ (float)polyFever.getWIDTH()*/;
+		x = (float) xd;
 		yd =  v.y() + (w/2)*Math.sin((Math.PI/2)-angle);
 		y = (float) yd;
 		p4.set( x, y);

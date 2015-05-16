@@ -32,7 +32,7 @@ public class Ligne {
 		this.vitesse2 = 0.009f;
 		this.vitesse = 0.009f;
 		this.polyfever = p;
-		this.epaisseur = 0.1f;
+		this.epaisseur = 0.01f;
 		this.courbe = Math.PI / 35;
 		this.tpsEnVie = 0;
 	}
