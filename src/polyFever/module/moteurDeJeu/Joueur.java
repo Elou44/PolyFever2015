@@ -1,6 +1,7 @@
 package polyFever.module.moteurDeJeu;
 
 import polyFever.module.util.math.Vector3;
+import polyFever.module.util.math.Vector4;
 
 
 /* 
@@ -18,7 +19,7 @@ public class Joueur {
 	// COMMENT DEFINIR LE ROLE ??? QUELLE INFORMATION JE VAIS RECEVOIR ? QUEL TYPE ?
 	private Role type;				// Variable définissant le role du joueur, accueillant l'énumération
 	private Ligne ligne;			// Objet Ligne controlée par le joueur
-	private Vector3 position;		// Vector2 donnant la position actuelle du point du joueur
+	private Vector3 position;		// Vector3 donnant la position actuelle du point du joueur et si la trace est un trou ou non
 	private double direction;		// Direction du point du joueur (en radians)
 	private boolean toucheGPresse;	// Booléen disant si la toucheG est enfoncée
 	private boolean toucheDPresse;	// Booléen disant si la toucheD est enfoncée
@@ -203,6 +204,92 @@ public class Joueur {
 				+ ", toucheD=" + toucheD + ", score=" + score + ", etat="
 				+ etat + ", type=" + type + ", ligne=" + ligne + ", position.x="
 				+ position.x() + ", position.y="+ position.y() + ", direction=" + direction + "]";
+	}
+
+	// Méthode mettant à jour l'attribut "grille" du joueur selon sa position
+	public void majGrille(Vector3 position)
+	{
+		// Si le curseur se situe dans la 0ème sous grille
+		if(position.x() <= -0.5 && position.y() >= 0.5)
+		{
+			// Mise à jour de la sous grille actuelle ou se trouve le joueur
+			this.setGrille(0);
+		}
+		// Si le curseur se situe dans la 1ère sous grille
+		else if( (position.x() >= -0.5 && position.x() <= 0) && position.y() >= 0.5)
+		{
+			this.setGrille(1);
+		}
+		// Si le curseur se situe dans la 2ème sous grille
+		else if( (position.x() >= 0 && position.x() <= 0.5) && position.y() >= 0.5)
+		{
+			this.setGrille(2);
+		}
+		// Si le curseur se situe dans la 3ème sous grille
+		else if(position.x() >= 0.5 && position.y() >= 0.5)
+		{
+			this.setGrille(3);
+		}
+		// Si le curseur se situe dans la 4ème sous grille
+		else if(position.x() <= -0.5 && (position.y() >= 0 && position.y() <= 0.5) )
+		{
+			this.setGrille(4);
+		}
+		// Si le curseur se situe dans la 5ème sous grille
+		else if( (position.x() >= -0.5 && position.x() <= 0) && (position.y() >= 0 && position.y() <= 0.5) )
+		{
+			this.setGrille(5);
+		}
+		// Si le curseur se situe dans la 6ème sous grille
+		else if( (position.x() >= 0 && position.x() <= 0.5) && (position.y() >= 0 && position.y() <= 0.5) )
+		{
+			this.setGrille(6);
+		}
+		// Si le curseur se situe dans la 7ème sous grille
+		else if(position.x() >= 0.5 && (position.y() >= 0 && position.y() <= 0.5) )
+		{
+			this.setGrille(7);
+		}
+		// Si le curseur se situe dans la 8ème sous grille
+		else if(position.x() <= -0.5 && (position.y() >= -0.5 && position.y() <= 0) )
+		{
+			this.setGrille(8);
+		}
+		// Si le curseur se situe dans la 9ème sous grille
+		else if( (position.x() >= -0.5 && position.x() <= 0) && (position.y() >= -0.5 && position.y() <= 0) )
+		{
+			this.setGrille(9);
+		}
+		// Si le curseur se situe dans la 10ème sous grille
+		else if( (position.x() >= 0 && position.x() <= 0.5) && (position.y() >= -0.5 && position.y() <= 0) )
+		{
+			this.setGrille(10);
+		}
+		// Si le curseur se situe dans la 11ème sous grille
+		else if(position.x() >= 0.5 && (position.y() >= -0.5 && position.y() <= 0) )
+		{
+			this.setGrille(11);
+		}
+		// Si le curseur se situe dans la 12ème sous grille
+		else if(position.x() <= -0.5 && position.y() <= -0.5)
+		{
+			this.setGrille(12);
+		}
+		// Si le curseur se situe dans la 13ème sous grille
+		else if( (position.x() >= -0.5 && position.x() <= 0) && position.y() <= -0.5)
+		{
+			this.setGrille(13);
+		}
+		// Si le curseur se situe dans la 14ème sous grille
+		else if( (position.x() >= 0 && position.x() <= 0.5) && position.y() <= -0.5)
+		{
+			this.setGrille(14);
+		}
+		// Si le curseur se situe dans la 15ème sous grille
+		else if(position.x() >= 0.5 && position.y() <= -0.5)
+		{
+			this.setGrille(15);
+		}
 	}
 	
 }

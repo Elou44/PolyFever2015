@@ -1,6 +1,6 @@
 package polyFever.module.moteurDeJeu;
 import polyFever.module.main.*;
-import polyFever.module.util.math.Vector3;
+import polyFever.module.util.math.Vector4;
 
 import java.util.*;
 
@@ -12,25 +12,27 @@ public class Partie {
 	private float dimensionPlateau;		// Dimensions du plateau de jeu
 	private List<Bonus> bonusPresents;	// Liste des bonus présents sur le plateau de jeu
 	private static long temps;			// Variable mesurant le temps d'une partie
-	private float tabVertex[];
+	private float tabVertex[];			// Référence vers le tableau de vertex du module Affichage (dans DessinLigne)
 	
-	private List<List<Vector3>> trace;		// Tableau de tableau de Vector3, donnant les traces sur les 16 sous grilles du plateau
-	private List<Vector3> grille0;		// Tableau de Vector3, donnant les traces sur la sous grille 0
-	private List<Vector3> grille1;		// Tableau de Vector3, donnant les traces sur la sous grille 1
-	private List<Vector3> grille2;		// Tableau de Vector3, donnant les traces sur la sous grille 2
-	private List<Vector3> grille3;		// Tableau de Vector3, donnant les traces sur la sous grille 3
-	private List<Vector3> grille4;		// Tableau de Vector3, donnant les traces sur la sous grille 4
-	private List<Vector3> grille5;		// Tableau de Vector3, donnant les traces sur la sous grille 5
-	private List<Vector3> grille6;		// Tableau de Vector3, donnant les traces sur la sous grille 6
-	private List<Vector3> grille7;		// Tableau de Vector3, donnant les traces sur la sous grille 7
-	private List<Vector3> grille8;		// Tableau de Vector3, donnant les traces sur la sous grille 8
-	private List<Vector3> grille9;		// Tableau de Vector3, donnant les traces sur la sous grille 9
-	private List<Vector3> grille10;		// Tableau de Vector3, donnant les traces sur la sous grille 10
-	private List<Vector3> grille11;		// Tableau de Vector3, donnant les traces sur la sous grille 11
-	private List<Vector3> grille12;		// Tableau de Vector3, donnant les traces sur la sous grille 12
-	private List<Vector3> grille13;		// Tableau de Vector3, donnant les traces sur la sous grille 13
-	private List<Vector3> grille14;		// Tableau de Vector3, donnant les traces sur la sous grille 14
-	private List<Vector3> grille15;		// Tableau de Vector3, donnant les traces sur la sous grille 15
+	private final int nbSousGrilles = 16;	// Variable donnant le nombre de sous grilles voulues
+	
+	private List<List<Vector4>> trace;		// Tableau de tableau de List de Vector4, donnant les traces sur les 16 sous grilles du plateau
+	/*private List<Vector2> grille0;	// Tableau de Vector2, donnant les traces sur la sous grille 0
+	private List<Vector2> grille1;		// Tableau de Vector2, donnant les traces sur la sous grille 1
+	private List<Vector2> grille2;		// Tableau de Vector2, donnant les traces sur la sous grille 2
+	private List<Vector2> grille3;		// Tableau de Vector2, donnant les traces sur la sous grille 3
+	private List<Vector2> grille4;		// Tableau de Vector2, donnant les traces sur la sous grille 4
+	private List<Vector2> grille5;		// Tableau de Vector2, donnant les traces sur la sous grille 5
+	private List<Vector2> grille6;		// Tableau de Vector2, donnant les traces sur la sous grille 6
+	private List<Vector2> grille7;		// Tableau de Vector2, donnant les traces sur la sous grille 7
+	private List<Vector2> grille8;		// Tableau de Vector2, donnant les traces sur la sous grille 8
+	private List<Vector2> grille9;		// Tableau de Vector2, donnant les traces sur la sous grille 9
+	private List<Vector2> grille10;		// Tableau de Vector2, donnant les traces sur la sous grille 10
+	private List<Vector2> grille11;		// Tableau de Vector2, donnant les traces sur la sous grille 11
+	private List<Vector2> grille12;		// Tableau de Vector2, donnant les traces sur la sous grille 12
+	private List<Vector2> grille13;		// Tableau de Vector2, donnant les traces sur la sous grille 13
+	private List<Vector2> grille14;		// Tableau de Vector2, donnant les traces sur la sous grille 14
+	private List<Vector2> grille15;		// Tableau de Vector2, donnant les traces sur la sous grille 15*/
 	
 	// Constructeur
 	public Partie()	// Par défaut
@@ -42,43 +44,13 @@ public class Partie {
 		this.dimensionPlateau = 0.0f;					// Création du vecteur des dimensions du plateau
 		this.bonusPresents = new ArrayList<Bonus>();	// Création de la liste des bonus
 		Partie.temps = System.currentTimeMillis();		// Définition de l'heure de début de la partie
+		this.trace = new ArrayList<List<Vector4>>();	// Création de la list trace
 		
 		// Initialisation des tableaux contenant les traces
-		this.trace = new ArrayList<List<Vector3>>();
-		this.grille0 = new ArrayList<Vector3>();
-		this.grille1 = new ArrayList<Vector3>();
-		this.grille2 = new ArrayList<Vector3>();
-		this.grille3 = new ArrayList<Vector3>();
-		this.grille4 = new ArrayList<Vector3>();
-		this.grille5 = new ArrayList<Vector3>();
-		this.grille6 = new ArrayList<Vector3>();
-		this.grille7 = new ArrayList<Vector3>();
-		this.grille8 = new ArrayList<Vector3>();
-		this.grille9 = new ArrayList<Vector3>();
-		this.grille10 = new ArrayList<Vector3>();
-		this.grille11 = new ArrayList<Vector3>();
-		this.grille12 = new ArrayList<Vector3>();
-		this.grille13 = new ArrayList<Vector3>();
-		this.grille14 = new ArrayList<Vector3>();
-		this.grille15 = new ArrayList<Vector3>();
-		
-		// Remplissage du tableau trace de toutes ses sous grilles
-		trace.add(grille0);
-		trace.add(grille1);
-		trace.add(grille2);
-		trace.add(grille3);
-		trace.add(grille4);
-		trace.add(grille5);
-		trace.add(grille6);
-		trace.add(grille7);
-		trace.add(grille8);
-		trace.add(grille9);
-		trace.add(grille10);
-		trace.add(grille11);
-		trace.add(grille12);
-		trace.add(grille13);
-		trace.add(grille14);
-		trace.add(grille15);
+		for (int i = 0; i < nbSousGrilles; i++)
+		{
+			trace.add(new ArrayList<Vector4>());
+		}
 	}
 
 	// Méthodes
@@ -95,14 +67,6 @@ public class Partie {
 		Partie.temps = temps;
 	}
 
-	public List<List<Vector3>> getTrace() {
-		return trace;
-	}
-
-	public void setTrace(List<List<Vector3>> trace) {
-		this.trace = trace;
-	}
-	
 	public int getScoreMax() {
 		return scoreMax;
 	}
@@ -141,6 +105,18 @@ public class Partie {
 
 	public void setBonusPresents(List<Bonus> bonusPresents) {
 		this.bonusPresents = bonusPresents;
+	}
+	
+	public float[] getTabVertex() {
+		return tabVertex;
+	}
+	
+	public List<List<Vector4>> getTrace() {
+		return trace;
+	}
+
+	public void setTrace(List<List<Vector4>> trace) {
+		this.trace = trace;
 	}
 	
 	/*
@@ -191,17 +167,17 @@ public class Partie {
 			// ### Collision trace ###
 
 			//System.out.println("Collisions - CONTENU grille "+e.getGrille()+" de taille "+e.getPartie().getTrace().get(e.getGrille()).size()+": ");
-			Iterator<Vector3> it = this.getTrace().get(e.getGrille()).iterator();
+			Iterator<Vector4> it = this.getTrace().get(e.getGrille()).iterator();
 			/*
 			while(it.hasNext())
 			{
-				Vector3 position = new Vector3();
+				Vector2 position = new Vector2();
 				position = it.next();
 				System.out.println("("+position.x()+","+position.y()+"), ");
 			}*/
 			
 			// Parmis tous les points présents dans le sous tableau de la grille correspondante à la position du joueur
-			for(Vector3 pointGrille : this.getTrace().get(e.getGrille()))
+			for(Vector4 pointGrille : this.getTrace().get(e.getGrille()))
 			{
 				// Si la position du joueur est la même que la position du point tracé
 				//if( ( ( (((float) ((int) ((e.getPosition().x())*100))) / 100) >= ( (((float) ((int) ((pointGrille.x())*100))) / 100) - 0.01 ) ) && ( (((float) ((int) ((e.getPosition().x())*100))) / 100) <= ( (((float) ((int) ((pointGrille.x())*100))) / 100) + 0.01 ) ) ) && ( ( (((float) ((int) ((e.getPosition().y())*100))) / 100) >= ( (((float) ((int) ((pointGrille.y())*100))) / 100) - 0.01 ) ) && ( (((float) ((int) ((e.getPosition().y())*100))) / 100) <= ( (((float) ((int) ((pointGrille.y())*100))) / 100) + 0.01 ) ) ) )
@@ -321,19 +297,119 @@ public class Partie {
 		 */
 	}
 	
+	// Méthode ajoutant les coordonnées du curseur du joueur dans le tableau des traces de la sous grille correspondante à sa position
+	public void ajouterCoord(Vector4 coord)
+	{
+		// Si le curseur se situe dans la 0ème sous grille
+		if(coord.x() <= -0.5 && coord.y() >= 0.5)
+		{
+			// On ajoute les coordonnées dans le sous tableau correspondant
+			trace.get(0).add(coord.copy());
+			// Mise à jour de la sous grille actuelle ou se trouve le joueur
+		}
+		// Si le curseur se situe dans la 1ère sous grille
+		else if( (coord.x() >= -0.5 && coord.x() <= 0) && coord.y() >= 0.5)
+		{
+			trace.get(1).add(coord.copy());
+		}
+		// Si le curseur se situe dans la 2ème sous grille
+		else if( (coord.x() >= 0 && coord.x() <= 0.5) && coord.y() >= 0.5)
+		{
+			trace.get(2).add(coord.copy());
+		}
+		// Si le curseur se situe dans la 3ème sous grille
+		else if(coord.x() >= 0.5 && coord.y() >= 0.5)
+		{
+			trace.get(3).add(coord.copy());
+		}
+		// Si le curseur se situe dans la 4ème sous grille
+		else if(coord.x() <= -0.5 && (coord.y() >= 0 && coord.y() <= 0.5) )
+		{
+			trace.get(4).add(coord.copy());
+		}
+		// Si le curseur se situe dans la 5ème sous grille
+		else if( (coord.x() >= -0.5 && coord.x() <= 0) && (coord.y() >= 0 && coord.y() <= 0.5) )
+		{
+			trace.get(5).add(coord.copy());
+		}
+		// Si le curseur se situe dans la 6ème sous grille
+		else if( (coord.x() >= 0 && coord.x() <= 0.5) && (coord.y() >= 0 && coord.y() <= 0.5) )
+		{
+			trace.get(6).add(coord.copy());
+		}
+		// Si le curseur se situe dans la 7ème sous grille
+		else if(coord.x() >= 0.5 && (coord.y() >= 0 && coord.y() <= 0.5) )
+		{
+			trace.get(7).add(coord.copy());
+		}
+		// Si le curseur se situe dans la 8ème sous grille
+		else if(coord.x() <= -0.5 && (coord.y() >= -0.5 && coord.y() <= 0) )
+		{
+			trace.get(8).add(coord.copy());
+		}
+		// Si le curseur se situe dans la 9ème sous grille
+		else if( (coord.x() >= -0.5 && coord.x() <= 0) && (coord.y() >= -0.5 && coord.y() <= 0) )
+		{
+			trace.get(9).add(coord.copy());
+		}
+		// Si le curseur se situe dans la 10ème sous grille
+		else if( (coord.x() >= 0 && coord.x() <= 0.5) && (coord.y() >= -0.5 && coord.y() <= 0) )
+		{
+			trace.get(10).add(coord.copy());
+		}
+		// Si le curseur se situe dans la 11ème sous grille
+		else if(coord.x() >= 0.5 && (coord.y() >= -0.5 && coord.y() <= 0) )
+		{
+			trace.get(11).add(coord.copy());
+		}
+		// Si le curseur se situe dans la 12ème sous grille
+		else if(coord.x() <= -0.5 && coord.y() <= -0.5)
+		{
+			trace.get(12).add(coord.copy());
+		}
+		// Si le curseur se situe dans la 13ème sous grille
+		else if( (coord.x() >= -0.5 && coord.x() <= 0) && coord.y() <= -0.5)
+		{
+			trace.get(13).add(coord.copy());
+		}
+		// Si le curseur se situe dans la 14ème sous grille
+		else if( (coord.x() >= 0 && coord.x() <= 0.5) && coord.y() <= -0.5)
+		{
+			trace.get(14).add(coord.copy());
+		}
+		// Si le curseur se situe dans la 15ème sous grille
+		else if(coord.x() >= 0.5 && coord.y() <= -0.5)
+		{
+			trace.get(15).add(coord.copy());
+		}
+		
+/*
+		System.out.println("Ligne - Ajout de coordonnées en ("+coord.x()+","+coord.y()+") dans la grille "+this.getJoueur().getGrille());
+		System.out.println("Ligne - CONTENU grille "+this.getJoueur().getGrille()+" de taille "+trace.get(joueur.getGrille()).size()+" : ");
+		Iterator<Vector3> it = joueur.getPartie().getTrace().get(joueur.getGrille()).iterator();
+		
+		while(it.hasNext())
+		{
+			Vector3 pos = new Vector3();
+			pos = it.next();
+			System.out.println("("+pos.x()+","+pos.y()+")");
+		}*/
+	}
+	
 	/*
 	 * Méthode définissant tout ce qu'on fait à chaque tour dans une partie
 	 */
 	
 	public void update()
 	{
-		// On commence par effectuer les mouvements des joueurs
-		// OU ALORS C'EST DEJA FAIT DANS LE GAME LOOP ET FAUT PAS LE FAIRE LA ???
+		// On remplit les sous grilles avec la nouvelle trace
+		int taille = this.tabVertex.length;
+		
+		System.out.println("\t\t### TAILLE VERTEX : "+taille);
+		
 		
 		// On repère si des joueurs sont en collision avec une trace ou un mur
-		
-		
-		// J'ai DESACTIVE les COLLISIONS ICI ----> //this.repererCollisions();	// Si collisions il y a, alors la méthode repererCollisions se charge de mettre à jour les scores et l'état des joueurs
+		//this.repererCollisions();	// Si collisions il y a, alors la méthode repererCollisions se charge de mettre à jour les scores et l'état des joueurs
 		
 		// On repère si des joueurs prennent un bonus
 		//this.repererBonus();	// Si bonus pris il y a, alors la méthode repererBonus se charge de modifier les paramètres des lignes concernées et de vider le tableau des bonus présents

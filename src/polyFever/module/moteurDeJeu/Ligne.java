@@ -7,7 +7,7 @@ package polyFever.module.moteurDeJeu;
 
 import java.util.Iterator;
 
-import polyFever.module.util.math.Vector3;
+import polyFever.module.util.math.Vector4;
 import polyFever.module.main.*;
 
 public class Ligne {
@@ -122,121 +122,6 @@ public class Ligne {
 	 * Autres méthodes de gestion des lignes
 	 */
 	
-	// Méthode ajoutant les coordonnées du curseur du joueur dans le tableau des traces de la sous grille correspondante à sa position
-	public void ajouterCoord(Vector3 coord)
-	{
-		// Si le curseur se situe dans la 0ème sous grille
-		if(coord.x() <= -0.5 && coord.y() >= 0.5)
-		{
-			// On ajoute les coordonnées dans le sous tableau correspondant
-			joueur.getPartie().getTrace().get(0).add(coord.copy());
-			// Mise à jour de la sous grille actuelle ou se trouve le joueur
-			joueur.setGrille(0);
-		}
-		// Si le curseur se situe dans la 1ère sous grille
-		else if( (coord.x() >= -0.5 && coord.x() <= 0) && coord.y() >= 0.5)
-		{
-			joueur.getPartie().getTrace().get(1).add(coord.copy());
-			joueur.setGrille(1);
-		}
-		// Si le curseur se situe dans la 2ème sous grille
-		else if( (coord.x() >= 0 && coord.x() <= 0.5) && coord.y() >= 0.5)
-		{
-			joueur.getPartie().getTrace().get(2).add(coord.copy());
-			joueur.setGrille(2);
-		}
-		// Si le curseur se situe dans la 3ème sous grille
-		else if(coord.x() >= 0.5 && coord.y() >= 0.5)
-		{
-			joueur.getPartie().getTrace().get(3).add(coord.copy());
-			joueur.setGrille(3);
-		}
-		// Si le curseur se situe dans la 4ème sous grille
-		else if(coord.x() <= -0.5 && (coord.y() >= 0 && coord.y() <= 0.5) )
-		{
-			joueur.getPartie().getTrace().get(4).add(coord.copy());
-			joueur.setGrille(4);
-		}
-		// Si le curseur se situe dans la 5ème sous grille
-		else if( (coord.x() >= -0.5 && coord.x() <= 0) && (coord.y() >= 0 && coord.y() <= 0.5) )
-		{
-			joueur.getPartie().getTrace().get(5).add(coord.copy());
-			joueur.setGrille(5);
-		}
-		// Si le curseur se situe dans la 6ème sous grille
-		else if( (coord.x() >= 0 && coord.x() <= 0.5) && (coord.y() >= 0 && coord.y() <= 0.5) )
-		{
-			joueur.getPartie().getTrace().get(6).add(coord.copy());
-			joueur.setGrille(6);
-		}
-		// Si le curseur se situe dans la 7ème sous grille
-		else if(coord.x() >= 0.5 && (coord.y() >= 0 && coord.y() <= 0.5) )
-		{
-			joueur.getPartie().getTrace().get(7).add(coord.copy());
-			joueur.setGrille(7);
-		}
-		// Si le curseur se situe dans la 8ème sous grille
-		else if(coord.x() <= -0.5 && (coord.y() >= -0.5 && coord.y() <= 0) )
-		{
-			joueur.getPartie().getTrace().get(8).add(coord.copy());
-			joueur.setGrille(8);
-		}
-		// Si le curseur se situe dans la 9ème sous grille
-		else if( (coord.x() >= -0.5 && coord.x() <= 0) && (coord.y() >= -0.5 && coord.y() <= 0) )
-		{
-			joueur.getPartie().getTrace().get(9).add(coord.copy());
-			joueur.setGrille(9);
-		}
-		// Si le curseur se situe dans la 10ème sous grille
-		else if( (coord.x() >= 0 && coord.x() <= 0.5) && (coord.y() >= -0.5 && coord.y() <= 0) )
-		{
-			joueur.getPartie().getTrace().get(10).add(coord.copy());
-			joueur.setGrille(10);
-		}
-		// Si le curseur se situe dans la 11ème sous grille
-		else if(coord.x() >= 0.5 && (coord.y() >= -0.5 && coord.y() <= 0) )
-		{
-			joueur.getPartie().getTrace().get(11).add(coord.copy());
-			joueur.setGrille(11);
-		}
-		// Si le curseur se situe dans la 12ème sous grille
-		else if(coord.x() <= -0.5 && coord.y() <= -0.5)
-		{
-			joueur.getPartie().getTrace().get(12).add(coord.copy());
-			joueur.setGrille(12);
-		}
-		// Si le curseur se situe dans la 13ème sous grille
-		else if( (coord.x() >= -0.5 && coord.x() <= 0) && coord.y() <= -0.5)
-		{
-			joueur.getPartie().getTrace().get(13).add(coord.copy());
-			joueur.setGrille(13);
-		}
-		// Si le curseur se situe dans la 14ème sous grille
-		else if( (coord.x() >= 0 && coord.x() <= 0.5) && coord.y() <= -0.5)
-		{
-			joueur.getPartie().getTrace().get(14).add(coord.copy());
-			joueur.setGrille(14);
-		}
-		// Si le curseur se situe dans la 15ème sous grille
-		else if(coord.x() >= 0.5 && coord.y() <= -0.5)
-		{
-			joueur.getPartie().getTrace().get(15).add(coord.copy());
-			joueur.setGrille(15);
-		}
-		
-/*
-		System.out.println("Ligne - Ajout de coordonnées en ("+coord.x()+","+coord.y()+") dans la grille "+this.getJoueur().getGrille());
-		System.out.println("Ligne - CONTENU grille "+this.getJoueur().getGrille()+" de taille "+joueur.getPartie().getTrace().get(joueur.getGrille()).size()+" : ");
-		Iterator<Vector3> it = joueur.getPartie().getTrace().get(joueur.getGrille()).iterator();
-		
-		while(it.hasNext())
-		{
-			Vector3 pos = new Vector3();
-			pos = it.next();
-			System.out.println("("+pos.x()+","+pos.y()+")");
-		}*/
-	}
-	
 	public void majVitessesCourbe() {
 		/*
 		 * Mise à jour des Vitesses (vitesse et vitesse2) -> réalisé à chaque frame (sachant que les fps sont maj toutes les secondes, peu utile)
@@ -328,13 +213,12 @@ public class Ligne {
 			
 		}
 		//System.out.println("nouvPos y =  "+nouvPositionY);
-		
-		// Remplissage du tableau des tracés
-		// A VOIR SI LE Z DU VECTOR 3 EST 0 OU 1, SI 1 ON L'AJOUTE, SI 0, ON L'AJOUTE PAS
-		this.ajouterCoord(joueur.getPosition());
-		
+			
 		// Affectation de la nouvelle position du joueur
 		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1);
+		
+		// Mis à jour de la sous grille courante
+		joueur.majGrille(joueur.getPosition());
 		
 		// Mise à jour de la direction
 		if((joueur.getDirection() - courbe) < 0)
@@ -424,13 +308,12 @@ public class Ligne {
 		}
 		//System.out.println("nouvPos y =  "+nouvPositionY);
 		
-		// Remplissage du tableau des tracés
-		// A VOIR SI LE Z DU VECTOR 3 EST 0 OU 1, SI 1 ON L'AJOUTE, SI 0, ON L'AJOUTE PAS
-		this.ajouterCoord(joueur.getPosition());
-		
 		// Affectation de la nouvelle position du joueur
 		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1);
 	
+		// Mis à jour de la sous grille courante
+		joueur.majGrille(joueur.getPosition());
+		
 		// Mise à jour de la direction
 		if((joueur.getDirection() + courbe) > (2*Math.PI))
 		{
@@ -509,14 +392,12 @@ public class Ligne {
 			nouvPositionY = joueur.getPosition().y() + (vitesse * Math.sin(angleRotation));
 		}
 		//System.out.println("nouvPos y =  "+nouvPositionY);
-		
-		// Remplissage du tableau des tracés
-		// A VOIR SI LE Z DU VECTOR 3 EST 0 OU 1, SI 1 ON L'AJOUTE, SI 0, ON L'AJOUTE PAS
-		//System.out.println("Ligne - Demande ajout ("+joueur.getPosition().x()+","+joueur.getPosition().y()+")");
-		this.ajouterCoord(joueur.getPosition());
 				
 		// Affectation de la nouvelle position du joueur
 		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1);
+		
+		// Mis à jour de la sous grille courante
+		joueur.majGrille(joueur.getPosition());
 		
 		// Pas de mise à jour de la direction, vu qu'elle ne change pas
 		

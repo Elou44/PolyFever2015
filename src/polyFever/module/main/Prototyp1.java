@@ -43,16 +43,8 @@ public class Prototyp1 extends PolyFever {
 	public void render() {		
 		//System.out.println("\n\n=================== NOUVELLE BOUCLE ===================\n\n");
 		affichage.dessiner();
-		try
-		{
-			partie.update();
-		}
-		catch (Exception NullPointerExcpeption)
-		{
-			System.out.println("Pointeur nul");
-		}
-		
-		
+		partie.update();
+				
 	}
 
 }
