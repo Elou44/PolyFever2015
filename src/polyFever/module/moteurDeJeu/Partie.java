@@ -405,7 +405,7 @@ public class Partie {
 		// On remplit les sous grilles avec la nouvelle trace
 		int taille = this.tabVertex.length;
 		
-		System.out.println("\t\t### TAILLE VERTEX : "+taille);
+		//System.out.println("\t\t### TAILLE VERTEX : "+taille);
 		
 		
 		// On repère si des joueurs sont en collision avec une trace ou un mur
