@@ -72,7 +72,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	{
 		
 		
-		partie.envoyerTabVertex(tabVertex); // Envoie de la référence du tableau à l'objet partie
+		//partie.envoyerTabVertex(tabVertex, lenTabV); // Envoie de la référence du tableau à l'objet partie
 		
 		System.out.println("Initialisation pour traçage des Lignes...");
 		t_start = System.currentTimeMillis();
@@ -183,7 +183,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 			{
 				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
 				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,0.0f));
+				/*this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,0.0f));
 				this.decalage += 0.03f;
 				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(0.0f,0.0f,1.0f));
 				this.decalage += 0.03f;
@@ -228,7 +228,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
 				this.decalage += 0.03f;
 				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				
+				*/
 				
 				
 				this.decalage = 0 ;
@@ -382,6 +382,11 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		this.tabVertex[this.lenTabV+17] = c.x(); 
 		this.tabVertex[this.lenTabV+18] = c.y()+colDelta; 
 		this.tabVertex[this.lenTabV+19] = c.z(); 
+		
+		
+		
+		this.partie.envoyerTabVertex(new Vector4(this.tabVertex[this.lenTabV],this.tabVertex[this.lenTabV+1],this.tabVertex[this.lenTabV+15],this.tabVertex[this.lenTabV+16]),
+				new Vector4(this.tabVertex[this.lenTabV+5],this.tabVertex[this.lenTabV+6],this.tabVertex[this.lenTabV+10],this.tabVertex[this.lenTabV+11]));
 		
 		this.lenTabV += 20;
 		 // Essayer de rajouter les derniers points et de faire un clear();

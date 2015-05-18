@@ -13,6 +13,7 @@ public class Partie {
 	private List<Bonus> bonusPresents;	// Liste des bonus présents sur le plateau de jeu
 	private static long temps;			// Variable mesurant le temps d'une partie
 	private float tabVertex[];			// Référence vers le tableau de vertex du module Affichage (dans DessinLigne)
+	private int indexVertex;			// Index de remplissage du tableau de vertex
 	
 	private final int nbSousGrilles = 16;	// Variable donnant le nombre de sous grilles voulues
 	
@@ -142,6 +143,38 @@ public class Partie {
 		System.out.println("Score MAX = "+getScoreMax());
 	}
 	
+	private boolean ligneIntersection(float indiceA, float indiceB, Vector4 joueur, Vector4 trace)
+	{
+		if(indiceA == 0 || indiceB == 0)
+		{
+			return false;
+		}
+		else
+		{
+	        if (joueur.x() > joueur.z()) {
+	            if (!(joueur.z() < indiceA && indiceA < joueur.x())) {return false;}
+	        } else {
+	            if (!(joueur.x() < indiceA && indiceA < joueur.z())) {return false;}
+	        }
+	        if (joueur.y() > joueur.w()) {
+	            if (!(joueur.w() < indiceB && indiceB < joueur.y())) {return false;}
+	        } else {
+	            if (!(joueur.y() < indiceB && indiceB < joueur.w())) {return false;}
+	        }
+	        if (trace.x() > trace.z()) {
+	            if (!(trace.z() < indiceA && indiceA < trace.x())) {return false;}
+	        } else {
+	            if (!(trace.x() < indiceA && indiceA < trace.z())) {return false;}
+	        }
+	        if (trace.y() > trace.w()) {
+	            if (!(trace.w() < indiceB && indiceB < trace.y())) {return false;}
+	        } else {
+	            if (!(trace.y() < indiceB && indiceB < trace.w())) {return false;}
+	        }
+		}
+		return true;
+	}
+	
 	public void repererCollisions()
 	{
 		/* Vérifier les coordonnées de chaque joueur; qu'elles soient pas égales
@@ -159,7 +192,7 @@ public class Partie {
 			// Si la position du joueur en x ou en y, est supérieure ou égale à 1 ou inférieure ou égale à -1
 			if( e.getPosition().x() >= 1 || e.getPosition().x() <= -1 || e.getPosition().y() >= 1 || e.getPosition().y() <= -1 )
 			{
-				System.out.println("==> Mort contre plateau \n");
+				//System.out.println("==> Mort contre plateau \n");
 				// On modifie l'état du joueur concerné et on le passe à mort
 				this.modifierEtat(e);
 			}
@@ -167,11 +200,11 @@ public class Partie {
 			// ### Collision trace ###
 
 			//System.out.println("Collisions - CONTENU grille "+e.getGrille()+" de taille "+e.getPartie().getTrace().get(e.getGrille()).size()+": ");
-			Iterator<Vector4> it = this.getTrace().get(e.getGrille()).iterator();
-			/*
+			
+			/*Iterator<Vector4> it = this.getTrace().get(e.getGrille()).iterator();
 			while(it.hasNext())
 			{
-				Vector2 position = new Vector2();
+				Vector4 position = new Vector4();
 				position = it.next();
 				System.out.println("("+position.x()+","+position.y()+"), ");
 			}*/
@@ -179,11 +212,23 @@ public class Partie {
 			// Parmis tous les points présents dans le sous tableau de la grille correspondante à la position du joueur
 			for(Vector4 pointGrille : this.getTrace().get(e.getGrille()))
 			{
+				/*
+				float denominateur = (pointGrille.w() - pointGrille.y()) * (e.getDroiteCourante().z() - e.getDroiteCourante().x()) - ((pointGrille.z() - pointGrille.x()) * (e.getDroiteCourante().w() - e.getDroiteCourante().y()));
+				float indiceA = (((pointGrille.z() - pointGrille.x()) * (e.getDroiteCourante().y() - pointGrille.y())) - ((pointGrille.w() - pointGrille.y()) * (e.getDroiteCourante().x() - pointGrille.y()))) / denominateur;
+				float indiceB = (((e.getDroiteCourante().z() - e.getDroiteCourante().x()) * (e.getDroiteCourante().y() - pointGrille.y())) - ((e.getDroiteCourante().w() - e.getDroiteCourante().y()) * (e.getDroiteCourante().x() - pointGrille.x()))) / denominateur;
+				*/
+				float denominateur = ( ( (e.getDroiteCourante().x() - e.getDroiteCourante().z()) * (pointGrille.y() - pointGrille.w()) ) - ( (e.getDroiteCourante().y() - e.getDroiteCourante().w()) * (pointGrille.x() - pointGrille.z()) ) );
+				float indiceA = ( ( ( (e.getDroiteCourante().x() * e.getDroiteCourante().w()) - (e.getDroiteCourante().y() * e.getDroiteCourante().z()) ) * (pointGrille.x() - pointGrille.z()) ) - ( (e.getDroiteCourante().x() - e.getDroiteCourante().z()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur;
+				float indiceB = ( ( ( (e.getDroiteCourante().x() * e.getDroiteCourante().w()) - (e.getDroiteCourante().y() * e.getDroiteCourante().z()) ) * (pointGrille.y() - pointGrille.w()) ) - ( (e.getDroiteCourante().y() - e.getDroiteCourante().w()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur;
+				
 				// Si la position du joueur est la même que la position du point tracé
-				//if( ( ( (((float) ((int) ((e.getPosition().x())*100))) / 100) >= ( (((float) ((int) ((pointGrille.x())*100))) / 100) - 0.01 ) ) && ( (((float) ((int) ((e.getPosition().x())*100))) / 100) <= ( (((float) ((int) ((pointGrille.x())*100))) / 100) + 0.01 ) ) ) && ( ( (((float) ((int) ((e.getPosition().y())*100))) / 100) >= ( (((float) ((int) ((pointGrille.y())*100))) / 100) - 0.01 ) ) && ( (((float) ((int) ((e.getPosition().y())*100))) / 100) <= ( (((float) ((int) ((pointGrille.y())*100))) / 100) + 0.01 ) ) ) )
-				if( ( (((float) ((int) ((e.getPosition().x())*100))) / 100) == (((float) ((int) ((pointGrille.x())*100))) / 100) ) && ( (((float) ((int) ((e.getPosition().y())*100))) / 100) == (((float) ((int) ((pointGrille.y())*100))) / 100) ) )
-				{
-					//System.out.println("==> Mort contre une trace en position "+(((float) ((int) ((pointGrille.x())*100))) / 100)+" et "+(((float) ((int) ((pointGrille.y())*100))) / 100)+"\n");
+				if(ligneIntersection(indiceA, indiceB, e.getDroiteCourante(), pointGrille))
+				{/*
+					System.out.println("INDICE A = "+indiceA);
+					System.out.println("INDICE B = "+indiceB);
+					System.out.println("Droite TRACE : ("+pointGrille.x()+","+pointGrille.y()+") et ("+pointGrille.z()+","+pointGrille.w()+")\n");
+					System.out.println("Droite JOUEUR : ("+e.getDroiteCourante().x()+","+e.getDroiteCourante().y()+") et ("+e.getDroiteCourante().z()+","+e.getDroiteCourante().w()+")\n");
+					*///System.out.println("==> Mort contre une trace en position "+(((float) ((int) ((pointGrille.x())*100))) / 100)+" et "+(((float) ((int) ((pointGrille.y())*100))) / 100)+"\n");
 					// Alors on modifie l'état du joueur en "mort"
 					this.modifierEtat(e);
 					
@@ -297,103 +342,107 @@ public class Partie {
 		 */
 	}
 	
-	// Méthode ajoutant les coordonnées du curseur du joueur dans le tableau des traces de la sous grille correspondante à sa position
-	public void ajouterCoord(Vector4 coord)
+	public void envoyerTabVertex(Vector4 droiteA, Vector4 droiteB)
 	{
-		// Si le curseur se situe dans la 0ème sous grille
-		if(coord.x() <= -0.5 && coord.y() >= 0.5)
-		{
-			// On ajoute les coordonnées dans le sous tableau correspondant
-			trace.get(0).add(coord.copy());
-			// Mise à jour de la sous grille actuelle ou se trouve le joueur
-		}
-		// Si le curseur se situe dans la 1ère sous grille
-		else if( (coord.x() >= -0.5 && coord.x() <= 0) && coord.y() >= 0.5)
-		{
-			trace.get(1).add(coord.copy());
-		}
-		// Si le curseur se situe dans la 2ème sous grille
-		else if( (coord.x() >= 0 && coord.x() <= 0.5) && coord.y() >= 0.5)
-		{
-			trace.get(2).add(coord.copy());
-		}
-		// Si le curseur se situe dans la 3ème sous grille
-		else if(coord.x() >= 0.5 && coord.y() >= 0.5)
-		{
-			trace.get(3).add(coord.copy());
-		}
-		// Si le curseur se situe dans la 4ème sous grille
-		else if(coord.x() <= -0.5 && (coord.y() >= 0 && coord.y() <= 0.5) )
-		{
-			trace.get(4).add(coord.copy());
-		}
-		// Si le curseur se situe dans la 5ème sous grille
-		else if( (coord.x() >= -0.5 && coord.x() <= 0) && (coord.y() >= 0 && coord.y() <= 0.5) )
-		{
-			trace.get(5).add(coord.copy());
-		}
-		// Si le curseur se situe dans la 6ème sous grille
-		else if( (coord.x() >= 0 && coord.x() <= 0.5) && (coord.y() >= 0 && coord.y() <= 0.5) )
-		{
-			trace.get(6).add(coord.copy());
-		}
-		// Si le curseur se situe dans la 7ème sous grille
-		else if(coord.x() >= 0.5 && (coord.y() >= 0 && coord.y() <= 0.5) )
-		{
-			trace.get(7).add(coord.copy());
-		}
-		// Si le curseur se situe dans la 8ème sous grille
-		else if(coord.x() <= -0.5 && (coord.y() >= -0.5 && coord.y() <= 0) )
-		{
-			trace.get(8).add(coord.copy());
-		}
-		// Si le curseur se situe dans la 9ème sous grille
-		else if( (coord.x() >= -0.5 && coord.x() <= 0) && (coord.y() >= -0.5 && coord.y() <= 0) )
-		{
-			trace.get(9).add(coord.copy());
-		}
-		// Si le curseur se situe dans la 10ème sous grille
-		else if( (coord.x() >= 0 && coord.x() <= 0.5) && (coord.y() >= -0.5 && coord.y() <= 0) )
-		{
-			trace.get(10).add(coord.copy());
-		}
-		// Si le curseur se situe dans la 11ème sous grille
-		else if(coord.x() >= 0.5 && (coord.y() >= -0.5 && coord.y() <= 0) )
-		{
-			trace.get(11).add(coord.copy());
-		}
-		// Si le curseur se situe dans la 12ème sous grille
-		else if(coord.x() <= -0.5 && coord.y() <= -0.5)
-		{
-			trace.get(12).add(coord.copy());
-		}
-		// Si le curseur se situe dans la 13ème sous grille
-		else if( (coord.x() >= -0.5 && coord.x() <= 0) && coord.y() <= -0.5)
-		{
-			trace.get(13).add(coord.copy());
-		}
-		// Si le curseur se situe dans la 14ème sous grille
-		else if( (coord.x() >= 0 && coord.x() <= 0.5) && coord.y() <= -0.5)
-		{
-			trace.get(14).add(coord.copy());
-		}
-		// Si le curseur se situe dans la 15ème sous grille
-		else if(coord.x() >= 0.5 && coord.y() <= -0.5)
-		{
-			trace.get(15).add(coord.copy());
-		}
+		Vector4 droiteJoueur = new Vector4();
+
+		droiteJoueur.x(droiteB.x());
+		droiteJoueur.y(droiteB.y());
+		droiteJoueur.z(droiteA.x());
+		droiteJoueur.w(droiteA.y());
 		
-/*
-		System.out.println("Ligne - Ajout de coordonnées en ("+coord.x()+","+coord.y()+") dans la grille "+this.getJoueur().getGrille());
-		System.out.println("Ligne - CONTENU grille "+this.getJoueur().getGrille()+" de taille "+trace.get(joueur.getGrille()).size()+" : ");
-		Iterator<Vector3> it = joueur.getPartie().getTrace().get(joueur.getGrille()).iterator();
+		Vector4[] coord = new Vector4[2];
+		coord[0] = droiteA;
+		coord[1] = droiteB;
 		
-		while(it.hasNext())
+		for(int i = 0; i < 2; i++)
 		{
-			Vector3 pos = new Vector3();
-			pos = it.next();
-			System.out.println("("+pos.x()+","+pos.y()+")");
-		}*/
+			// Si le curseur se situe dans la 0ème sous grille
+			if(coord[i].x() <= -0.5 && coord[i].y() >= 0.5)
+			{
+				// On ajoute les coordonnées dans le sous tableau correspondant
+				trace.get(0).add(coord[i].copy());
+				// Mise à jour de la sous grille actuelle ou se trouve le joueur
+			}
+			// Si le curseur se situe dans la 1ère sous grille
+			else if( (coord[i].x() >= -0.5 && coord[i].x() <= 0) && coord[i].y() >= 0.5)
+			{
+				trace.get(1).add(coord[i].copy());
+			}
+			// Si le curseur se situe dans la 2ème sous grille
+			else if( (coord[i].x() >= 0 && coord[i].x() <= 0.5) && coord[i].y() >= 0.5)
+			{
+				trace.get(2).add(coord[i].copy());
+			}
+			// Si le curseur se situe dans la 3ème sous grille
+			else if(coord[i].x() >= 0.5 && coord[i].y() >= 0.5)
+			{
+				trace.get(3).add(coord[i].copy());
+			}
+			// Si le curseur se situe dans la 4ème sous grille
+			else if(coord[i].x() <= -0.5 && (coord[i].y() >= 0 && coord[i].y() <= 0.5) )
+			{
+				trace.get(4).add(coord[i].copy());
+			}
+			// Si le curseur se situe dans la 5ème sous grille
+			else if( (coord[i].x() >= -0.5 && coord[i].x() <= 0) && (coord[i].y() >= 0 && coord[i].y() <= 0.5) )
+			{
+				trace.get(5).add(coord[i].copy());
+			}
+			// Si le curseur se situe dans la 6ème sous grille
+			else if( (coord[i].x() >= 0 && coord[i].x() <= 0.5) && (coord[i].y() >= 0 && coord[i].y() <= 0.5) )
+			{
+				trace.get(6).add(coord[i].copy());
+			}
+			// Si le curseur se situe dans la 7ème sous grille
+			else if(coord[i].x() >= 0.5 && (coord[i].y() >= 0 && coord[i].y() <= 0.5) )
+			{
+				trace.get(7).add(coord[i].copy());
+			}
+			// Si le curseur se situe dans la 8ème sous grille
+			else if(coord[i].x() <= -0.5 && (coord[i].y() >= -0.5 && coord[i].y() <= 0) )
+			{
+				trace.get(8).add(coord[i].copy());
+			}
+			// Si le curseur se situe dans la 9ème sous grille
+			else if( (coord[i].x() >= -0.5 && coord[i].x() <= 0) && (coord[i].y() >= -0.5 && coord[i].y() <= 0) )
+			{
+				trace.get(9).add(coord[i].copy());
+			}
+			// Si le curseur se situe dans la 10ème sous grille
+			else if( (coord[i].x() >= 0 && coord[i].x() <= 0.5) && (coord[i].y() >= -0.5 && coord[i].y() <= 0) )
+			{
+				trace.get(10).add(coord[i].copy());
+			}
+			// Si le curseur se situe dans la 11ème sous grille
+			else if(coord[i].x() >= 0.5 && (coord[i].y() >= -0.5 && coord[i].y() <= 0) )
+			{
+				trace.get(11).add(coord[i].copy());
+			}
+			// Si le curseur se situe dans la 12ème sous grille
+			else if(coord[i].x() <= -0.5 && coord[i].y() <= -0.5)
+			{
+				trace.get(12).add(coord[i].copy());
+			}
+			// Si le curseur se situe dans la 13ème sous grille
+			else if( (coord[i].x() >= -0.5 && coord[i].x() <= 0) && coord[i].y() <= -0.5)
+			{
+				trace.get(13).add(coord[i].copy());
+			}
+			// Si le curseur se situe dans la 14ème sous grille
+			else if( (coord[i].x() >= 0 && coord[i].x() <= 0.5) && coord[i].y() <= -0.5)
+			{
+				trace.get(14).add(coord[i].copy());
+			}
+			// Si le curseur se situe dans la 15ème sous grille
+			else if(coord[i].x() >= 0.5 && coord[i].y() <= -0.5)
+			{
+				trace.get(15).add(coord[i].copy());
+			}
+		}	
+		//System.out.println("J'envoie droiteA : p4 ("+coord[0].x()+","+coord[0].y()+") ; p3 ("+coord[0].z()+","+coord[0].w()+")\n");
+		//System.out.println("J'envoie droiteB : p1 ("+coord[1].x()+","+coord[1].y()+") ; p2 ("+coord[1].z()+","+coord[1].w()+")\n");
+		
 	}
 	
 	/*
@@ -403,13 +452,13 @@ public class Partie {
 	public void update()
 	{
 		// On remplit les sous grilles avec la nouvelle trace
-		int taille = this.tabVertex.length;
+		//int taille = this.tabVertex.length;
 		
-		//System.out.println("\t\t### TAILLE VERTEX : "+taille);
+		//System.out.println("\t\t### TAILLE VERTEX : "+indexVertex);
 		
 		
 		// On repère si des joueurs sont en collision avec une trace ou un mur
-		//this.repererCollisions();	// Si collisions il y a, alors la méthode repererCollisions se charge de mettre à jour les scores et l'état des joueurs
+		this.repererCollisions();	// Si collisions il y a, alors la méthode repererCollisions se charge de mettre à jour les scores et l'état des joueurs
 		
 		// On repère si des joueurs prennent un bonus
 		//this.repererBonus();	// Si bonus pris il y a, alors la méthode repererBonus se charge de modifier les paramètres des lignes concernées et de vider le tableau des bonus présents
@@ -420,11 +469,6 @@ public class Partie {
 		// Mettre à jour le traçage des trous pour chaque joueur
 		
 		
-	}
-	
-	public void envoyerTabVertex(float tab[])
-	{
-		this.tabVertex = tab;
 	}
 
 	@Override

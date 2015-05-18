@@ -25,6 +25,7 @@ public class Joueur {
 	private boolean toucheDPresse;	// Booléen disant si la toucheD est enfoncée
 	private Partie partie;			// Objet Partie auquel est rattaché le joueur
 	private int grille;				// Entier donnant l'index de la sous grille du plateau de jeu ou se trouve actuellement le joueur
+	private Vector4 droiteCourante;		// Points formant la droite de contact du joueur
 	
 	// Constructeur
 	public Joueur(Partie partie)	// Par défaut
@@ -41,8 +42,9 @@ public class Joueur {
 		this.toucheDPresse = false;
 		this.toucheGPresse = false;
 		this.partie = partie;
+		this.droiteCourante = new Vector4();
 	}
-	
+
 	public Joueur(Partie partie, String pseudo, int toucheG, int toucheD, int couleur)	// Avec paramètres
 	{
 		this(partie);
@@ -162,6 +164,14 @@ public class Joueur {
 
 	public void setToucheDPresse(boolean toucheDPresse) {
 		this.toucheDPresse = toucheDPresse;
+	}
+	
+	public Vector4 getDroiteCourante() {
+		return droiteCourante;
+	}
+
+	public void setDroiteCourante(Vector4 droiteCourante) {
+		this.droiteCourante = droiteCourante;
 	}
 	
 	/* 

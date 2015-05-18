@@ -7,6 +7,7 @@ package polyFever.module.moteurDeJeu;
 
 import java.util.Iterator;
 
+import polyFever.module.util.math.Vector2;
 import polyFever.module.util.math.Vector4;
 import polyFever.module.main.*;
 
@@ -217,8 +218,15 @@ public class Ligne {
 		// Affectation de la nouvelle position du joueur
 		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1);
 		
-		// Mis à jour de la sous grille courante
+		// Mise à jour de la sous grille courante
 		joueur.majGrille(joueur.getPosition());
+		
+		// Mise à jour de la droite du joueur courante
+		joueur.getDroiteCourante().x((float) (joueur.getPosition().x() - (epaisseur/2)*Math.cos((Math.PI/2)-joueur.getAngleRectangle())));
+		joueur.getDroiteCourante().y((float) (joueur.getPosition().y() + (epaisseur/2)*Math.sin((Math.PI/2)-joueur.getAngleRectangle())));
+		
+		joueur.getDroiteCourante().z((float) (joueur.getPosition().x() + (epaisseur/2)*Math.cos((Math.PI/2)-joueur.getAngleRectangle())));
+		joueur.getDroiteCourante().w((float) (joueur.getPosition().y() - (epaisseur/2)*Math.sin((Math.PI/2)-joueur.getAngleRectangle())));
 		
 		// Mise à jour de la direction
 		if((joueur.getDirection() - courbe) < 0)
@@ -311,8 +319,15 @@ public class Ligne {
 		// Affectation de la nouvelle position du joueur
 		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1);
 	
-		// Mis à jour de la sous grille courante
+		// Mise à jour de la sous grille courante
 		joueur.majGrille(joueur.getPosition());
+		
+		// Mise à jour de la droite du joueur courante
+		joueur.getDroiteCourante().x((float) (joueur.getPosition().x() - (epaisseur/2)*Math.cos((Math.PI/2)-joueur.getAngleRectangle())));
+		joueur.getDroiteCourante().y((float) (joueur.getPosition().y() + (epaisseur/2)*Math.sin((Math.PI/2)-joueur.getAngleRectangle())));
+		
+		joueur.getDroiteCourante().z((float) (joueur.getPosition().x() + (epaisseur/2)*Math.cos((Math.PI/2)-joueur.getAngleRectangle())));
+		joueur.getDroiteCourante().w((float) (joueur.getPosition().y() - (epaisseur/2)*Math.sin((Math.PI/2)-joueur.getAngleRectangle())));
 		
 		// Mise à jour de la direction
 		if((joueur.getDirection() + courbe) > (2*Math.PI))
@@ -398,6 +413,13 @@ public class Ligne {
 		
 		// Mis à jour de la sous grille courante
 		joueur.majGrille(joueur.getPosition());
+		
+		// Mise à jour de la droite du joueur courante
+		joueur.getDroiteCourante().x((float) (joueur.getPosition().x() - (epaisseur/2)*Math.cos((Math.PI/2)-joueur.getAngleRectangle())));
+		joueur.getDroiteCourante().y((float) (joueur.getPosition().y() + (epaisseur/2)*Math.sin((Math.PI/2)-joueur.getAngleRectangle())));
+		
+		joueur.getDroiteCourante().z((float) (joueur.getPosition().x() + (epaisseur/2)*Math.cos((Math.PI/2)-joueur.getAngleRectangle())));
+		joueur.getDroiteCourante().w((float) (joueur.getPosition().y() - (epaisseur/2)*Math.sin((Math.PI/2)-joueur.getAngleRectangle())));
 		
 		// Pas de mise à jour de la direction, vu qu'elle ne change pas
 		
