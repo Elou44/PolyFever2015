@@ -204,7 +204,7 @@ public class Partie {
 				float indiceB = ( ( ( (droite.x() * droite.w()) - (droite.y() * droite.z()) ) * (pointGrille.y() - pointGrille.w()) ) - ( (droite.y() - droite.w()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur;
 
 				// Si la position du joueur est la même que la position du point tracé
-				if(ligneIntersection(indiceA, indiceB, droite, pointGrille))
+				if(ligneIntersection(indiceA, indiceB, droite, pointGrille) && e.getPosition().z() == 1)
 				{
 					System.out.println("Ancienne pos : ("+droite.x()+","+droite.y()+") ; Nouvelle pos : ("+droite.z()+","+droite.w()+")");
 					System.out.println("INDICE A = "+indiceA);
