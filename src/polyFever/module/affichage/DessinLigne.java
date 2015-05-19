@@ -152,8 +152,9 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 
 		// On trace des axes
-		this.addRectangle(new Vector3(0.0f,-1.0f,1.0f), 1.57f,0.005f, -2.0f, new Vector3(1.0f,1.0f,1.0f));
-		this.addRectangle(new Vector3(-1.0f,0.0f,1.0f), 0.0f, 0.005f, -2.0f, new Vector3(1.0f,1.0f,1.0f));
+		/*this.addRectangle(new Vector3(0.0f,-1.0f,1.0f), 1.57f,0.005f, -2.0f, new Vector3(1.0f,1.0f,1.0f));
+		this.addRectangle(new Vector3(-1.0f,0.0f,1.0f), 0.0f, 0.005f, -2.0f, new Vector3(1.0f,1.0f,1.0f));*/
+		dessinerBordsPlateau(new Vector2(0.0f,0.0f));
 		
 		// Dessin des bords du plateau
 		
@@ -181,7 +182,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 			j = e.next();
 			if(j.getPosition().z() == 1.0f && j.getEtat() == Etat.VIVANT)
 			{
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse(), new Vector3(1.0f,0.0f,0.0f));
 				this.decalage += 0.03f;
 				/*this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,0.0f));
 				this.decalage += 0.03f;
@@ -417,12 +418,12 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	}
 	
 	
-	public void dessinerBordsPlateau(Vector2 p, float w)
+	public void dessinerBordsPlateau(Vector2 p)
 	{
-		this.addRectangle(new Vector3(0.0f,0.0f,1.0f), 0.0f, w, -3.0f, new Vector3(1.0f,1.0f,1.0f)); // TOP
-		this.addRectangle(new Vector3(0.0f,0.0f,1.0f), 1.57f, w, -3.0f, new Vector3(1.0f,1.0f,1.0f)); // BOTTOM
-		this.addRectangle(new Vector3(0.0f,0.0f,1.0f), 1.57f, w, -3.0f, new Vector3(1.0f,1.0f,1.0f)); // LEFT 
-		this.addRectangle(new Vector3(0.0f,0.0f,1.0f), 1.57f, w, -3.0f, new Vector3(1.0f,1.0f,1.0f)); // RIGHT
+		this.addRectangle(new Vector3(-1.0f-p.x(),1.0f-p.y(),1.0f), 1.57f, 0.01f, 2.0f, new Vector3(1.0f,1.0f,0.0f)); // TOP
+		this.addRectangle(new Vector3(1.0f-p.x(),1.0f-p.y(),1.0f), 1.57f, 0.01f, 2.0f, new Vector3(1.0f,1.0f,0.0f)); // BOTTOM
+		this.addRectangle(new Vector3(0.0f-p.x(),0.0f-p.y(),1.0f), 1.57f, 0.01f, -3.0f, new Vector3(1.0f,1.0f,1.0f)); // LEFT 
+		this.addRectangle(new Vector3(0.0f-p.x(),0.0f-p.y(),1.0f), 1.57f, 0.01f, -3.0f, new Vector3(1.0f,1.0f,1.0f)); // RIGHT
 	}
 	
 	

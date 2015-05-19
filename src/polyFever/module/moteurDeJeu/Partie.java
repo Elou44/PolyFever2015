@@ -120,8 +120,10 @@ public class Partie {
 		// Calcul des positions de base des joueurs & définition du temps de traçage de trou
 		for(Joueur e : joueurs)		// Boucle de parcours de la liste des joueurs
 		{
-			e.getPosition().set((float) (Math.random() * (0.5 + 0.5) - 0.5), (float) (Math.random() * (0.5 + 0.5) - 0.5), 1);	// Calcul de la position en x et y, entre -0.5 et 0.5
-			e.setDirection((double) (Math.random() * 2*Math.PI));	// Calcul d'une direction entre 0 et 2 PI
+			//e.getPosition().set((float) (Math.random() * (0.5 + 0.5) - 0.5), (float) (Math.random() * (0.5 + 0.5) - 0.5), 1);	// Calcul de la position en x et y, entre -0.5 et 0.5
+			e.getPosition().set(-0.9f,-0.9f,1);
+			//e.setDirection((double) (Math.random() * 2*Math.PI));	// Calcul d'une direction entre 0 et 2 PI
+			e.setDirection(Math.PI/2);
 			e.getLigne().setTpsTrou((long) (Math.random() * (4500 - 3000) + 3000));	// Calcul du temps de traçage de trou
 		}
 		System.out.println("Score MAX = "+getScoreMax());

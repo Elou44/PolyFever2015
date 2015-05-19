@@ -16,8 +16,8 @@ public class Ligne {
 	// COULEUR AFFECTEE LORS DE L'INSTANCIATION D'UN JOUEUR
 	private int couleur;				// Couleur de la ligne
 	private Joueur joueur;				// Joueur controlant la ligne
-	private float vitesse2;				// Vitesse de la ligne (en pixels)
 	private float vitesse;  			// Vitesse de la ligne en float
+	private float vitesseInit;
 	private float epaisseur;			// Epaisseur du trait
 	private double courbe;				// Rayon de courbure de la ligne (en radians)
 	private int tpsEnVie;				// Temps passé en vie durant un round (en secondes)
@@ -31,11 +31,11 @@ public class Ligne {
 		//System.out.println("Instanciation d'un objet Ligne (sp)...");
 		this.couleur = 0;
 		this.joueur = null;
-		this.vitesse2 = 0.009f;
 		this.vitesse = 0.009f;
+		this.vitesseInit = 0.009f;
 		this.polyfever = p;
 		this.epaisseur = 0.01f;
-		this.courbe = Math.PI / 35;
+		this.courbe = Math.PI /35;//35;
 		this.tpsEnVie = 0;
 		this.longueurTrou = 230;
 	}
@@ -55,10 +55,6 @@ public class Ligne {
 
 	public PolyFever getPolyfever() {
 		return polyfever;
-	}
-
-	public void setVitesse2(float vitesse2) {
-		this.vitesse2 = vitesse2;
 	}
 
 	public void setVitesse(float vitesse) {
@@ -81,10 +77,6 @@ public class Ligne {
 		this.joueur = joueur;
 	}
 
-	public float getVitesse2() {
-		return vitesse2;
-	}
-	
 	public float getVitesse() {
 		return vitesse;
 	}
@@ -134,10 +126,7 @@ public class Ligne {
 		float realFPS = (float) polyfever.getRealFPS();
 		if(realFPS == 0.0f) realFPS = (float) polyfever.getFPS();
 		
-		
-
-		this.vitesse = 0.009f*(30.0f/realFPS); 
-		this.vitesse2 = 0.009f*(30.0f/realFPS);
+		this.vitesse = this.vitesseInit*(30.0f/realFPS); 
 		this.courbe = Math.PI/35*(30.0f/realFPS);
 		
 		//System.out.println("vitesse: ".concat(String.valueOf(vitesse)));

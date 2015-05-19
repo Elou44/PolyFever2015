@@ -23,7 +23,7 @@ public class BonusVitesse extends Bonus{
 		 */
 		float ancienneVitesse;
 		
-		ancienneVitesse = joueur.getLigne().getVitesse2();
+		ancienneVitesse = joueur.getLigne().getVitesse();
 		joueur.getLigne().setEpaisseur(ancienneVitesse+1);
 	}
 	
