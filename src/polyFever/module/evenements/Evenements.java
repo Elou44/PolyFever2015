@@ -19,24 +19,24 @@ public class Evenements {
 	
 	//Rappel : vous m'appelez pour les menus, donc vous m'initialiserez jamais directement avec la liste des joueurs
 	public Evenements() {
-		this.partie = new Partie();
-		this.controles = new Hashtable();
-		this.entree = new StringBuilder();
+		this.partie = new Partie();				//partie geree
+		this.controles = new Hashtable();		//table associant les joueurs a leurs controles
+		this.entree = new StringBuilder();		//buffer pour les entrees utilisateurs
 	}
 	/*
 	//Retourne les coordonnées du clic au menu, donc c'est un couple
-	public List<int> gestionMenu() {
+	public void gestionMenu() {
 		//Renvoie les coordonnées de la souris quand l'utilisateur clic
 	}
 	
-	public String entreeUtilisateur() {
+	public void entreeUtilisateur() {
 		//Renvoie la chaine saisie par l'utilisateur (pour les pseudos et les adresses)
 		//Arrête d'enregistrer quand l'utilisateur appuie sur Entrée
 	}
 	
 	//Retourne les deux touches pour tourner entrées par un joueur, donc c'est un couple
 	//Retourne les entiers KEY_xxx : utiliser Keyboard.getKeyName()
-	public List<int> entreeControles() {
+	public void entreeControles() {
 		//Renvoie les deux premiers caractères valides entrés par l'utilisateur
 	}
 	*/
@@ -44,25 +44,23 @@ public class Evenements {
 	public void initControles(Partie p) {
 		this.partie = p;	//Récupérer la liste des joueurs
 		
-		Joueur j = new Joueur();
+		Joueur j = new Joueur(p);
 		Iterator<Joueur> i = this.partie.getJoueurs().iterator();		//Pour parcourir la liste de joueurs
 		
 		while(i.hasNext()) {
 			j = i.next();
 			this.controles.put(j.getToucheG(), j);
-			this.controles.put(j.getToucheG(), j);
+			this.controles.put(j.getToucheD(), j);
 		}
 	}
 	
 	//Gestion des contrôles en partie
-	//Pour le moment j'utilise directement LEFT et RIGHT, je reflechie encore à comment
-	//convertir un String en Keyboard.KEY_<insert key here>
 	public void gestionJeu() {
 		Joueur j;
-		
+		/*
 		if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))	//Si on appuie sur echap
 													//Quitter la partie (à compléter)
-		
+		*/
 		//Puis on regarde les évènements
 		//Re garder les évènements permet d'être plus réactif sur l'action quand on appuie/relache une touche
 		while(Keyboard.next()) {
