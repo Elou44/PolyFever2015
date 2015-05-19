@@ -19,6 +19,7 @@ public class Evenements {
 	
 	//Rappel : vous m'appelez pour les menus, donc vous m'initialiserez jamais directement avec la liste des joueurs
 	public Evenements() {
+		System.out.println("Instanciation d'un objet Evenements...");
 		this.partie = new Partie();				//partie geree
 		this.controles = new Hashtable();		//table associant les joueurs a leurs controles
 		this.entree = new StringBuilder();		//buffer pour les entrees utilisateurs
