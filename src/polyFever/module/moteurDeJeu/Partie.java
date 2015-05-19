@@ -1,7 +1,6 @@
 package polyFever.module.moteurDeJeu;
 import polyFever.module.main.*;
-import polyFever.module.util.math.Vector2;
-import polyFever.module.util.math.Vector4;
+import polyFever.module.util.math.*;
 
 import java.util.*;
 
@@ -212,7 +211,7 @@ public class Partie {
 					System.out.println("Droite TRACE : ("+pointGrille.x()+","+pointGrille.y()+") et ("+pointGrille.z()+","+pointGrille.w()+")");
 
 					// Définition du point de collision
-					e.setPointCollision(indiceA, indiceB);
+					e.setPosition(new Vector3(indiceA, indiceB, 1));
 					
 					// Alors on modifie l'état du joueur en "mort"
 					this.modifierEtat(e);
