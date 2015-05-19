@@ -10,24 +10,22 @@ import polyFever.module.util.math.*;
 
 public class Joueur {
 
-	private String pseudo;			// Pseudo du joueur
-	private int toucheG;			// Sa touche de jeu, tournant à gauche
-	private int toucheD;			// Sa touche de jeu, tournant à droite
-	private int score;				// Score du joueur, sur une partie
-	private Etat etat;				// Etat du joueur
+	private String pseudo;				// Pseudo du joueur
+	private int toucheG;				// Sa touche de jeu, tournant à gauche
+	private int toucheD;				// Sa touche de jeu, tournant à droite
+	private int score;					// Score du joueur, sur une partie
+	private Etat etat;					// Etat du joueur
 	// COMMENT DEFINIR LE ROLE ??? QUELLE INFORMATION JE VAIS RECEVOIR ? QUEL TYPE ?
-	private Role type;				// Variable définissant le role du joueur, accueillant l'énumération
-	private Ligne ligne;			// Objet Ligne controlée par le joueur
-	private Vector3 position;		// Vector3 donnant la position actuelle du point du joueur et si la trace est un trou ou non
-	private double direction;		// Direction du point du joueur (en radians)
-	private boolean toucheGPresse;	// Booléen disant si la toucheG est enfoncée
-	private boolean toucheDPresse;	// Booléen disant si la toucheD est enfoncée
-	private Partie partie;			// Objet Partie auquel est rattaché le joueur
-	private int grille;				// Entier donnant l'index de la sous grille du plateau de jeu ou se trouve actuellement le joueur
-	private Vector4 droiteCourante;	// Points formant la droite de contact du joueur
-	private Vector4 pointDetection;	// Coordonnées du point en face du curseur du joueur permettant de détecter une collision
-	private Vector3 anciennePosition;
-	private Vector2 pointCollision;
+	private Role type;					// Variable définissant le role du joueur, accueillant l'énumération
+	private Ligne ligne;				// Objet Ligne controlée par le joueur
+	private Vector3 position;			// Vector3 donnant la position actuelle du point du joueur et si la trace est un trou ou non
+	private double direction;			// Direction du point du joueur (en radians)
+	private boolean toucheGPresse;		// Booléen disant si la toucheG est enfoncée
+	private boolean toucheDPresse;		// Booléen disant si la toucheD est enfoncée
+	private Partie partie;				// Objet Partie auquel est rattaché le joueur
+	private int grille;					// Entier donnant l'index de la sous grille du plateau de jeu ou se trouve actuellement le joueur
+	private Vector3 anciennePosition;	// Position antérieure à la position courante du joueur
+	private Vector2 pointCollision;		// Coordonnées du point de collision
 	
 	// Constructeur
 	public Joueur(Partie partie)	// Par défaut

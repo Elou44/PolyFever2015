@@ -12,7 +12,7 @@ public class Partie {
 	private Set<Joueur> joueurs;		// Liste des joueurs de la partie (objet Joueur)
 	private float dimensionPlateau;		// Dimensions du plateau de jeu
 	private List<Bonus> bonusPresents;	// Liste des bonus présents sur le plateau de jeu
-	private static long temps;			// Variable mesurant le temps d'une partie
+	private long temps;			// Variable mesurant le temps d'une partie
 	private float tabVertex[];			// Référence vers le tableau de vertex du module Affichage (dans DessinLigne)
 	private int indexVertex;			// Index de remplissage du tableau de vertex
 	
@@ -29,7 +29,7 @@ public class Partie {
 		this.joueurs = new HashSet<Joueur>();			// Création de la liste des joueurs
 		this.dimensionPlateau = 0.0f;					// Création du vecteur des dimensions du plateau
 		this.bonusPresents = new ArrayList<Bonus>();	// Création de la liste des bonus
-		Partie.temps = System.currentTimeMillis();		// Définition de l'heure de début de la partie
+		this.temps = System.currentTimeMillis();		// Définition de l'heure de début de la partie
 		this.trace = new ArrayList<List<Vector4>>();	// Création de la list trace
 		
 		// Initialisation des tableaux contenant les traces
@@ -45,12 +45,12 @@ public class Partie {
 	 * Assesseurs et mutateurs
 	 */
 	
-	public static long getTemps() {
+	public long getTemps() {
 		return temps;
 	}
 
-	public static void setTemps(long temps) {
-		Partie.temps = temps;
+	public void setTemps(long temps) {
+		this.temps = temps;
 	}
 
 	public int getScoreMax() {
@@ -123,7 +123,7 @@ public class Partie {
 		{
 			e.getPosition().set((float) (Math.random() * (0.5 + 0.5) - 0.5), (float) (Math.random() * (0.5 + 0.5) - 0.5), 1);	// Calcul de la position en x et y, entre -0.5 et 0.5
 			e.setDirection((double) (Math.random() * 2*Math.PI));	// Calcul d'une direction entre 0 et 2 PI
-			e.getLigne().setTpsTrou((float) (Math.random() * (3.0 - 1.5) + 1.5));	// Calcul du temps de traçage de trou
+			e.getLigne().setTpsTrou((long) (Math.random() * (4500 - 3000) + 3000));	// Calcul du temps de traçage de trou
 		}
 		System.out.println("Score MAX = "+getScoreMax());
 	}

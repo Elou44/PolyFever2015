@@ -21,8 +21,9 @@ public class Ligne {
 	private float epaisseur;			// Epaisseur du trait
 	private double courbe;				// Rayon de courbure de la ligne (en radians)
 	private int tpsEnVie;				// Temps passé en vie durant un round (en secondes)
-	private float tpsTrou;				// Temps définissant le moment ou la ligne trace un trou (en secondes, entre 1.5 et 3.0 secondes)
-	private PolyFever polyfever;
+	private long tpsTrou;				// Temps définissant le moment ou la ligne trace un trou (en millisecondes)
+	private PolyFever polyfever;		// Connexion à l'objet PolyFever
+	private final long longueurTrou;	// Temps en millisecondes correspondant au traçage d'un trou
 	
 	// Constructeur
 	public Ligne(PolyFever p)	// Par défaut
@@ -36,6 +37,7 @@ public class Ligne {
 		this.epaisseur = 0.01f;
 		this.courbe = Math.PI / 35;
 		this.tpsEnVie = 0;
+		this.longueurTrou = 230;
 	}
 	
 	public Ligne(int couleur, PolyFever p)	// Avec paramètres
@@ -50,10 +52,6 @@ public class Ligne {
 	/*
 	 * Assesseurs et mutateurs
 	 */
-	
-	public float getTpsTrou() {
-		return tpsTrou;
-	}
 
 	public PolyFever getPolyfever() {
 		return polyfever;
@@ -115,7 +113,11 @@ public class Ligne {
 		this.tpsEnVie = tpsEnVie;
 	}
 	
-	public void setTpsTrou (float temps) {
+	public long getTpsTrou () {
+		return this.tpsTrou;
+	}
+	
+	public void setTpsTrou (long temps) {
 		this.tpsTrou = temps;
 	}
 	
@@ -216,8 +218,14 @@ public class Ligne {
 		}
 		//System.out.println("nouvPos y =  "+nouvPositionY);
 			
-		// Affectation de la nouvelle position du joueur
-		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1);
+		// Affectation de la nouvelle position du joueur et savoir si trace un trou ou non
+		//System.out.println("TROU ? "+(System.currentTimeMillis() - joueur.getPartie().getTemps()));
+		if( (((System.currentTimeMillis() - joueur.getPartie().getTemps()) % tpsTrou) >= 0) && (((System.currentTimeMillis() - joueur.getPartie().getTemps()) % tpsTrou) <= longueurTrou))
+		{
+			//System.out.println("TROU !");
+			joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 0);
+		}
+		else { joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1); }
 		
 		// Mise à jour de la sous grille courante
 		joueur.majGrille(joueur.getPosition());
@@ -311,8 +319,14 @@ public class Ligne {
 		}
 		//System.out.println("nouvPos y =  "+nouvPositionY);
 		
-		// Affectation de la nouvelle position du joueur
-		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1);
+		// Affectation de la nouvelle position du joueur et savoir si trace un trou ou non
+		//System.out.println("TROU ? "+(System.currentTimeMillis() - joueur.getPartie().getTemps()));
+		if( (((System.currentTimeMillis() - joueur.getPartie().getTemps()) % tpsTrou) >= 0) && (((System.currentTimeMillis() - joueur.getPartie().getTemps()) % tpsTrou) <= longueurTrou))
+		{
+			//System.out.println("TROU !");
+			joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 0);
+		}
+		else { joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1); }
 	
 		// Mise à jour de la sous grille courante
 		joueur.majGrille(joueur.getPosition());
@@ -397,8 +411,14 @@ public class Ligne {
 		}
 		//System.out.println("nouvPos y =  "+nouvPositionY);
 				
-		// Affectation de la nouvelle position du joueur
-		joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1);
+		// Affectation de la nouvelle position du joueur et savoir si trace un trou ou non
+		//System.out.println("TROU ? "+(System.currentTimeMillis() - joueur.getPartie().getTemps()));
+		if( (((System.currentTimeMillis() - joueur.getPartie().getTemps()) % tpsTrou) >= 0) && (((System.currentTimeMillis() - joueur.getPartie().getTemps()) % tpsTrou) <= longueurTrou))
+		{
+			//System.out.println("TROU !");
+			joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 0);
+		}
+		else { joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1); }
 		
 		// Mis à jour de la sous grille courante
 		joueur.majGrille(joueur.getPosition());
