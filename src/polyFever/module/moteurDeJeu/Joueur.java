@@ -1,7 +1,6 @@
 package polyFever.module.moteurDeJeu;
 
-import polyFever.module.util.math.Vector3;
-import polyFever.module.util.math.Vector4;
+import polyFever.module.util.math.*;
 
 
 /* 
@@ -25,7 +24,10 @@ public class Joueur {
 	private boolean toucheDPresse;	// Booléen disant si la toucheD est enfoncée
 	private Partie partie;			// Objet Partie auquel est rattaché le joueur
 	private int grille;				// Entier donnant l'index de la sous grille du plateau de jeu ou se trouve actuellement le joueur
-	private Vector4 droiteCourante;		// Points formant la droite de contact du joueur
+	private Vector4 droiteCourante;	// Points formant la droite de contact du joueur
+	private Vector4 pointDetection;	// Coordonnées du point en face du curseur du joueur permettant de détecter une collision
+	private Vector3 anciennePosition;
+	private Vector2 pointCollision;
 	
 	// Constructeur
 	public Joueur(Partie partie)	// Par défaut
@@ -42,7 +44,8 @@ public class Joueur {
 		this.toucheDPresse = false;
 		this.toucheGPresse = false;
 		this.partie = partie;
-		this.droiteCourante = new Vector4();
+		this.anciennePosition = new Vector3();
+		this.pointCollision = new Vector2();
 	}
 
 	public Joueur(Partie partie, String pseudo, int toucheG, int toucheD, int couleur)	// Avec paramètres
@@ -52,7 +55,7 @@ public class Joueur {
 		this.pseudo = pseudo;
 		this.toucheG = toucheG;
 		this.toucheD = toucheD;
-		this.ligne.setCouleur(couleur);
+		//this.ligne.setCouleur(couleur);
 	}
 
 	// Méthodes
@@ -60,6 +63,23 @@ public class Joueur {
 	/* 
 	 * Assesseurs et mutateurs
 	 */
+	
+	public Vector2 getPointCollision() {
+		return pointCollision;
+	}
+
+	public void setPointCollision(float x, float y) {
+		this.pointCollision.x(x);
+		this.pointCollision.y(y);
+	}
+	
+	public Vector3 getAnciennePosition() {
+		return anciennePosition;
+	}
+
+	public void setAnciennePosition(Vector3 anciennePosition) {
+		this.anciennePosition = anciennePosition;
+	}
 	
 	public int getGrille() {
 		return grille;
@@ -164,14 +184,6 @@ public class Joueur {
 
 	public void setToucheDPresse(boolean toucheDPresse) {
 		this.toucheDPresse = toucheDPresse;
-	}
-	
-	public Vector4 getDroiteCourante() {
-		return droiteCourante;
-	}
-
-	public void setDroiteCourante(Vector4 droiteCourante) {
-		this.droiteCourante = droiteCourante;
 	}
 	
 	/* 

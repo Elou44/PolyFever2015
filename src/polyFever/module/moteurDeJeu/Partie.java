@@ -1,5 +1,6 @@
 package polyFever.module.moteurDeJeu;
 import polyFever.module.main.*;
+import polyFever.module.util.math.Vector2;
 import polyFever.module.util.math.Vector4;
 
 import java.util.*;
@@ -18,22 +19,6 @@ public class Partie {
 	private final int nbSousGrilles = 16;	// Variable donnant le nombre de sous grilles voulues
 	
 	private List<List<Vector4>> trace;		// Tableau de tableau de List de Vector4, donnant les traces sur les 16 sous grilles du plateau
-	/*private List<Vector2> grille0;	// Tableau de Vector2, donnant les traces sur la sous grille 0
-	private List<Vector2> grille1;		// Tableau de Vector2, donnant les traces sur la sous grille 1
-	private List<Vector2> grille2;		// Tableau de Vector2, donnant les traces sur la sous grille 2
-	private List<Vector2> grille3;		// Tableau de Vector2, donnant les traces sur la sous grille 3
-	private List<Vector2> grille4;		// Tableau de Vector2, donnant les traces sur la sous grille 4
-	private List<Vector2> grille5;		// Tableau de Vector2, donnant les traces sur la sous grille 5
-	private List<Vector2> grille6;		// Tableau de Vector2, donnant les traces sur la sous grille 6
-	private List<Vector2> grille7;		// Tableau de Vector2, donnant les traces sur la sous grille 7
-	private List<Vector2> grille8;		// Tableau de Vector2, donnant les traces sur la sous grille 8
-	private List<Vector2> grille9;		// Tableau de Vector2, donnant les traces sur la sous grille 9
-	private List<Vector2> grille10;		// Tableau de Vector2, donnant les traces sur la sous grille 10
-	private List<Vector2> grille11;		// Tableau de Vector2, donnant les traces sur la sous grille 11
-	private List<Vector2> grille12;		// Tableau de Vector2, donnant les traces sur la sous grille 12
-	private List<Vector2> grille13;		// Tableau de Vector2, donnant les traces sur la sous grille 13
-	private List<Vector2> grille14;		// Tableau de Vector2, donnant les traces sur la sous grille 14
-	private List<Vector2> grille15;		// Tableau de Vector2, donnant les traces sur la sous grille 15*/
 	
 	// Constructeur
 	public Partie()	// Par défaut
@@ -145,31 +130,31 @@ public class Partie {
 	
 	private boolean ligneIntersection(float indiceA, float indiceB, Vector4 joueur, Vector4 trace)
 	{
-		if(indiceA == 0 || indiceB == 0)
+		if(indiceA == 0.0 || indiceB == 0.0)
 		{
 			return false;
 		}
 		else
 		{
-	        if (joueur.x() > joueur.z()) {
-	            if (!(joueur.z() < indiceA && indiceA < joueur.x())) {return false;}
+	        if (joueur.x() >= joueur.z()) {
+	            if (!(joueur.z() <= indiceA && indiceA <= joueur.x())) {return false;}
 	        } else {
-	            if (!(joueur.x() < indiceA && indiceA < joueur.z())) {return false;}
+	            if (!(joueur.x() <= indiceA && indiceA <= joueur.z())) {return false;}
 	        }
-	        if (joueur.y() > joueur.w()) {
-	            if (!(joueur.w() < indiceB && indiceB < joueur.y())) {return false;}
+	        if (joueur.y() >= joueur.w()) {
+	            if (!(joueur.w() <= indiceB && indiceB <= joueur.y())) {return false;}
 	        } else {
-	            if (!(joueur.y() < indiceB && indiceB < joueur.w())) {return false;}
+	            if (!(joueur.y() <= indiceB && indiceB <= joueur.w())) {return false;}
 	        }
-	        if (trace.x() > trace.z()) {
-	            if (!(trace.z() < indiceA && indiceA < trace.x())) {return false;}
+	        if (trace.x() >= trace.z()) {
+	            if (!(trace.z() <= indiceA && indiceA <= trace.x())) {return false;}
 	        } else {
-	            if (!(trace.x() < indiceA && indiceA < trace.z())) {return false;}
+	            if (!(trace.x() <= indiceA && indiceA <= trace.z())) {return false;}
 	        }
-	        if (trace.y() > trace.w()) {
-	            if (!(trace.w() < indiceB && indiceB < trace.y())) {return false;}
+	        if (trace.y() >= trace.w()) {
+	            if (!(trace.w() <= indiceB && indiceB <= trace.y())) {return false;}
 	        } else {
-	            if (!(trace.y() < indiceB && indiceB < trace.w())) {return false;}
+	            if (!(trace.y() <= indiceB && indiceB <= trace.w())) {return false;}
 	        }
 		}
 		return true;
@@ -192,7 +177,7 @@ public class Partie {
 			// Si la position du joueur en x ou en y, est supérieure ou égale à 1 ou inférieure ou égale à -1
 			if( e.getPosition().x() >= 1 || e.getPosition().x() <= -1 || e.getPosition().y() >= 1 || e.getPosition().y() <= -1 )
 			{
-				//System.out.println("==> Mort contre plateau \n");
+				System.out.println("==> Mort contre plateau \n");
 				// On modifie l'état du joueur concerné et on le passe à mort
 				this.modifierEtat(e);
 			}
@@ -200,35 +185,35 @@ public class Partie {
 			// ### Collision trace ###
 
 			//System.out.println("Collisions - CONTENU grille "+e.getGrille()+" de taille "+e.getPartie().getTrace().get(e.getGrille()).size()+": ");
-			
-			/*Iterator<Vector4> it = this.getTrace().get(e.getGrille()).iterator();
+			/*
+			Iterator<Vector4> it = this.getTrace().get(e.getGrille()).iterator();
 			while(it.hasNext())
 			{
 				Vector4 position = new Vector4();
 				position = it.next();
-				System.out.println("("+position.x()+","+position.y()+"), ");
+				System.out.println("GRILLE "+e.getGrille()+" "+this.getTrace().get(e.getGrille()).size()+"("+position.x()+","+position.y()+"), ("+position.z()+","+position.w()+")\n");
 			}*/
 			
 			// Parmis tous les points présents dans le sous tableau de la grille correspondante à la position du joueur
 			for(Vector4 pointGrille : this.getTrace().get(e.getGrille()))
-			{
-				/*
-				float denominateur = (pointGrille.w() - pointGrille.y()) * (e.getDroiteCourante().z() - e.getDroiteCourante().x()) - ((pointGrille.z() - pointGrille.x()) * (e.getDroiteCourante().w() - e.getDroiteCourante().y()));
-				float indiceA = (((pointGrille.z() - pointGrille.x()) * (e.getDroiteCourante().y() - pointGrille.y())) - ((pointGrille.w() - pointGrille.y()) * (e.getDroiteCourante().x() - pointGrille.y()))) / denominateur;
-				float indiceB = (((e.getDroiteCourante().z() - e.getDroiteCourante().x()) * (e.getDroiteCourante().y() - pointGrille.y())) - ((e.getDroiteCourante().w() - e.getDroiteCourante().y()) * (e.getDroiteCourante().x() - pointGrille.x()))) / denominateur;
-				*/
-				float denominateur = ( ( (e.getDroiteCourante().x() - e.getDroiteCourante().z()) * (pointGrille.y() - pointGrille.w()) ) - ( (e.getDroiteCourante().y() - e.getDroiteCourante().w()) * (pointGrille.x() - pointGrille.z()) ) );
-				float indiceA = ( ( ( (e.getDroiteCourante().x() * e.getDroiteCourante().w()) - (e.getDroiteCourante().y() * e.getDroiteCourante().z()) ) * (pointGrille.x() - pointGrille.z()) ) - ( (e.getDroiteCourante().x() - e.getDroiteCourante().z()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur;
-				float indiceB = ( ( ( (e.getDroiteCourante().x() * e.getDroiteCourante().w()) - (e.getDroiteCourante().y() * e.getDroiteCourante().z()) ) * (pointGrille.y() - pointGrille.w()) ) - ( (e.getDroiteCourante().y() - e.getDroiteCourante().w()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur;
+			{				
+				Vector4 droite = new Vector4(e.getAnciennePosition().x(), e.getAnciennePosition().y(), e.getPosition().x(), e.getPosition().y());
 				
+				float denominateur = ( ( (droite.x() - droite.z()) * (pointGrille.y() - pointGrille.w()) ) - ( (droite.y() - droite.w()) * (pointGrille.x() - pointGrille.z()) ) );
+				float indiceA = ( ( ( (droite.x() * droite.w()) - (droite.y() * droite.z()) ) * (pointGrille.x() - pointGrille.z()) ) - ( (droite.x() - droite.z()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur;
+				float indiceB = ( ( ( (droite.x() * droite.w()) - (droite.y() * droite.z()) ) * (pointGrille.y() - pointGrille.w()) ) - ( (droite.y() - droite.w()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur;
+
 				// Si la position du joueur est la même que la position du point tracé
-				if(ligneIntersection(indiceA, indiceB, e.getDroiteCourante(), pointGrille))
-				{/*
+				if(ligneIntersection(indiceA, indiceB, droite, pointGrille))
+				{
+					System.out.println("Ancienne pos : ("+droite.x()+","+droite.y()+") ; Nouvelle pos : ("+droite.z()+","+droite.w()+")");
 					System.out.println("INDICE A = "+indiceA);
 					System.out.println("INDICE B = "+indiceB);
-					System.out.println("Droite TRACE : ("+pointGrille.x()+","+pointGrille.y()+") et ("+pointGrille.z()+","+pointGrille.w()+")\n");
-					System.out.println("Droite JOUEUR : ("+e.getDroiteCourante().x()+","+e.getDroiteCourante().y()+") et ("+e.getDroiteCourante().z()+","+e.getDroiteCourante().w()+")\n");
-					*///System.out.println("==> Mort contre une trace en position "+(((float) ((int) ((pointGrille.x())*100))) / 100)+" et "+(((float) ((int) ((pointGrille.y())*100))) / 100)+"\n");
+					System.out.println("Droite TRACE : ("+pointGrille.x()+","+pointGrille.y()+") et ("+pointGrille.z()+","+pointGrille.w()+")");
+
+					// Définition du point de collision
+					e.setPointCollision(indiceA, indiceB);
+					
 					// Alors on modifie l'état du joueur en "mort"
 					this.modifierEtat(e);
 					
@@ -238,7 +223,7 @@ public class Partie {
 			}
 		}
 	}
-	
+
 	public void modifierScore()
 	{
 		/* Rajouter +1 aux scores des joueurs encore en vie
@@ -343,14 +328,7 @@ public class Partie {
 	}
 	
 	public void envoyerTabVertex(Vector4 droiteA, Vector4 droiteB)
-	{
-		Vector4 droiteJoueur = new Vector4();
-
-		droiteJoueur.x(droiteB.x());
-		droiteJoueur.y(droiteB.y());
-		droiteJoueur.z(droiteA.x());
-		droiteJoueur.w(droiteA.y());
-		
+	{		
 		Vector4[] coord = new Vector4[2];
 		coord[0] = droiteA;
 		coord[1] = droiteB;
