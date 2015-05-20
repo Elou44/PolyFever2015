@@ -34,10 +34,10 @@ public class Ligne {
 		this.vitesse = 0.009f;
 		this.vitesseInit = 0.009f;
 		this.polyfever = p;
-		this.epaisseur = 0.01f;
+		this.epaisseur = 0.015f;
 		this.courbe = Math.PI /35;//35;
 		this.tpsEnVie = 0;
-		this.longueurTrou = 230;
+		this.longueurTrou = (long) (2.3/vitesse);//230;
 	}
 	
 	public Ligne(int couleur, PolyFever p)	// Avec paramètres
@@ -218,6 +218,12 @@ public class Ligne {
 		
 		// Mise à jour de la sous grille courante
 		joueur.majGrille(joueur.getPosition());
+		
+		// Mise à jour de la droite du joueur, permettant la détection de collision
+		joueur.setDroiteJoueur(new Vector4( (float) (joueur.getPosition().x() + (epaisseur/2)*Math.cos((Math.PI/2) - joueur.getAngleRectangle())),
+				(float) (joueur.getPosition().y() - (epaisseur/2)*Math.sin((Math.PI/2) - joueur.getAngleRectangle())),
+				(float) (joueur.getPosition().x() - (epaisseur/2)*Math.cos((Math.PI/2) - joueur.getAngleRectangle())),
+				(float) (joueur.getPosition().y() + (epaisseur/2)*Math.sin((Math.PI/2) - joueur.getAngleRectangle())) ));	
 			
 		// Mise à jour de la direction
 		if((joueur.getDirection() - courbe) < 0)
@@ -229,7 +235,7 @@ public class Ligne {
 			joueur.setDirection(joueur.getDirection() - courbe);
 		}
 		//System.out.println("MAJ direction : "+joueur.getDirection());
-		
+				
 	}
 	
 	public void tournerGauche()	// Méthode calculant la prochaine position, si le joueur veut tourner à droite
@@ -319,6 +325,12 @@ public class Ligne {
 	
 		// Mise à jour de la sous grille courante
 		joueur.majGrille(joueur.getPosition());
+			
+		// Mise à jour de la droite du joueur, permettant la détection de collision
+		joueur.setDroiteJoueur(new Vector4( (float) (joueur.getPosition().x() + (epaisseur/2)*Math.cos((Math.PI/2) - joueur.getAngleRectangle())),
+				(float) (joueur.getPosition().y() - (epaisseur/2)*Math.sin((Math.PI/2) - joueur.getAngleRectangle())),
+				(float) (joueur.getPosition().x() - (epaisseur/2)*Math.cos((Math.PI/2) - joueur.getAngleRectangle())),
+				(float) (joueur.getPosition().y() + (epaisseur/2)*Math.sin((Math.PI/2) - joueur.getAngleRectangle())) ));
 			
 		// Mise à jour de la direction
 		if((joueur.getDirection() + courbe) > (2*Math.PI))
@@ -414,6 +426,11 @@ public class Ligne {
 		
 		// Pas de mise à jour de la direction, vu qu'elle ne change pas
 		
+		// Mise à jour de la droite du joueur, permettant la détection de collision
+		joueur.setDroiteJoueur(new Vector4( (float) (joueur.getPosition().x() + (epaisseur/2)*Math.cos((Math.PI/2) - joueur.getAngleRectangle())),
+				(float) (joueur.getPosition().y() - (epaisseur/2)*Math.sin((Math.PI/2) - joueur.getAngleRectangle())),
+				(float) (joueur.getPosition().x() - (epaisseur/2)*Math.cos((Math.PI/2) - joueur.getAngleRectangle())),
+				(float) (joueur.getPosition().y() + (epaisseur/2)*Math.sin((Math.PI/2) - joueur.getAngleRectangle())) ));
 		
 	}
 	

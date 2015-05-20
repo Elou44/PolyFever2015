@@ -204,8 +204,13 @@ public class Partie {
 				float indiceA = ( ( ( (droite.x() * droite.w()) - (droite.y() * droite.z()) ) * (pointGrille.x() - pointGrille.z()) ) - ( (droite.x() - droite.z()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur;
 				float indiceB = ( ( ( (droite.x() * droite.w()) - (droite.y() * droite.z()) ) * (pointGrille.y() - pointGrille.w()) ) - ( (droite.y() - droite.w()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur;
 
+				float denominateur2 = ( ( (e.getDroiteJoueur().x() - e.getDroiteJoueur().z()) * (pointGrille.y() - pointGrille.w()) ) - ( (e.getDroiteJoueur().y() - e.getDroiteJoueur().w()) * (pointGrille.x() - pointGrille.z()) ) );
+				float indiceC = ( ( ( (e.getDroiteJoueur().x() * e.getDroiteJoueur().w()) - (e.getDroiteJoueur().y() * e.getDroiteJoueur().z()) ) * (pointGrille.x() - pointGrille.z()) ) - ( (e.getDroiteJoueur().x() - e.getDroiteJoueur().z()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur2;
+				float indiceD = ( ( ( (e.getDroiteJoueur().x() * e.getDroiteJoueur().w()) - (e.getDroiteJoueur().y() * e.getDroiteJoueur().z()) ) * (pointGrille.y() - pointGrille.w()) ) - ( (e.getDroiteJoueur().y() - e.getDroiteJoueur().w()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur2;
+				boolean contact = false;
+				
 				// Si la position du joueur est la même que la position du point tracé
-				if(ligneIntersection(indiceA, indiceB, droite, pointGrille) && e.getPosition().z() == 1)
+				if( ( (contact = ligneIntersection(indiceC, indiceD, e.getDroiteJoueur(), pointGrille)) || ligneIntersection(indiceA, indiceB, droite, pointGrille) ) && e.getPosition().z() == 1)
 				{
 					System.out.println("Ancienne pos : ("+droite.x()+","+droite.y()+") ; Nouvelle pos : ("+droite.z()+","+droite.w()+")");
 					System.out.println("INDICE A = "+indiceA);
@@ -213,7 +218,12 @@ public class Partie {
 					System.out.println("Droite TRACE : ("+pointGrille.x()+","+pointGrille.y()+") et ("+pointGrille.z()+","+pointGrille.w()+")");
 
 					// Définition du point de collision
-					e.setPosition(new Vector3(indiceA, indiceB, 1));
+					if(contact)
+					{
+						System.out.println("MORT PAR façade");
+						e.setPosition(new Vector3(indiceC, indiceD, 1));
+					}
+					else { e.setPosition(new Vector3(indiceA, indiceB, 1)); }
 					
 					// Alors on modifie l'état du joueur en "mort"
 					this.modifierEtat(e);

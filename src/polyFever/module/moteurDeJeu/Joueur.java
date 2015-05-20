@@ -26,6 +26,7 @@ public class Joueur {
 	private int grille;					// Entier donnant l'index de la sous grille du plateau de jeu ou se trouve actuellement le joueur
 	private Vector3 anciennePosition;	// Position antérieure à la position courante du joueur
 	private Vector2 pointCollision;		// Coordonnées du point de collision
+	private Vector4 droiteJoueur;		// Coordonnées des points formant la droite de contact du joueur
 	
 	// Constructeur
 	public Joueur(Partie partie)	// Par défaut
@@ -44,6 +45,7 @@ public class Joueur {
 		this.partie = partie;
 		this.anciennePosition = new Vector3();
 		this.pointCollision = new Vector2();
+		this.droiteJoueur = new Vector4();
 	}
 
 	public Joueur(Partie partie, String pseudo, int toucheG, int toucheD, int couleur)	// Avec paramètres
@@ -61,6 +63,14 @@ public class Joueur {
 	/* 
 	 * Assesseurs et mutateurs
 	 */
+	
+	public Vector4 getDroiteJoueur() {
+		return droiteJoueur;
+	}
+
+	public void setDroiteJoueur(Vector4 droiteJoueur) {
+		this.droiteJoueur = droiteJoueur;
+	}
 	
 	public Vector2 getPointCollision() {
 		return pointCollision;
