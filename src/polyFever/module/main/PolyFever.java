@@ -285,8 +285,8 @@ public abstract class PolyFever {
 	 * @param attribs The context attributes.
 	 */
 	public final void run(PixelFormat format, ContextAttribs attribs) {
-		
-		while(true)
+		boolean tryAgain = true;
+		while(tryAgain)
 		{
 			try {
 				if(this.isAAAvailable) // Si oui, on créé un écran avec l'antiAliasing activé
@@ -296,6 +296,7 @@ public abstract class PolyFever {
 				}
 				else // Si non, on désactive l'AA
 				{
+					tryAgain = false;
 					Display.create(format, attribs);
 					break;
 				}
@@ -304,7 +305,11 @@ public abstract class PolyFever {
 			} catch(Exception exc) {
 				exc.printStackTrace();
 				this.isAAAvailable = false;
-				//System.exit(1);
+				if(!tryAgain) // Si aucune des deux solutions n'est disponible , on ferme la fenetre
+				{
+					System.exit(1);	
+				}
+				
 			}
 		}
 		
