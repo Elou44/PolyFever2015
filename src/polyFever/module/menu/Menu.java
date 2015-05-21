@@ -1,4 +1,4 @@
-package menu;
+package polyFever.module.menu;
 
 import java.util.*;
 

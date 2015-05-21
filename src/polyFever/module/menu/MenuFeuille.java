@@ -1,4 +1,4 @@
-package menu;
+package polyFever.module.menu;
 /**
  * Classe permettant d'afficher un contenu dans un menu, typiquement le menu Crédits
  * @author Ambre
