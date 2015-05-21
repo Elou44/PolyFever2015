@@ -55,16 +55,29 @@ public class Evenements {
 		}
 	}
 	
+	/*
+	 * Echap : quitter le jeu, fonction encore à définir
+	 * Espace : plus tard, sans doute pour lancer le jeu/pause
+	 * vérifie l'état du joueur : ne pas faire d'action sur les joueurs morts
+	 *  -> classe enum ETAT : ne traiter que les VIVANTS
+	 */
 	//Gestion des contrôles en partie
 	public void gestionJeu() {
 		Joueur j;
+		
 		/*
 		if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))	//Si on appuie sur echap
 													//Quitter la partie (à compléter)
 		*/
+		
 		//Puis on regarde les évènements
 		//Re garder les évènements permet d'être plus réactif sur l'action quand on appuie/relache une touche
 		while(Keyboard.next()) {
+			/*
+			if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {	//Quitter la partie
+				
+			} else
+			*/
 			if(this.controles.containsKey(Keyboard.getEventKey())) {	//Si l'évènement concerne les controles d'un joueur
 				j = (Joueur) this.controles.get(Keyboard.getEventKey());
 				
@@ -82,13 +95,17 @@ public class Evenements {
 		while(i.hasNext()) {
 			j = i.next();
 			
-			if(j.isToucheGPresse() && !j.isToucheDPresse())		//Le joueur tourne à gauche
-				j.getLigne().tournerGauche();			//Appel de la fonction pour tourner à droite
+			if(j.getEtat() == Etat.VIVANT) {
 			
-			else if(j.isToucheDPresse() && !j.isToucheGPresse())	//Le joueur tourne à droite
-				j.getLigne().tournerDroite();			//Appel de la fonction pour tourner à gauche
-			
-			else j.getLigne().pasTourner();				//Sinon on tourne pas
+				if(j.isToucheGPresse() && !j.isToucheDPresse())		//Le joueur tourne à gauche
+					j.getLigne().tournerGauche();			//Appel de la fonction pour tourner à gauche
+				
+				else if(j.isToucheDPresse() && !j.isToucheGPresse())	//Le joueur tourne à droite
+					j.getLigne().tournerDroite();			//Appel de la fonction pour tourner à droite
+				
+				else j.getLigne().pasTourner();				//Sinon on tourne pas
+				
+			}
 			
 		}
 	}
