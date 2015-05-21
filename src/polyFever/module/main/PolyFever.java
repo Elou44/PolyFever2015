@@ -30,7 +30,7 @@ public abstract class PolyFever {
 	private final int WIDTH;
 	private final int HEIGHT;
 	private float RATIO; // Largeur d'un pixel en float
-
+	private boolean isAAAvailable = true; // l'Anti-Aliasing est t-il disponible ? Oui par défaut
 	
 	private Partie partie;
 	private GlOrtho glOrtho;
@@ -48,6 +48,7 @@ public abstract class PolyFever {
 	 *        A framerate can be set with the <code>setFPS(int fps)</code> method.
 	 */
 	public PolyFever(boolean vsync, int width, int height) {
+		System.setProperty("org.lwjgl.opengl.Display.allowSoftwareOpenGL", "true"); // Pour faire fonctionner le programme sur les vieux ordis
 		System.out.println("Création du context openGL...");
 		
 		this.glOrtho = new GlOrtho(-1.0f*((float)width/(float)height),1.0f*((float)width/(float)height),-1.0f,1.0f,-1.0f,1.0f);
@@ -97,6 +98,11 @@ public abstract class PolyFever {
 	{
 		this.partie = p;
 	}
+	
+	public boolean getIsAAAvailable()
+	{
+		return this.isAAAvailable;
+	}
 
 	/**
 	 * Initializes a windowed application. The framerate is set to 60 and can be modified using <code>setFPS(int fps)</code>.
@@ -107,6 +113,7 @@ public abstract class PolyFever {
 	 * @param resizable Enables/disables the ability to resize the window.
 	 */
 	public PolyFever(String name, int width, int height, boolean resizable) {
+		System.setProperty("org.lwjgl.opengl.Display.allowSoftwareOpenGL", "true"); // Pour faire fonctionner le programme sur les vieux ordis
 		System.out.println("Création du context openGL...");
 		
 		
@@ -278,13 +285,27 @@ public abstract class PolyFever {
 	 * @param attribs The context attributes.
 	 */
 	public final void run(PixelFormat format, ContextAttribs attribs) {
-		try {
-			
-			Display.create(format.withSamples(this.MSAA), attribs);
-			
-		} catch(Exception exc) {
-			exc.printStackTrace();
-			System.exit(1);
+		
+		while(true)
+		{
+			try {
+				if(this.isAAAvailable) // Si oui, on créé un écran avec l'antiAliasing activé
+				{
+					Display.create(format.withSamples(this.MSAA), attribs);
+					break;
+				}
+				else // Si non, on désactive l'AA
+				{
+					Display.create(format, attribs);
+					break;
+				}
+				
+				
+			} catch(Exception exc) {
+				exc.printStackTrace();
+				this.isAAAvailable = false;
+				//System.exit(1);
+			}
 		}
 		
 		gameLoop();
