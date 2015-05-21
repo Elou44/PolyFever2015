@@ -292,12 +292,14 @@ public abstract class PolyFever {
 				if(this.isAAAvailable) // Si oui, on créé un écran avec l'antiAliasing activé
 				{
 					Display.create(format.withSamples(this.MSAA), attribs);
+					System.out.println("AA disponible");
 					break;
 				}
 				else // Si non, on désactive l'AA
 				{
 					tryAgain = false;
 					Display.create(format, attribs);
+					System.out.println("AA non disponible");
 					break;
 				}
 				
@@ -307,6 +309,7 @@ public abstract class PolyFever {
 				this.isAAAvailable = false;
 				if(!tryAgain) // Si aucune des deux solutions n'est disponible , on ferme la fenetre
 				{
+					System.out.println("ton pc c'est de la merde");
 					System.exit(1);	
 				}
 				
