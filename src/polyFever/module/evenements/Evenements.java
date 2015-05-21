@@ -11,6 +11,7 @@ import polyFever.module.moteurDeJeu.*;
  * C'EST A DIRE UNE GESTION POUR QUAND EN JEU
  * UNE GESTION POUR QUAND DANS LE MENU
  */
+//implementation : http://pastebin.com/i7TYjrbM
 
 public class Evenements {
 	private Partie partie;			//Partie
