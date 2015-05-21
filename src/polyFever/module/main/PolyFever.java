@@ -299,7 +299,7 @@ public abstract class PolyFever {
 			
 		}
 		/*while(tryAgain)
-		{
+		{666
 			try {
 				if(this.isAAAvailable) // Si oui, on créé un écran avec l'antiAliasing activé
 				{
