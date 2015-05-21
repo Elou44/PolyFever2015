@@ -1,4 +1,4 @@
-package polyFever.module.menu;
+package menu;
 
 import java.io.Serializable;
 /**
@@ -13,8 +13,8 @@ public class Parametres implements Serializable {
 	protected String pseudo;
 	protected String ip;
 	protected String port;
-	protected static int gauche;
-	protected static int droite;
+	protected int gauche;
+	protected int droite;
 	
 	/**
 	 * Constructeur necessitant les informations de parametrage

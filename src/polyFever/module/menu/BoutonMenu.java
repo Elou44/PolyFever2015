@@ -1,4 +1,4 @@
-package polyFever.module.menu;
+package menu;
 
 public class BoutonMenu extends Bouton {
 	String titreMenu;
