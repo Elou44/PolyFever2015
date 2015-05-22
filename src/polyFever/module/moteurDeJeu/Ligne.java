@@ -31,7 +31,7 @@ public class Ligne {
 		this.vitesse = 0.009f;
 		this.vitesseInit = 0.009f;
 		this.polyfever = p;
-		this.epaisseur = 0.03f;
+		this.epaisseur = 0.017f;
 		this.courbe = Math.PI /35;//35;
 		this.tpsEnVie = 0;
 		this.longueurTrou = (long) (2.3/vitesse);//230;
