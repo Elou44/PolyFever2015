@@ -220,7 +220,7 @@ public class Partie {
 			//System.out.println("Collisions - Position du joueur x: "+e.getPosition().x()+" y: "+e.getPosition().y());
 			// ### Collision plateau ###
 			// Si la position du joueur en x ou en y, est supérieure ou égale à 1 ou inférieure ou égale à -1
-			if( e.getPosition().x() >= 1 || e.getPosition().x() <= -1 || e.getPosition().y() >= 1 || e.getPosition().y() <= -1 )
+			/*if( e.getPosition().x() >= 1 || e.getPosition().x() <= -1 || e.getPosition().y() >= 1 || e.getPosition().y() <= -1 )
 			{
 				System.out.println("==> Mort contre plateau \n");
 				// On modifie l'état du joueur concerné et on le passe à mort
@@ -228,7 +228,7 @@ public class Partie {
 				
 				// On met à jour le score des autres joueurs
 				this.modifierScore();
-			}
+			}*/
 			
 			// ### Collision trace ###
 
