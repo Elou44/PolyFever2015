@@ -28,6 +28,7 @@ public class Joueur {
 	private Vector4 ancienneDroiteJoueur;	// Coordonnées des précédent points formant la collision de contact du joueur
 	private Vector2 pointCollision;		// Coordonnées du point de collision
 	private Vector4 droiteJoueur;		// Coordonnées des points formant la droite de contact du joueur
+	private boolean redimension;		// Booléen indiquant si l'épaisseur de la ligne du joueur a été modifiée
 	
 	// Constructeur
 	public Joueur(Partie partie)	// Par défaut
@@ -48,6 +49,7 @@ public class Joueur {
 		this.ancienneDroiteJoueur = new Vector4();
 		this.pointCollision = new Vector2();
 		this.droiteJoueur = new Vector4();
+		this.redimension = false;
 	}
 
 	public Joueur(Partie partie, String pseudo, int toucheG, int toucheD, int couleur)	// Avec paramètres
@@ -65,6 +67,14 @@ public class Joueur {
 	/* 
 	 * Assesseurs et mutateurs
 	 */
+	
+	public boolean isRedimension() {
+		return redimension;
+	}
+
+	public void setRedimension(boolean redimension) {
+		this.redimension = redimension;
+	}
 	
 	public Vector4 getAncienneDroiteJoueur() {
 		return ancienneDroiteJoueur;
