@@ -25,6 +25,7 @@ public class Joueur {
 	private Partie partie;				// Objet Partie auquel est rattaché le joueur
 	private int grille;					// Entier donnant l'index de la sous grille du plateau de jeu ou se trouve actuellement le joueur
 	private Vector3 anciennePosition;	// Position antérieure à la position courante du joueur
+	private Vector4 ancienneDroiteJoueur;	// Coordonnées des précédent points formant la collision de contact du joueur
 	private Vector2 pointCollision;		// Coordonnées du point de collision
 	private Vector4 droiteJoueur;		// Coordonnées des points formant la droite de contact du joueur
 	
@@ -44,6 +45,7 @@ public class Joueur {
 		this.toucheGPresse = false;
 		this.partie = partie;
 		this.anciennePosition = new Vector3();
+		this.ancienneDroiteJoueur = new Vector4();
 		this.pointCollision = new Vector2();
 		this.droiteJoueur = new Vector4();
 	}
@@ -63,6 +65,14 @@ public class Joueur {
 	/* 
 	 * Assesseurs et mutateurs
 	 */
+	
+	public Vector4 getAncienneDroiteJoueur() {
+		return ancienneDroiteJoueur;
+	}
+
+	public void setAncienneDroiteJoueur(Vector4 ancienneDroiteJoueur) {
+		this.ancienneDroiteJoueur = ancienneDroiteJoueur;
+	}
 	
 	public Vector4 getDroiteJoueur() {
 		return droiteJoueur;
@@ -158,7 +168,6 @@ public class Joueur {
 	}
 
 	public Vector3 getPosition() {
-		// rafraichissement de la vitesse
 		return position;
 	}
 

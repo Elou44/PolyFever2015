@@ -144,6 +144,7 @@ public class Ligne {
 		
 			majVitessesCourbe(); // mise à jour des vitesses en fonction du frameRate
 			joueur.setAnciennePosition(joueur.getPosition().copy());
+			joueur.setAncienneDroiteJoueur(joueur.getDroiteJoueur().copy());
 			
 			////System.out.println("TOURNE DROITE / direction : "+joueur.getDirection()+" direction-courbe : "+(joueur.getDirection()-courbe));
 			double angleRotation = 0;
@@ -224,8 +225,8 @@ public class Ligne {
 			joueur.setDroiteJoueur(new Vector4( (float) (joueur.getPosition().x() + (epaisseur/2)*Math.cos((Math.PI/2) - joueur.getAngleRectangle())),
 					(float) (joueur.getPosition().y() - (epaisseur/2)*Math.sin((Math.PI/2) - joueur.getAngleRectangle())),
 					(float) (joueur.getPosition().x() - (epaisseur/2)*Math.cos((Math.PI/2) - joueur.getAngleRectangle())),
-					(float) (joueur.getPosition().y() + (epaisseur/2)*Math.sin((Math.PI/2) - joueur.getAngleRectangle())) ));	
-				
+					(float) (joueur.getPosition().y() + (epaisseur/2)*Math.sin((Math.PI/2) - joueur.getAngleRectangle())) ));
+							
 			// Mise à jour de la direction
 			if((joueur.getDirection() - courbe) < 0)
 			{
@@ -253,6 +254,7 @@ public class Ligne {
 		
 			majVitessesCourbe(); // mise à jour des vitesses en fonction du frameRate
 			joueur.setAnciennePosition(joueur.getPosition().copy());
+			joueur.setAncienneDroiteJoueur(joueur.getDroiteJoueur().copy());
 			
 			double angleRotation = 0;
 			double nouvPositionX = 0;
@@ -331,13 +333,13 @@ public class Ligne {
 		
 			// Mise à jour de la sous grille courante
 			joueur.majGrille(joueur.getPosition());
-				
+			
 			// Mise à jour de la droite du joueur, permettant la détection de collision
 			joueur.setDroiteJoueur(new Vector4( (float) (joueur.getPosition().x() + (epaisseur/2)*Math.cos((Math.PI/2) - joueur.getAngleRectangle())),
 					(float) (joueur.getPosition().y() - (epaisseur/2)*Math.sin((Math.PI/2) - joueur.getAngleRectangle())),
 					(float) (joueur.getPosition().x() - (epaisseur/2)*Math.cos((Math.PI/2) - joueur.getAngleRectangle())),
 					(float) (joueur.getPosition().y() + (epaisseur/2)*Math.sin((Math.PI/2) - joueur.getAngleRectangle())) ));
-				
+						
 			// Mise à jour de la direction
 			if((joueur.getDirection() + courbe) > (2*Math.PI))
 			{
@@ -365,6 +367,7 @@ public class Ligne {
 		
 			majVitessesCourbe(); // mise à jour des vitesses en fonction du frameRate
 			joueur.setAnciennePosition(joueur.getPosition().copy());
+			joueur.setAncienneDroiteJoueur(joueur.getDroiteJoueur().copy());
 			
 			double angleRotation = 0;
 			double nouvPositionX = 0;
