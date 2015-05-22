@@ -42,7 +42,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	FloatBuffer vboBuffer;
 	IntBuffer eboBuffer;
 	
-	private final int NBCOTES = 10; // Nombre de côtés du point du joueur
+	private final int NBCOTES = 15; // Nombre de côtés du point du joueur
 	private float colDelta;
 	
 	private FloatBuffer projectionMatrix;
@@ -161,8 +161,17 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		/*this.addRectangle(new Vector3(0.0f,-1.0f,1.0f), 1.57f,0.005f, -2.0f, new Vector3(1.0f,1.0f,1.0f));
 		this.addRectangle(new Vector3(-1.0f,0.0f,1.0f), 0.0f, 0.005f, -2.0f, new Vector3(1.0f,1.0f,1.0f));*/
 		
+		//InitDessinJoueurs
+		
+
+		initDessinJoueurs();
+		
+		
+		
 		// Dessin des bords du plateau
 		dessinerBordsPlateau(new Vector2(0.0f,0.0f));
+		
+
 		
 		glBindVertexArray(glGenVertexArrays()); // Création d'un VAO : Vertex Array Object avec glGenVertexArrays() . le VAO stock les liens entre les attributs et les VBO
 		// le VAO contient une référence vers le VBO
@@ -181,6 +190,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		long t_now = System.currentTimeMillis();
 		float time = t_now - t_start;
 		
+			
 		Iterator<Joueur> e = this.partie.getJoueurs().iterator();
 		while(e.hasNext()) // A déplacer dans Init();
 		{
@@ -188,7 +198,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 			if(j.getPosition().z() == 1.0f && j.getEtat() == Etat.VIVANT)
 			{
 				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse(), new Vector3(1.0f,0.0f,0.0f));
-				this.decalage += 0.03f;
+				//this.decalage += 0.03f;
 				/*this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,0.0f));
 				this.decalage += 0.03f;
 				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(0.0f,0.0f,1.0f));
@@ -235,11 +245,11 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 				this.decalage += 0.03f;
 				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
 				*/
-				
-				
-				this.decalage = 0 ;
+
 			}
 		}
+		
+		updatePosJoueurs(); // On bouge le point du joueur
 		
 		
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -253,6 +263,8 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		glClear(GL_COLOR_BUFFER_BIT);
 		
 		glUseProgram(program);
+		
+		
 		
 		glUniformMatrix4(projectionUniform, false, (FloatBuffer)projectionMatrix);
 		
@@ -329,7 +341,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		p3.set( x, y);
 		
 		ajouterVector2Rect(p1, p2, p3, p4, c);
-		this.nbVertex += 6;
+		this.nbVertex += 6; // L'équivalent des 6 vertex doivent être utilisées pour tracer un rectangle
 		
 	}
 	
@@ -362,8 +374,8 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 		
 		
-		this.partie.envoyerTabVertex(new Vector4(this.tabVertex[this.lenTabV],this.tabVertex[this.lenTabV+1],this.tabVertex[this.lenTabV+15],this.tabVertex[this.lenTabV+16]),
-				new Vector4(this.tabVertex[this.lenTabV+5],this.tabVertex[this.lenTabV+6],this.tabVertex[this.lenTabV+10],this.tabVertex[this.lenTabV+11]));
+		this.partie.envoyerTabVertex(new Vector4(p4.x()+decalage,p4.y(),p3.x()+decalage,p3.y()),
+				new Vector4(p1.x()+decalage,p1.y(),p2.x()+decalage,p2.y()));
 		
 		this.lenTabV += 20;
 
@@ -397,31 +409,37 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		while(e.hasNext()) 
 		{
 			j = e.next();
-			if(j.getPosition().z() == 1.0f && j.getEtat() == Etat.VIVANT)
-			{
-				this.initPoint(j.getPosition(),j.getLigne().getEpaisseur()/2);
-			}
-			
+
+			this.initPoint(j.getPosition(),j.getLigne().getEpaisseur()/2);
 		}
 		
 	}
 	
 	public void initPoint(Vector3 p, float r) // Ajoute dans le buffer les vertex nécessaires à l'affichage du point d'un joueur.
 	{
-		double alpha = Math.PI / this.NBCOTES;
+		double alpha = 2*Math.PI / this.NBCOTES;
 		Vector2 tabVertexPoint[] = new Vector2[this.NBCOTES+1]; // +1 pour le vertex central
 		
 		tabVertexPoint[0] = new Vector2(p.x(),p.y()); // centre du point du joueur
 		
-		for(int i = 1; i<this.NBCOTES; i++)
+		for(int i = 1,j = 0; i<this.NBCOTES+1; i++,j++)
 		{
 			tabVertexPoint[i] = new Vector2(
-					(float)Math.cos(alpha*(i-1))*r,
-					(float)Math.sin(alpha*(i-1))*r
+					(float)Math.cos(alpha*(j))*r+p.x(),
+					(float)Math.sin(alpha*(j))*r+p.y()
 					);
 		}
 		
-		for(int i = 0; i<this.NBCOTES; i++)
+	
+		this.tabVertex[this.lenTabV] = tabVertexPoint[0].x(); // Centre x
+		this.tabVertex[this.lenTabV+1] = tabVertexPoint[0].y(); // Centre x
+		this.tabVertex[this.lenTabV+2] = 1.0f; 
+		this.tabVertex[this.lenTabV+3] = 0.0f; 
+		this.tabVertex[this.lenTabV+4] = 0.0f; 
+		
+		this.lenTabV += 5;
+		
+		for(int i = 1; i<this.NBCOTES+1; i++) // On ajoute les vertex dans le tableau des vertex
 		{
 			this.tabVertex[this.lenTabV] = tabVertexPoint[i].x(); // Top Left
 			this.tabVertex[this.lenTabV+1] = tabVertexPoint[i].y(); 	
@@ -429,12 +447,77 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 			this.tabVertex[this.lenTabV+3] = 1.0f; 
 			this.tabVertex[this.lenTabV+4] = 1.0f; 
 			
+			System.out.println("Vertex "+ i + ": " + tabVertexPoint[i].x() + ", " + tabVertexPoint[i].y() );
+			
 			this.lenTabV += 5;
 		}
 		
 		
 		
 		
+		int indexInitial = this.indexTabE; // indice du centre du point
+		
+		for(int j = 0; j<this.NBCOTES; j++)
+		{
+			if(j == this.NBCOTES-1) // dernier tour de boucle
+			{
+				this.elements[this.lenTabE] = indexInitial;
+				this.elements[this.lenTabE+1] = this.indexTabE+1;
+				this.elements[this.lenTabE+2] = this.indexTabE+1+j;
+				
+				System.out.println(String.valueOf(indexInitial) + "-" + String.valueOf(this.indexTabE+1) + "-" + String.valueOf(this.indexTabE+1+j));
+			}
+			else
+			{
+				this.elements[this.lenTabE] = indexInitial;
+				this.elements[this.lenTabE+1] = this.indexTabE+2+j;
+				this.elements[this.lenTabE+2] = this.indexTabE+1+j;
+				
+				System.out.println(String.valueOf(indexInitial) + "-" + String.valueOf(this.indexTabE+2+j) + "-" + String.valueOf(this.indexTabE+1+j));
+			}
+			
+			this.lenTabE += 3;
+		}
+		
+		this.indexTabE += this.NBCOTES + 1; // + NBCOTES vertex + 1 (centre)
+		
+		this.nbVertex += (this.NBCOTES)*3; // On doit utiliser l'équivalent de 3*NBCOTES pour tracer le point
+	}
+	
+	public void updatePosJoueurs()
+	{
+		int i = 0;
+		Iterator<Joueur> e = this.partie.getJoueurs().iterator();
+		while(e.hasNext()) // A déplacer dans Init();
+		{
+			j = e.next();
+			if(j.getEtat() == Etat.VIVANT)
+			{
+				moveVertexJoueur(j.getAnciennePosition(), j.getPosition(), i);
+				i++;
+			}
+		}
+		
+
+		
+	}
+	
+	public void moveVertexJoueur(Vector3 lastp, Vector3 p, int i) // i : indice du joueur
+	{
+		Vector2 vecDiff = new Vector2(p.x()-lastp.x(),p.y()-lastp.y());
+		//System.out.println(" Gap_-__-___-___-___-___-___-_____________:"+ vecDiff.x() + "," + vecDiff.y());
+
+		for(int j = i*(5*(this.NBCOTES+1)); j<this.NBCOTES+1+i*(5*(this.NBCOTES+1)); j++)
+		{
+			this.tabVertex[5*j] += vecDiff.x();
+			this.tabVertex[(5*j)+1] += vecDiff.y();
+		}
+		
+		this.vboBuffer.put(this.tabVertex); // On met a jour le buffer VBO 
+		this.vboBuffer.clear();
+		
+		this.eboBuffer.put(this.elements);
+		this.eboBuffer.clear();
 	}
 	
 	
