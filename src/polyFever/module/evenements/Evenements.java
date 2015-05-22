@@ -5,20 +5,27 @@ import java.util.*;
 import org.lwjgl.input.Keyboard;
 
 import polyFever.module.moteurDeJeu.*;
+import polyFever.module.menu.*;
 
-/* 
- * POUR LES EVENEMENTS FAUDRAIT PEUT ETRE AVOIR PLUSIEURS CONSTRUCTEURS, GENRE 1 POUR CHAQUE TYPE DE GESTION
- * C'EST A DIRE UNE GESTION POUR QUAND EN JEU
- * UNE GESTION POUR QUAND DANS LE MENU
- */
+
 //implementation : http://pastebin.com/i7TYjrbM
 
+/**
+ * Classe gérant les contrôles des joueurs et les entrées utilisateurs dans les menus.
+ * N'est modifié par aucune autre classe : ne contient aucun getter/setter.
+ * @author Valentin
+ *
+ */
 public class Evenements {
 	private Partie partie;			//Partie
 	private Hashtable controles;	//Liste des touches associes aux joueurs
 	private StringBuilder entree;	//Entree utilisateur
 	
-	//Rappel : vous m'appelez pour les menus, donc vous m'initialiserez jamais directement avec la liste des joueurs
+	//Rappel : vous m'appelez pour les menus, donc vous n'initialiserez jamais directement avec la liste des joueurs
+	/**
+	 * Constructeur par défaut, aucun paramètre.
+	 * Sera appelé dés le début de l'éxécution pour la navugation dans les menus, lorsque les contrôles et le nombre de joueurs seront encore inconnus.
+	 */
 	public Evenements() {
 		System.out.println("Instanciation d'un objet Evenements...");
 		this.partie = new Partie();				//partie geree
@@ -30,19 +37,56 @@ public class Evenements {
 	public void gestionMenu() {
 		//Renvoie les coordonnées de la souris quand l'utilisateur clic
 	}
-	
-	public void entreeUtilisateur() {
+	*/
+	/**
+	 * Gestion des entrées au clavier des utilisateurs : saisie de pseudo, adresse IP, port.
+	 * @param param	L'objet Parametres dans lequel modifier la chaine correspondante.
+	 */
+	public void entreeUtilisateur(Parametres param) {
 		//Renvoie la chaine saisie par l'utilisateur (pour les pseudos et les adresses)
-		//Arrête d'enregistrer quand l'utilisateur appuie sur Entrée
+		//Choix : ESCAPE pour arreter la saisie, RETURN pour la valider, BACK pour effacer
+		while(Keyboard.next()) {
+			
+			if(Keyboard.getEventKey() == Key.KEY_ESCAPE) {
+				param.setPseudo(new String());		//On renvoie une chaine vide quand l'utilisateur annule la saisie
+			
+			} else if(Keyboard.getEventKey() == Key.KEY_RETURN) {
+				this.entree.deleteCharAt(this.entree.length()-1);	//On efface le dernier caractere
+			
+			} else if(Keyboard.getEventKey() == Key.BACK) {
+				param.setPseudo(this.entree.toString());	//On envoie la chaine courante (en String)
+				
+			} else this.entree.append(getEventCharacter());	//On ajoute le caractere associe a la touche
+			
+		}
+		//getEventCharacter envoie le caractere (en char) associe (fonctionne avec Keyboard.next, les evenements)
+		//getKeyName envoie le nom de la Key saisie en parametre (en String) (fonctionne avec l'int KEY_xxx)
 	}
 	
 	//Retourne les deux touches pour tourner entrées par un joueur, donc c'est un couple
 	//Retourne les entiers KEY_xxx : utiliser Keyboard.getKeyName()
-	public void entreeControles() {
+	/**
+	 * Fonction qui permet aux joueurs de choisir leurs touches.
+	 * @param param	Objet Parametres où modifier les touches.
+	 */
+	public void entreeControles(Parametres param) {
 		//Renvoie les deux premiers caractères valides entrés par l'utilisateur
+		while(Keyboard.next()) {
+			
+			if(param.getGauche() == null)		//On regarde quelle touche est entree
+				param.setGauche(getEventKey());	//Et on l'ajoute
+			else if(param.getDroite() == null)
+				param.setDroite(getEventKey());
+			//Si les deux touches sont deja saisies, on ne fait rien
+			//Aucune restriction sur les touches possibles pour le moment
+		}
 	}
-	*/
+	
 	//Initialiser les contrôles avec les joueurs au debut d'une partie
+	/**
+	 * Initialisation des contrôles d'une partie : récupère les contrôles et les associe aux objets Joueur correspondants?
+	 * @param p	Objet partie où sont enregistrés les joueurs.
+	 */
 	public void initControles(Partie p) {
 		this.partie = p;	//Récupérer la liste des joueurs
 		
@@ -63,13 +107,12 @@ public class Evenements {
 	 *  -> classe enum ETAT : ne traiter que les VIVANTS
 	 */
 	//Gestion des contrôles en partie
+	/**
+	 * Gestion des entrées clavier pendant une partie : permet au joueur de tourner ainsi que l'arrêt et la mise en pause de la partie.
+	 */
 	public void gestionJeu() {
 		Joueur j;
 		
-		/*
-		if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))	//Si on appuie sur echap
-													//Quitter la partie (à compléter)
-		*/
 		
 		//Puis on regarde les évènements
 		//Re garder les évènements permet d'être plus réactif sur l'action quand on appuie/relache une touche
