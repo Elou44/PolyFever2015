@@ -493,24 +493,38 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 			j = e.next();
 			if(j.getEtat() == Etat.VIVANT)
 			{
-				moveVertexJoueur(j.getAnciennePosition(), j.getPosition(), i);
+				moveVertexJoueur(j.getAnciennePosition(), j.getPosition(),j.getLigne().getEpaisseur()/2,j.isRedimension(), i);
 				i++;
 			}
 		}
-		
-
-		
+			
 	}
 	
-	public void moveVertexJoueur(Vector3 lastp, Vector3 p, int i) // i : indice du joueur
+	public void moveVertexJoueur(Vector3 lastp, Vector3 p, float r, boolean isRedimension, int i) // i : indice du joueur
 	{
 		Vector2 vecDiff = new Vector2(p.x()-lastp.x(),p.y()-lastp.y());
 		//System.out.println(" Gap_-__-___-___-___-___-___-_____________:"+ vecDiff.x() + "," + vecDiff.y());
 
-		for(int j = i*(5*(this.NBCOTES+1)); j<this.NBCOTES+1+i*(5*(this.NBCOTES+1)); j++)
+		if(!isRedimension) // Si l'épaisseur n'a pas changé
 		{
-			this.tabVertex[5*j] += vecDiff.x();
-			this.tabVertex[(5*j)+1] += vecDiff.y();
+			for(int j = i*(5*(this.NBCOTES+1)); j<this.NBCOTES+1+i*(5*(this.NBCOTES+1)); j++)
+			{
+				this.tabVertex[5*j] += vecDiff.x();
+				this.tabVertex[(5*j)+1] += vecDiff.y();
+			}
+
+		}
+		else
+		{
+			double alpha = 2*Math.PI / this.NBCOTES;
+			
+			this.tabVertex[0] = p.x();
+			this.tabVertex[1] = p.y();
+			for(int j = i*(5*(this.NBCOTES+1))+1, k = 0; j<this.NBCOTES+1+i*(5*(this.NBCOTES+1)); j++, k++)
+			{
+				this.tabVertex[5*j] = (float)Math.cos(alpha*(k))*r+p.x();
+				this.tabVertex[(5*j)+1] = (float)Math.sin(alpha*(k))*r+p.y();
+			}
 		}
 		
 		this.vboBuffer.put(this.tabVertex); // On met a jour le buffer VBO 
@@ -518,6 +532,9 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 		this.eboBuffer.put(this.elements);
 		this.eboBuffer.clear();
+		
+		//printTabVertex();
+
 	}
 	
 	
@@ -527,6 +544,16 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		this.addRectangle(new Vector3(1.0f-p.x(),1.0f-p.y(),1.0f),(float) Math.PI/2, 0.01f, 2.0f, new Vector3(1.0f,1.0f,0.0f)); // RIGHT
 		this.addRectangle(new Vector3(1.0f-p.x(),-1.0f-p.y(),1.0f), 0.0f, 0.02f, 1.99f, new Vector3(1.0f,1.0f,0.0f)); // BOTTOM
 		this.addRectangle(new Vector3(1.0f-p.x(),1.0f-p.y(),1.0f), 0.0f, 0.01f, 1.99f, new Vector3(1.0f,1.0f,0.0f)); // RIGHT
+	}
+	
+	
+	public void printTabVertex()
+	{
+		for(int i = 0; i<50; i++)
+		{
+			System.out.print(this.tabVertex[i]+", ");
+		}
+		System.out.println("_______________________________________________");
 	}
 	
 	
