@@ -11,9 +11,9 @@ public class Partie {
 	private Set<Joueur> joueurs;		// Liste des joueurs de la partie (objet Joueur)
 	private float dimensionPlateau;		// Dimensions du plateau de jeu
 	private List<Bonus> bonusPresents;	// Liste des bonus présents sur le plateau de jeu
-	private long temps;			// Variable mesurant le temps d'une partie
-	private float tabVertex[];			// Référence vers le tableau de vertex du module Affichage (dans DessinLigne)
-	private int indexVertex;			// Index de remplissage du tableau de vertex
+	private long temps;					// Variable mesurant le temps d'une partie
+	private boolean roundEnPause;		// Booléen indiquant si le round est en pause ou non, permet aussi de démarrer les parties (false = pas en pause ; true = en pause)
+	private boolean jeu;				// Booléen indiquant si une partie est toujours en cours ou si elle est terminée
 	
 	private final int nbSousGrilles = 16;	// Variable donnant le nombre de sous grilles voulues
 	
@@ -30,6 +30,8 @@ public class Partie {
 		this.bonusPresents = new ArrayList<Bonus>();	// Création de la liste des bonus
 		this.temps = System.currentTimeMillis();		// Définition de l'heure de début de la partie
 		this.trace = new ArrayList<List<Vector4>>();	// Création de la list trace
+		this.roundEnPause = false;						// Initialisation du jeu en pause
+		this.jeu = true;								// Initialisation de l'état de jeu à "en cours"
 		
 		// Initialisation des tableaux contenant les traces
 		for (int i = 0; i < nbSousGrilles; i++)
@@ -43,6 +45,18 @@ public class Partie {
 	/*
 	 * Assesseurs et mutateurs
 	 */
+	
+	public boolean isJeu() {
+		return jeu;
+	}
+
+	public boolean isRoundEnPause() {
+		return roundEnPause;
+	}
+
+	public void setRoundEnPause(boolean roundEnPause) {
+		this.roundEnPause = roundEnPause;
+	}
 	
 	public long getTemps() {
 		return temps;
@@ -92,10 +106,6 @@ public class Partie {
 		this.bonusPresents = bonusPresents;
 	}
 	
-	public float[] getTabVertex() {
-		return tabVertex;
-	}
-	
 	public List<List<Vector4>> getTrace() {
 		return trace;
 	}
@@ -120,15 +130,48 @@ public class Partie {
 		// Calcul des positions de base des joueurs & définition du temps de traçage de trou
 		for(Joueur e : joueurs)		// Boucle de parcours de la liste des joueurs
 		{
-			//e.getPosition().set((float) (Math.random() * (0.5 + 0.5) - 0.5), (float) (Math.random() * (0.5 + 0.5) - 0.5), 1);	// Calcul de la position en x et y, entre -0.5 et 0.5
-			e.getPosition().set(-0.9f,-0.9f,1);
-			//e.setDirection((double) (Math.random() * 2*Math.PI));	// Calcul d'une direction entre 0 et 2 PI
-			e.setDirection(Math.PI/2);
+			e.getPosition().set((float) (Math.random() * (0.5 + 0.5) - 0.5), (float) (Math.random() * (0.5 + 0.5) - 0.5), 1);	// Calcul de la position en x et y, entre -0.5 et 0.5
+			e.setDirection((double) (Math.random() * 2*Math.PI));	// Calcul d'une direction entre 0 et 2 PI
 			e.getLigne().setTpsTrou((long) (Math.random() * (4500 - 3000) + 3000));	// Calcul du temps de traçage de trou
 		}
 		System.out.println("Score MAX = "+getScoreMax());
 	}
 	
+	// Méthode faisant débuter une partie
+	public void demarrerPartie()
+	{
+		// On change l'état du jeu à "non en pause"
+		this.roundEnPause = false;
+	}
+	
+	// Méthode changeant l'état du jeu, de "pause" à "en cours" ou "en cours" à "pause"
+	public void pause()
+	{
+		if(this.roundEnPause)
+		{
+			this.roundEnPause = false;
+		}
+		else { this.roundEnPause = true; }
+	}
+	
+	// Méthode initialisant le début d'un round
+	public void initialiserRound()
+	{
+		//System.out.println("\n\n====> NOUVEAU ROUND <====\n");
+		
+		// Calcul des positions de base des joueurs & définition du temps de traçage de trou
+		for(Joueur e : joueurs)		// Boucle de parcours de la liste des joueurs
+		{
+			e.getPosition().set((float) (Math.random() * (0.5 + 0.5) - 0.5), (float) (Math.random() * (0.5 + 0.5) - 0.5), 1);	// Calcul de la position en x et y, entre -0.5 et 0.5
+			e.setDirection((double) (Math.random() * 2*Math.PI));	// Calcul d'une direction entre 0 et 2 PI
+			e.getLigne().setTpsTrou((long) (Math.random() * (4500 - 3000) + 3000));	// Calcul du temps de traçage de trou
+		}
+		
+		// Changement de l'état du jeu à "pause" pour attendre le départ donnée par un joueur
+		this.roundEnPause = true;
+	}
+	
+	// Méthode testant l'intersection de 2 segments
 	private boolean ligneIntersection(float indiceA, float indiceB, Vector4 joueur, Vector4 trace)
 	{
 		if(indiceA == 0.0 || indiceB == 0.0)
@@ -161,6 +204,7 @@ public class Partie {
 		return true;
 	}
 	
+	// Méthode de détection des collisions, entre le joueur / bords du plateau et joueur / trace
 	public void repererCollisions()
 	{
 		/* Vérifier les coordonnées de chaque joueur; qu'elles soient pas égales
@@ -180,7 +224,10 @@ public class Partie {
 			{
 				System.out.println("==> Mort contre plateau \n");
 				// On modifie l'état du joueur concerné et on le passe à mort
-				this.modifierEtat(e);
+				e.setEtat(Etat.MORT);	// Alors on modifie son état en MORT
+				
+				// On met à jour le score des autres joueurs
+				this.modifierScore();
 			}
 			
 			// ### Collision trace ###
@@ -226,7 +273,7 @@ public class Partie {
 					else { e.setPosition(new Vector3(indiceA, indiceB, 1)); }
 					
 					// Alors on modifie l'état du joueur en "mort"
-					this.modifierEtat(e);
+					e.setEtat(Etat.MORT);	// Alors on modifie son état en MORT
 					
 					// On met à jour le score des autres joueurs
 					this.modifierScore();
@@ -235,6 +282,7 @@ public class Partie {
 		}
 	}
 
+	// Méthode incrémentant le score des joueurs en vie
 	public void modifierScore()
 	{
 		/* Rajouter +1 aux scores des joueurs encore en vie
@@ -255,25 +303,6 @@ public class Partie {
 		
 	}
 	
-	public void modifierEtat(Joueur mort)
-	{
-		/* Modifier l'état d'un joueur
-		 * Pour passer de vivant | mort | quitté
-		 */
-		
-		System.out.println("Joueur mort "+mort.toString());
-		
-		// Parmis les joueurs dans la partie
-		for(Joueur e : joueurs)
-		{
-			// Si le joueur étudié est le joueur décédé
-			if(e == mort)
-			{
-				e.setEtat(Etat.MORT);	// Alors on modifie son état en MORT
-			}
-		}
-	}
-	
 	public void apparaitreBonus()
 	{
 		/* 
@@ -292,6 +321,7 @@ public class Partie {
 		}
 	}
 	
+	// Méthode ajoutant un objet joueur dans la partie
 	public void ajouterJoueur(Joueur joueur, PolyFever p)
 	{
 		// Incrémentation du nombre de joueurs
@@ -325,8 +355,6 @@ public class Partie {
 		{
 			e.printStackTrace();
 		}
-		
-		//System.out.println("\t\t\tNEW : "+joueur.getLigne().toString());
 
 	}
 	
@@ -338,6 +366,7 @@ public class Partie {
 		 */
 	}
 	
+	// Méthode remplissant les tableaux des sous grilles avec les traces des joueurs
 	public void envoyerTabVertex(Vector4 droiteA, Vector4 droiteB)
 	{		
 		Vector4[] coord = new Vector4[2];
@@ -434,18 +463,68 @@ public class Partie {
 		
 	}
 	
+	// Méthode vérifiant si un joueur ayant atteint le scoreMax a gagné la partie ou non
+	private boolean verifGagnant(Joueur joueur)
+	{
+		for(Joueur a : joueurs)
+		{
+			if(joueur != a && joueur.getScore() < a.getScore()+2)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	// Méthode annonçant la fin d'une partie
+	private void arreterPartie()
+	{
+		// Mise à l'état de pause du jeu
+		this.roundEnPause = true;
+		
+		// "Suppression" des joueurs et de leurs lignes, pour que le ramasse-miettes les suppriment vraiment
+		for(Joueur e : joueurs)
+		{
+			e.setLigne(null);
+			e = null;
+		}
+		
+		// "Suppression" des bonus
+		for(Bonus b : bonusPresents)
+		{
+			b = null;
+		}
+		
+		// Changement de l'état de la partie
+		this.jeu = false;
+	}
+	
+	// Méhode comptant le nombre de joueurs encore en vie dans la partie
+	private int nbJoueursVivant()
+	{
+		int nb = 0;		// Définition d'une variable accueillant le nombre de joueurs
+		
+		// PArmis tous les joueurs
+		for(Joueur e : joueurs)
+		{
+			// Si le joueur est en vie
+			if(e.getEtat() == Etat.VIVANT)
+			{
+				// Incrémentation de nb
+				nb++;
+			}
+		}
+		
+		return nb;
+	}
+	
+	
 	/*
 	 * Méthode définissant tout ce qu'on fait à chaque tour dans une partie
 	 */
 	
 	public void update()
 	{
-		// On remplit les sous grilles avec la nouvelle trace
-		//int taille = this.tabVertex.length;
-		
-		//System.out.println("\t\t### TAILLE VERTEX : "+indexVertex);
-		
-		
 		// On repère si des joueurs sont en collision avec une trace ou un mur
 		this.repererCollisions();	// Si collisions il y a, alors la méthode repererCollisions se charge de mettre à jour les scores et l'état des joueurs
 		
@@ -455,8 +534,33 @@ public class Partie {
 		// Voir si on fait apparaitre des bonus ou non
 		//this.apparaitreBonus();
 		
-		// Mettre à jour le traçage des trous pour chaque joueur
-		
+		// Voir si il ne reste plus qu'un joueur en vie, donc fin du round
+		if(nbJoueursVivant() <= 1)
+		{
+			/* 
+			 * Si il ne reste plus qu'un joueur en vie
+			 * 	Vérifier si le score max a été atteint
+			 * 		Si oui : vérifier que l'écart avec le 2ème et de plus de 2 points
+			 * 		Si non : repartir sur un nouveau round
+			 */
+			
+			// Parmis tous les joueurs
+			for(Joueur e : joueurs)
+			{
+				// Si le score du joueur est sup ou égal au scoreMax
+				if(e.getScore() >= scoreMax)
+				{
+					// On vérifie si il a plus de 2 points par rapport aux autres joueurs
+					if(verifGagnant(e))
+					{
+						//arreterPartie();
+						// FIN DE LA PARTIE
+					}
+				}
+				// Si non, alors on initialise un nouveau round
+				else { this.initialiserRound(); }
+			}
+		}
 		
 	}
 
