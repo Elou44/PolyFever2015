@@ -25,7 +25,7 @@ public class Prototyp1 extends PolyFever {
 		Joueur j1 = new Joueur(partie);
 		partie.ajouterJoueur(j1,this);
 		System.out.println("Création de l'objet Affichage...");
-		this.affichage = new Affichage(this, partie);
+		this.affichage = new Affichage();
 		System.out.println("Affichage créé avec succès...");
 		this.partie = partie;	// Sans ça j'ai un pointeur nul quand j'appelle ma méthode update :/ TON setPartie n'a pas l'air de bien définir la partie
 		this.setPartie(partie); // Envoie de l'objet Partie à la classe PolyFever
@@ -35,8 +35,10 @@ public class Prototyp1 extends PolyFever {
 	@Override
 	public void init() {
 		
-		affichage.init();
+		affichage.initMenu();
 		partie.initialiserPartie();
+		affichage.initJeu(this, partie);
+		
 		
 	}
 	
@@ -44,7 +46,10 @@ public class Prototyp1 extends PolyFever {
 	public void render() {		
 		//System.out.println("\n\n=================== NOUVELLE BOUCLE ===================\n\n");
 		partie.update();
-		affichage.dessiner();
+		
+		affichage.dessinerMenu();
+		
+		affichage.dessinerJeu();
 		
 				
 	}

@@ -8,25 +8,34 @@ public class Affichage {
 	private DessinJeu dJeu;
 	private DessinMenu dMenu;
 	
-	public Affichage(PolyFever p, Partie partie)
+	public Affichage()
 	{
-
-		dJeu = new DessinJeu(this, p, partie);
-		dMenu = new DessinMenu();
+		
 	}
 	
 	
-	public void dessiner()
+	public void initMenu()
+	{
+		dMenu = new DessinMenu();
+		dMenu.init();
+	}
+	
+	public void initJeu(PolyFever p, Partie partie)
+	{
+		dJeu = new DessinJeu(this, p, partie);
+		dJeu.init();
+	}
+	
+	public void dessinerMenu()
 	{
 		//System.out.println("dessiner Affichage");
-		dJeu.dessiner();
 		dMenu.dessiner();
 	}
 	
-	public void init()
+	public void dessinerJeu()
 	{
-		dJeu.init();
-		dMenu.init();
+		//System.out.println("dessiner Affichage");
+		dJeu.dessiner();
 	}
 	
 }

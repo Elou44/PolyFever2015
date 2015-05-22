@@ -286,7 +286,7 @@ public abstract class PolyFever {
 	 */
 	public final void run(PixelFormat format, ContextAttribs attribs) {
 		
-		try {
+		/*try {
 
 			
 			Display.create(format, attribs);
@@ -297,9 +297,10 @@ public abstract class PolyFever {
 			System.exit(1);	
 
 			
-		}
-		/*while(tryAgain)
-		{666
+		}*/
+		boolean tryAgain = true;
+		while(tryAgain)
+		{
 			try {
 				if(this.isAAAvailable) // Si oui, on créé un écran avec l'antiAliasing activé
 				{
@@ -326,7 +327,7 @@ public abstract class PolyFever {
 				}
 				
 			}
-		}*/
+		}
 		
 		gameLoop();
 	}

@@ -41,6 +41,8 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	private int indexTabE;
 	FloatBuffer vboBuffer;
 	IntBuffer eboBuffer;
+	
+	private final int NBCOTES = 10; // Nombre de côtés du point du joueur
 	private float colDelta;
 	
 	private FloatBuffer projectionMatrix;
@@ -54,10 +56,14 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		this.decalage = d; // PROVISOIRE
 		this.colDelta = 0.01f;
 		
-		this.nbVertex = 0;
+		
 		this.affichage = a;
 		this.polyFever = p;
 		this.partie = partie;
+		
+		
+		
+		this.nbVertex = 0;
 		this.lenTabV = 0;
 		this.lenTabE = 0;
 		this.indexTabE = 0;
@@ -154,10 +160,9 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		// On trace des axes
 		/*this.addRectangle(new Vector3(0.0f,-1.0f,1.0f), 1.57f,0.005f, -2.0f, new Vector3(1.0f,1.0f,1.0f));
 		this.addRectangle(new Vector3(-1.0f,0.0f,1.0f), 0.0f, 0.005f, -2.0f, new Vector3(1.0f,1.0f,1.0f));*/
-		dessinerBordsPlateau(new Vector2(0.0f,0.0f));
 		
 		// Dessin des bords du plateau
-		
+		dessinerBordsPlateau(new Vector2(0.0f,0.0f));
 		
 		glBindVertexArray(glGenVertexArrays()); // Création d'un VAO : Vertex Array Object avec glGenVertexArrays() . le VAO stock les liens entre les attributs et les VBO
 		// le VAO contient une référence vers le VBO
@@ -285,24 +290,9 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		this.colDelta += 0.001f;
 		if(colDelta > 1.0f) colDelta = 0.0f;
 		//System.out.println("colDelta: ".concat(String.valueOf(colDelta)));
-		
-		//w = w; // conversion pixel vers float
-		h = h+0.01f; // conversion pixel vers float
-		//System.out.println("polyFever.getHEIGHT()/polyFever.getWIDTH(): ".concat(String.valueOf((float)polyFever.getHEIGHT()/(float)polyFever.getWIDTH())));
-		/*System.out.println("angle: ".concat(String.valueOf(angle)));
-		System.out.println("w: ".concat(String.valueOf(w)));
-		System.out.println("h: ".concat(String.valueOf(h)));*/
-		
-		//System.out.println("w: ".concat(String.valueOf(w)));
-		//System.out.println("h: ".concat(String.valueOf(h)));	
-		
-		//System.out.println("lenTabV: ".concat(String.valueOf(this.lenTabV)));
 
-		//System.out.println("decalage: ".concat(String.valueOf(decalage)));
-		
-		
-		// ECRASER LES DIMENSIONS SUR X
-		//v.set(v.x() *(float) polyFever.getHEIGHT()/ (float)polyFever.getWIDTH(),v.y(),v.z());
+		h = h+0.01f; // conversion pixel vers float
+
 		
 		Vector2 p1 = new Vector2();
 		
@@ -311,12 +301,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		double yd =  v.y() - (w/2)*Math.sin((Math.PI/2)-angle);
 		float y = (float) yd;
 		p1.set( x, y);
-		
-		//System.out.println("p1x: ".concat(String.valueOf(p1.x())));
-		//System.out.println("p1y: ".concat(String.valueOf(p1.y())));	
-		
-		//System.out.println("vx: ".concat(String.valueOf(v.x())));
-		//System.out.println("vy: ".concat(String.valueOf(v.y())));	
+
 		
 		Vector2 p2 = new Vector2();	
 		
@@ -325,10 +310,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		yd =  p1.y() - h*Math.sin(angle);
 		y = (float) yd;
 		p2.set(x, y);
-		
-		//System.out.println("p2x: ".concat(String.valueOf(p2.x())));
-		//System.out.println("p2y: ".concat(String.valueOf(p2.y())));	
-		
+
 		
 		Vector2 p4 = new Vector2();
 		xd =  v.x() - (w/2)*Math.cos((Math.PI/2)-angle);
@@ -336,10 +318,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		yd =  v.y() + (w/2)*Math.sin((Math.PI/2)-angle);
 		y = (float) yd;
 		p4.set( x, y);
-		
-		//System.out.println("p4x: ".concat(String.valueOf(p4.x())));
-		//System.out.println("p4y: ".concat(String.valueOf(p4.y())));	
-		
+
 		
 		Vector2 p3 = new Vector2();
 		
@@ -351,9 +330,6 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 		ajouterVector2Rect(p1, p2, p3, p4, c);
 		this.nbVertex += 6;
-		
-		// Peut etre utiliser matrice de rotation ? 
-		
 		
 	}
 	
@@ -390,7 +366,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 				new Vector4(this.tabVertex[this.lenTabV+5],this.tabVertex[this.lenTabV+6],this.tabVertex[this.lenTabV+10],this.tabVertex[this.lenTabV+11]));
 		
 		this.lenTabV += 20;
-		 // Essayer de rajouter les derniers points et de faire un clear();
+
 		this.vboBuffer.put(this.tabVertex); // On met a jour le buffer VBO 
 		this.vboBuffer.clear();
 
@@ -411,6 +387,50 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		this.indexTabE += 4;
 		
 		this.eboBuffer.clear();
+	
+	}
+	
+	public void initDessinJoueurs()
+	{
+		
+		Iterator<Joueur> e = this.partie.getJoueurs().iterator();
+		while(e.hasNext()) 
+		{
+			j = e.next();
+			if(j.getPosition().z() == 1.0f && j.getEtat() == Etat.VIVANT)
+			{
+				this.initPoint(j.getPosition(),j.getLigne().getEpaisseur()/2);
+			}
+			
+		}
+		
+	}
+	
+	public void initPoint(Vector3 p, float r) // Ajoute dans le buffer les vertex nécessaires à l'affichage du point d'un joueur.
+	{
+		double alpha = Math.PI / this.NBCOTES;
+		Vector2 tabVertexPoint[] = new Vector2[this.NBCOTES+1]; // +1 pour le vertex central
+		
+		tabVertexPoint[0] = new Vector2(p.x(),p.y()); // centre du point du joueur
+		
+		for(int i = 1; i<this.NBCOTES; i++)
+		{
+			tabVertexPoint[i] = new Vector2(
+					(float)Math.cos(alpha*(i-1))*r,
+					(float)Math.sin(alpha*(i-1))*r
+					);
+		}
+		
+		for(int i = 0; i<this.NBCOTES; i++)
+		{
+			this.tabVertex[this.lenTabV] = tabVertexPoint[i].x(); // Top Left
+			this.tabVertex[this.lenTabV+1] = tabVertexPoint[i].y(); 	
+			this.tabVertex[this.lenTabV+2] = 1.0f; 
+			this.tabVertex[this.lenTabV+3] = 1.0f; 
+			this.tabVertex[this.lenTabV+4] = 1.0f; 
+			
+			this.lenTabV += 5;
+		}
 		
 		
 		
@@ -420,10 +440,10 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	
 	public void dessinerBordsPlateau(Vector2 p)
 	{
-		this.addRectangle(new Vector3(-1.0f-p.x(),1.0f-p.y(),1.0f), 1.57f, 0.01f, 2.0f, new Vector3(1.0f,1.0f,0.0f)); // TOP
-		this.addRectangle(new Vector3(1.0f-p.x(),1.0f-p.y(),1.0f), 1.57f, 0.01f, 2.0f, new Vector3(1.0f,1.0f,0.0f)); // BOTTOM
-		this.addRectangle(new Vector3(0.0f-p.x(),0.0f-p.y(),1.0f), 1.57f, 0.01f, -3.0f, new Vector3(1.0f,1.0f,1.0f)); // LEFT 
-		this.addRectangle(new Vector3(0.0f-p.x(),0.0f-p.y(),1.0f), 1.57f, 0.01f, -3.0f, new Vector3(1.0f,1.0f,1.0f)); // RIGHT
+		this.addRectangle(new Vector3(-1.0f-p.x(),1.0f-p.y(),1.0f),(float) Math.PI/2, 0.01f, 2.0f, new Vector3(1.0f,1.0f,0.0f)); // LEFT 
+		this.addRectangle(new Vector3(1.0f-p.x(),1.0f-p.y(),1.0f),(float) Math.PI/2, 0.01f, 2.0f, new Vector3(1.0f,1.0f,0.0f)); // RIGHT
+		this.addRectangle(new Vector3(1.0f-p.x(),-1.0f-p.y(),1.0f), 0.0f, 0.02f, 1.99f, new Vector3(1.0f,1.0f,0.0f)); // BOTTOM
+		this.addRectangle(new Vector3(1.0f-p.x(),1.0f-p.y(),1.0f), 0.0f, 0.01f, 1.99f, new Vector3(1.0f,1.0f,0.0f)); // RIGHT
 	}
 	
 	
