@@ -14,6 +14,7 @@ import polyFever.module.moteurDeJeu.Partie;
 import polyFever.module.util.*;
 import polyFever.module.moteurDeJeu.*;
 import polyFever.module.affichage.*;
+import polyFever.module.evenements.Evenements;
 
 /**
  * This class defines an entry point for OpenGL programs as it handles context creation and the game loop.
@@ -34,6 +35,7 @@ public abstract class PolyFever {
 	
 	private Partie partie;
 	private GlOrtho glOrtho;
+	private Evenements evenements;
 	
 	private final int MSAA = 8; // AntiAliasing x8 
 	private String name;
@@ -58,6 +60,7 @@ public abstract class PolyFever {
 		
 		
 		this.partie = null;
+		this.evenements = null;
 		this.WIDTH = width; 
 		this.HEIGHT = height;
 		
@@ -99,6 +102,11 @@ public abstract class PolyFever {
 		this.partie = p;
 	}
 	
+	public void setEvenements(Evenements e)
+    {
+            this.evenements = e;
+    }
+	
 	public boolean getIsAAAvailable()
 	{
 		return this.isAAAvailable;
@@ -119,6 +127,7 @@ public abstract class PolyFever {
 		
 		this.name = name;
 		this.partie = null;
+		this.evenements = null;
 		Display.setTitle(this.name);
 		this.WIDTH = width; 
 		this.HEIGHT = height;
@@ -353,6 +362,8 @@ public abstract class PolyFever {
 				if(Display.wasResized())
 					resized();
 				
+				this.evenements.gestionJeu();
+				/*
 				while(Keyboard.next()) {
 					if(Keyboard.getEventKeyState())
 						keyPressed(Keyboard.getEventKey(), Keyboard.getEventCharacter());
@@ -375,7 +386,7 @@ public abstract class PolyFever {
 				}
 				
 				traitementEvenements(isLeftHeld, isRightHeld);
-				
+				*/
 				update(deltaTime);
 				
 				Utils.checkGLError("update");
