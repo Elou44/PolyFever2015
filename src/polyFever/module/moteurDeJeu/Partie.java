@@ -504,7 +504,7 @@ public class Partie {
 	}
 	
 	// Méthode annonçant la fin d'une partie
-	private void arreterPartie()
+	public void arreterPartie()
 	{
 		// Mise à l'état de pause du jeu
 		this.roundEnPause = true;
