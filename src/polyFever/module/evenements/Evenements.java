@@ -117,12 +117,14 @@ public class Evenements {
 		//Puis on regarde les évènements
 		//Re garder les évènements permet d'être plus réactif sur l'action quand on appuie/relache une touche
 		while(Keyboard.next()) {
-			/*
+			
 			if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {	//Quitter la partie
+				this.partie.arreterPartie();
 				
-			} else
-			*/
-			if(this.controles.containsKey(Keyboard.getEventKey())) {	//Si l'évènement concerne les controles d'un joueur
+			} else if(Keyboard.getEventKey() == Keyboard.KEY_SPACE) {	//Quitter la partie
+				this.partie.pause();
+			
+			} else if(this.controles.containsKey(Keyboard.getEventKey())) {	//Si l'évènement concerne les controles d'un joueur
 				j = (Joueur) this.controles.get(Keyboard.getEventKey());
 				
 				if(Keyboard.getEventKey() == j.getToucheG())

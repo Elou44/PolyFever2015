@@ -8,7 +8,7 @@ import polyFever.module.affichage.Affichage;
 import polyFever.module.moteurDeJeu.*;
 
 public class Prototyp1 extends PolyFever {
-		
+	
 	public static void main(String[] args) {
 		new Prototyp1().run(3, 2, true);
 	}
