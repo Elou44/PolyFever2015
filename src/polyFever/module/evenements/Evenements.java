@@ -47,16 +47,16 @@ public class Evenements {
 		//Choix : ESCAPE pour arreter la saisie, RETURN pour la valider, BACK pour effacer
 		while(Keyboard.next()) {
 			
-			if(Keyboard.getEventKey() == Key.KEY_ESCAPE) {
+			if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
 				param.setPseudo(new String());		//On renvoie une chaine vide quand l'utilisateur annule la saisie
 			
-			} else if(Keyboard.getEventKey() == Key.KEY_RETURN) {
+			} else if(Keyboard.getEventKey() == Keyboard.KEY_RETURN) {
 				this.entree.deleteCharAt(this.entree.length()-1);	//On efface le dernier caractere
 			
-			} else if(Keyboard.getEventKey() == Key.BACK) {
+			} else if(Keyboard.getEventKey() == Keyboard.KEY_BACK) {
 				param.setPseudo(this.entree.toString());	//On envoie la chaine courante (en String)
 				
-			} else this.entree.append(getEventCharacter());	//On ajoute le caractere associe a la touche
+			} else this.entree.append(Keyboard.getEventCharacter());	//On ajoute le caractere associe a la touche
 			
 		}
 		//getEventCharacter envoie le caractere (en char) associe (fonctionne avec Keyboard.next, les evenements)
@@ -73,10 +73,10 @@ public class Evenements {
 		//Renvoie les deux premiers caractères valides entrés par l'utilisateur
 		while(Keyboard.next()) {
 			
-			if(param.getGauche() == null)		//On regarde quelle touche est entree
-				param.setGauche(getEventKey());	//Et on l'ajoute
-			else if(param.getDroite() == null)
-				param.setDroite(getEventKey());
+			if(param.getGauche() == (Integer) null)		//On regarde quelle touche est entree
+				param.setGauche(Keyboard.getEventKey());	//Et on l'ajoute
+			else if(param.getDroite() == (Integer) null)
+				param.setDroite(Keyboard.getEventKey());
 			//Si les deux touches sont deja saisies, on ne fait rien
 			//Aucune restriction sur les touches possibles pour le moment
 		}
@@ -141,7 +141,7 @@ public class Evenements {
 		while(i.hasNext()) {
 			j = i.next();
 			
-			if(j.getEtat() == Etat.VIVANT) {
+			if(j.getEtat() == Etat.VIVANT &&  !this.partie.isRoundEnPause()) {
 			
 				if(j.isToucheGPresse() && !j.isToucheDPresse())		//Le joueur tourne à gauche
 					j.getLigne().tournerGauche();			//Appel de la fonction pour tourner à gauche
