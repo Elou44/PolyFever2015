@@ -400,7 +400,7 @@ public class Partie {
 					// Si la position du joueur est la même que la position du point tracé
 					//if( ( (contactG = ligneIntersection(indiceE, indiceF, new Vector4(e.getDroiteJoueur().x(), e.getDroiteJoueur().y(), e.getAncienneDroiteJoueur().x(), e.getAncienneDroiteJoueur().y()), pointGrille)) || (contactD = ligneIntersection(indiceC, indiceD, new Vector4(e.getDroiteJoueur().z(), e.getDroiteJoueur().w(), e.getAncienneDroiteJoueur().z(), e.getAncienneDroiteJoueur().w()), pointGrille)) || ligneIntersection(indiceA, indiceB, droite, pointGrille) ) && e.getPosition().z() == 1 && ( (pointGrille.x() != e.getDroiteJoueur().x()) || (pointGrille.z() != e.getDroiteJoueur().z())))
 					//if(circleIntersection(e.getLigne().getEpaisseur(), e.getPosition(), pointGrille) && e.getPosition().z() == 1 && ( (pointGrille.x() != e.getDroiteJoueur().x()) || (pointGrille.x() != e.getDroiteJoueur().z()) ) )
-					if( ( (contactD = ligneIntersection(indiceC, indiceD, e.getDroiteJoueur(), pointGrille)) || ligneIntersection(indiceA, indiceB, droite, pointGrille) ) && e.getPosition().z() == 1)
+					if( ( /*(contactD = ligneIntersection(indiceC, indiceD, e.getDroiteJoueur(), pointGrille)) || */ligneIntersection(indiceA, indiceB, droite, pointGrille) ) && e.getPosition().z() == 1)
 					{
 						System.out.println("Ancienne pos : ("+droite.x()+","+droite.y()+") ; Nouvelle pos : ("+droite.z()+","+droite.w()+")");
 						System.out.println("INDICE A = "+indiceA);
