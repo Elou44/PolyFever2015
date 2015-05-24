@@ -347,34 +347,54 @@ public class Partie {
 				for(Vector4 pointGrille : this.getTrace().get(e.getGrille()))
 				{
 					Vector4 droite = new Vector4();
+					Vector4 droiteG = new Vector4();
+					Vector4 droiteD = new Vector4();
 					
 					if(e.getDirection() >= 0 && e.getDirection() <= (Math.PI/2))
 					{
 						droite.set(e.getAnciennePosition().x()+(e.getLigne().getEpaisseur()/2), e.getAnciennePosition().y()+(e.getLigne().getEpaisseur()/2), e.getPosition().x()+(e.getLigne().getEpaisseur()/2), e.getPosition().y()+(e.getLigne().getEpaisseur()/2));
+						droiteG.set(e.getAncienneDroiteJoueur().z()+(e.getLigne().getEpaisseur()/32), e.getAncienneDroiteJoueur().w()-(e.getLigne().getEpaisseur()/32), e.getDroiteJoueur().z()+(e.getLigne().getEpaisseur()/32), e.getDroiteJoueur().w()-(e.getLigne().getEpaisseur()/32));
+						droiteD.set(e.getAncienneDroiteJoueur().x()+(e.getLigne().getEpaisseur()/32), e.getAncienneDroiteJoueur().y()-(e.getLigne().getEpaisseur()/32), e.getDroiteJoueur().x()+(e.getLigne().getEpaisseur()/32), e.getDroiteJoueur().y()-(e.getLigne().getEpaisseur()/32));
 					}
 					else if(e.getDirection() > (Math.PI/2) && e.getDirection() <= Math.PI)
 					{
 						droite.set(e.getAnciennePosition().x()-(e.getLigne().getEpaisseur()/2), e.getAnciennePosition().y()+(e.getLigne().getEpaisseur()/2), e.getPosition().x()-(e.getLigne().getEpaisseur()/2), e.getPosition().y()+(e.getLigne().getEpaisseur()/2));
+						droiteG.set(e.getAncienneDroiteJoueur().z() + (e.getLigne().getEpaisseur()/32), e.getAncienneDroiteJoueur().w() + (e.getLigne().getEpaisseur()/32), e.getDroiteJoueur().z() + (e.getLigne().getEpaisseur()/32), e.getDroiteJoueur().w() + (e.getLigne().getEpaisseur()/32));
+						droiteD.set(e.getAncienneDroiteJoueur().x() - (e.getLigne().getEpaisseur()/32), e.getAncienneDroiteJoueur().y() - (e.getLigne().getEpaisseur()/32), e.getDroiteJoueur().x() - (e.getLigne().getEpaisseur()/32), e.getDroiteJoueur().y() - (e.getLigne().getEpaisseur()/32));
 					}
 					else if(e.getDirection() > Math.PI && e.getDirection() <= (3*Math.PI/2))
 					{
 						droite.set(e.getAnciennePosition().x()-(e.getLigne().getEpaisseur()/2), e.getAnciennePosition().y()-(e.getLigne().getEpaisseur()/2), e.getPosition().x()-(e.getLigne().getEpaisseur()/2), e.getPosition().y()-(e.getLigne().getEpaisseur()/2));
+						droiteG.set(e.getAncienneDroiteJoueur().z() - (e.getLigne().getEpaisseur()/32), e.getAncienneDroiteJoueur().w() + (e.getLigne().getEpaisseur()/32), e.getDroiteJoueur().z() - (e.getLigne().getEpaisseur()/32), e.getDroiteJoueur().w() + (e.getLigne().getEpaisseur()/32));
+						droiteD.set(e.getAncienneDroiteJoueur().x() + (e.getLigne().getEpaisseur()/32), e.getAncienneDroiteJoueur().y() - (e.getLigne().getEpaisseur()/32), e.getDroiteJoueur().x() + (e.getLigne().getEpaisseur()/32), e.getDroiteJoueur().y() - (e.getLigne().getEpaisseur()/32));
 					}
 					else if(e.getDirection() > (3*Math.PI/2) && e.getDirection() <= (2*Math.PI))
 					{
 						droite.set(e.getAnciennePosition().x()+(e.getLigne().getEpaisseur()/2), e.getAnciennePosition().y()-(e.getLigne().getEpaisseur()/2), e.getPosition().x()+(e.getLigne().getEpaisseur()/2), e.getPosition().y()-(e.getLigne().getEpaisseur()/2));
+						droiteG.set(e.getAncienneDroiteJoueur().z() - (e.getLigne().getEpaisseur()/32), e.getAncienneDroiteJoueur().w() - (e.getLigne().getEpaisseur()/32), e.getDroiteJoueur().z() - (e.getLigne().getEpaisseur()/32), e.getDroiteJoueur().w() - (e.getLigne().getEpaisseur()/32));
+						droiteD.set(e.getAncienneDroiteJoueur().x() + (e.getLigne().getEpaisseur()/32), e.getAncienneDroiteJoueur().y() + (e.getLigne().getEpaisseur()/32), e.getDroiteJoueur().x() + (e.getLigne().getEpaisseur()/32), e.getDroiteJoueur().y() + (e.getLigne().getEpaisseur()/32));
 					}
 					
 					float denominateur = ( ( (droite.x() - droite.z()) * (pointGrille.y() - pointGrille.w()) ) - ( (droite.y() - droite.w()) * (pointGrille.x() - pointGrille.z()) ) );
 					float indiceA = ( ( ( (droite.x() * droite.w()) - (droite.y() * droite.z()) ) * (pointGrille.x() - pointGrille.z()) ) - ( (droite.x() - droite.z()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur;
 					float indiceB = ( ( ( (droite.x() * droite.w()) - (droite.y() * droite.z()) ) * (pointGrille.y() - pointGrille.w()) ) - ( (droite.y() - droite.w()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur;
 	
+					float denominateur2 = ( ( (droiteG.x() - droiteG.z()) * (pointGrille.y() - pointGrille.w()) ) - ( (droiteG.y() - droiteG.w()) * (pointGrille.x() - pointGrille.z()) ) );
+					float indiceC = ( ( ( (droiteG.x() * droiteG.w()) - (droiteG.y() * droiteG.z()) ) * (pointGrille.x() - pointGrille.z()) ) - ( (droiteG.x() - droiteG.z()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur2;
+					float indiceD = ( ( ( (droiteG.x() * droiteG.w()) - (droiteG.y() * droiteG.z()) ) * (pointGrille.y() - pointGrille.w()) ) - ( (droiteG.y() - droiteG.w()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur2;
+					boolean contactG = false;
+					
+					float denominateur3 = ( ( (droiteD.x() - droiteD.z()) * (pointGrille.y() - pointGrille.w()) ) - ( (droiteD.y() - droiteD.w()) * (pointGrille.x() - pointGrille.z()) ) );
+					float indiceE = ( ( ( (droiteD.x() * droiteD.w()) - (droiteD.y() * droiteD.z()) ) * (pointGrille.x() - pointGrille.z()) ) - ( (droiteD.x() - droiteD.z()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur3;
+					float indiceF = ( ( ( (droiteD.x() * droiteD.w()) - (droiteD.y() * droiteD.z()) ) * (pointGrille.y() - pointGrille.w()) ) - ( (droiteD.y() - droiteD.w()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur3;
+					boolean contactD = false;
+					
 					/*
 					float denominateur2 = ( ( (e.getAncienneDroiteJoueur().z() - e.getDroiteJoueur().z()) * (pointGrille.y() - pointGrille.w()) ) - ( (e.getAncienneDroiteJoueur().w() - e.getDroiteJoueur().w()) * (pointGrille.x() - pointGrille.z()) ) );
 					float indiceC = ( ( ( (e.getAncienneDroiteJoueur().z() * e.getDroiteJoueur().w()) - (e.getAncienneDroiteJoueur().w() * e.getDroiteJoueur().z()) ) * (pointGrille.x() - pointGrille.z()) ) - ( (e.getAncienneDroiteJoueur().z() - e.getDroiteJoueur().z()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur2;
 					float indiceD = ( ( ( (e.getAncienneDroiteJoueur().z() * e.getDroiteJoueur().w()) - (e.getAncienneDroiteJoueur().w() * e.getDroiteJoueur().z()) ) * (pointGrille.y() - pointGrille.w()) ) - ( (e.getAncienneDroiteJoueur().w() - e.getDroiteJoueur().w()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur2;
 					boolean contactD = false;*/
-					
+					/*
 					float denominateur2 = ( ( (e.getDroiteJoueur().x() - e.getDroiteJoueur().z()) * (pointGrille.y() - pointGrille.w()) ) - ( (e.getDroiteJoueur().y() - e.getDroiteJoueur().w()) * (pointGrille.x() - pointGrille.z()) ) );
 					float indiceC = ( ( ( (e.getDroiteJoueur().x() * e.getDroiteJoueur().w()) - (e.getDroiteJoueur().y() * e.getDroiteJoueur().z()) ) * (pointGrille.x() - pointGrille.z()) ) - ( (e.getDroiteJoueur().x() - e.getDroiteJoueur().z()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur2;
 					float indiceD = ( ( ( (e.getDroiteJoueur().x() * e.getDroiteJoueur().w()) - (e.getDroiteJoueur().y() * e.getDroiteJoueur().z()) ) * (pointGrille.y() - pointGrille.w()) ) - ( (e.getDroiteJoueur().y() - e.getDroiteJoueur().w()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur2;
@@ -383,7 +403,7 @@ public class Partie {
 					float denominateur3 = ( ( (e.getDroiteJoueur().x() - e.getAncienneDroiteJoueur().x()) * (pointGrille.y() - pointGrille.w()) ) - ( (e.getDroiteJoueur().y() - e.getAncienneDroiteJoueur().y()) * (pointGrille.x() - pointGrille.z()) ) );
 					float indiceE = ( ( ( (e.getDroiteJoueur().x() * e.getAncienneDroiteJoueur().y()) - (e.getDroiteJoueur().y() * e.getAncienneDroiteJoueur().x()) ) * (pointGrille.x() - pointGrille.z()) ) - ( (e.getDroiteJoueur().x() - e.getAncienneDroiteJoueur().x()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur3;
 					float indiceF = ( ( ( (e.getDroiteJoueur().x() * e.getAncienneDroiteJoueur().y()) - (e.getDroiteJoueur().y() * e.getAncienneDroiteJoueur().x()) ) * (pointGrille.y() - pointGrille.w()) ) - ( (e.getDroiteJoueur().y() - e.getAncienneDroiteJoueur().y()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur3;
-					boolean contactG = false;			
+					boolean contactG = false;*/
 					
 					/*Vector2 pres = new Vector2();
 					pres = pointPlusProche(e.getPosition(), e.getDroiteJoueur(), pointGrille);
@@ -397,28 +417,40 @@ public class Partie {
 						System.out.println("COLLISION");
 					}*/
 					
+					/*
+					System.out.println("INDICE C = "+indiceC);
+					System.out.println("INDICE D = "+indiceD);
+					System.out.println("INDICE E = "+indiceE);
+					System.out.println("INDICE F = "+indiceF);
+					System.out.println("droiteG ancien : ("+droiteG.x()+","+droiteG.y()+") ; actu ("+droiteG.z()+","+droiteG.w()+")");
+					System.out.println("droiteD ancien : ("+droiteD.x()+","+droiteD.y()+") ; actu ("+droiteD.z()+","+droiteD.w()+")");
+					System.out.println("VRAI ancien : ("+e.getAncienneDroiteJoueur().x()+","+e.getAncienneDroiteJoueur().y()+") ; actu ("+e.getDroiteJoueur().z()+","+e.getDroiteJoueur().w()+")");
+					*/
 					// Si la position du joueur est la même que la position du point tracé
 					//if( ( (contactG = ligneIntersection(indiceE, indiceF, new Vector4(e.getDroiteJoueur().x(), e.getDroiteJoueur().y(), e.getAncienneDroiteJoueur().x(), e.getAncienneDroiteJoueur().y()), pointGrille)) || (contactD = ligneIntersection(indiceC, indiceD, new Vector4(e.getDroiteJoueur().z(), e.getDroiteJoueur().w(), e.getAncienneDroiteJoueur().z(), e.getAncienneDroiteJoueur().w()), pointGrille)) || ligneIntersection(indiceA, indiceB, droite, pointGrille) ) && e.getPosition().z() == 1 && ( (pointGrille.x() != e.getDroiteJoueur().x()) || (pointGrille.z() != e.getDroiteJoueur().z())))
 					//if(circleIntersection(e.getLigne().getEpaisseur(), e.getPosition(), pointGrille) && e.getPosition().z() == 1 && ( (pointGrille.x() != e.getDroiteJoueur().x()) || (pointGrille.x() != e.getDroiteJoueur().z()) ) )
-					if( ( /*(contactD = ligneIntersection(indiceC, indiceD, e.getDroiteJoueur(), pointGrille)) || */ligneIntersection(indiceA, indiceB, droite, pointGrille) ) && e.getPosition().z() == 1)
+					//if( ( /*(contactD = ligneIntersection(indiceC, indiceD, e.getDroiteJoueur(), pointGrille)) || */ligneIntersection(indiceA, indiceB, droite, pointGrille) ) && e.getPosition().z() == 1)
+					if( ( (contactG = ligneIntersection(indiceC, indiceD, droiteG, pointGrille)) || (contactD = ligneIntersection(indiceE, indiceF, droiteD, pointGrille)) || ligneIntersection(indiceA, indiceB, droite, pointGrille) ) && e.getPosition().z() == 1)
 					{
 						System.out.println("Ancienne pos : ("+droite.x()+","+droite.y()+") ; Nouvelle pos : ("+droite.z()+","+droite.w()+")");
 						System.out.println("INDICE A = "+indiceA);
 						System.out.println("INDICE B = "+indiceB);
 						System.out.println("INDICE C = "+indiceC);
 						System.out.println("INDICE D = "+indiceD);
+						System.out.println("INDICE E = "+indiceE);
+						System.out.println("INDICE F = "+indiceF);
 						System.out.println("Droite TRACE : ("+pointGrille.x()+","+pointGrille.y()+") et ("+pointGrille.z()+","+pointGrille.w()+")");
 	
 						// Définition du point de collision
 						if(contactG)
 						{
 							System.out.println("MORT PAR façade G");
-							e.setPosition(new Vector3(indiceE, indiceF, 1));
+							e.setPosition(new Vector3(indiceC, indiceD, 1));
 						}
 						else if(contactD)
 						{
 							System.out.println("MORT PAR façade D");
-							e.setPosition(new Vector3(indiceC, indiceD, 1));
+							e.setPosition(new Vector3(indiceE, indiceF, 1));
 						}
 						else { e.setPosition(new Vector3(indiceA, indiceB, 1)); }
 						
