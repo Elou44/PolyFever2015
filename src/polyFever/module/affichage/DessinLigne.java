@@ -486,18 +486,22 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	
 	public void updatePosJoueurs()
 	{
-		int i = 0;
-		Iterator<Joueur> e = this.partie.getJoueurs().iterator();
-		while(e.hasNext()) // A déplacer dans Init();
+		if(!this.partie.isRoundEnPause())
 		{
-			j = e.next();
-			if(j.getEtat() == Etat.VIVANT)
+			int i = 0;
+			Iterator<Joueur> e = this.partie.getJoueurs().iterator();
+			while(e.hasNext()) // A déplacer dans Init();
 			{
-				moveVertexJoueur(j.getAnciennePosition(), j.getPosition(),j.getLigne().getEpaisseur()/2,j.isRedimension(), i);
-				i++;
+				
+					
+				j = e.next();
+				if(j.getEtat() == Etat.VIVANT)
+				{
+					moveVertexJoueur(j.getAnciennePosition(), j.getPosition(),j.getLigne().getEpaisseur()/2,j.isRedimension(), i);
+					i++;
+				}
 			}
-		}
-			
+		}	
 	}
 	
 	public void moveVertexJoueur(Vector3 lastp, Vector3 p, float r, boolean isRedimension, int i) // i : indice du joueur
