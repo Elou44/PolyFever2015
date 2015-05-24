@@ -134,8 +134,7 @@ public class Partie {
 		{
 			e.getPosition().set((float) (Math.random() * (0.5 + 0.5) - 0.5), (float) (Math.random() * (0.5 + 0.5) - 0.5), 1);	// Calcul de la position en x et y, entre -0.5 et 0.5
 			e.setDirection((double) (Math.random() * 2*Math.PI));	// Calcul d'une direction entre 0 et 2 PI
-			//e.getLigne().setTpsTrou((long) (Math.random() * (4500 - 3000) + 3000));	// Calcul du temps de traçage de trou
-			e.getLigne().setTpsTrou((long) 2000);
+			e.getLigne().setTpsTrou((long) (Math.random() * (4500 - 3000) + 3000));	// Calcul du temps de traçage de trou
 		}
 		System.out.println("Score MAX = "+getScoreMax());
 	}
@@ -150,12 +149,17 @@ public class Partie {
 	// Méthode changeant l'état du jeu, de "pause" à "en cours" ou "en cours" à "pause"
 	public void pause()
 	{		
+		// Si le jeu est déjà en pause
 		if(this.roundEnPause)
 		{
+			// On calcule le temps écoulé durant la pause
 			tpsPause = System.currentTimeMillis() - tpsPause;
+			// On rajoute cette durée au temps général de la partie, pour ne pas perdre le traçage des trous
 			temps = temps + tpsPause;
+			// On change l'état du jeu à "pas en pause"
 			this.roundEnPause = false;
 		}
+		// Si le jeu n'était pas en pause, alors on change l'état à "en pause" 
 		else { tpsPause = System.currentTimeMillis(); this.roundEnPause = true; }
 		
 	}
