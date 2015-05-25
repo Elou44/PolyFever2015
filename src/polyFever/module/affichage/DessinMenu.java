@@ -72,7 +72,7 @@ public class DessinMenu {
 	
 	private float decalage; // PROVISOIRE ONLY FOR TEST PURPOSE
 	
-	private int program, ebo,vbo, posAttrib, colAttrib, texAttrib, uniColor, projectionUniform;
+	private int program, ebo,vbo, posAttrib, colAttrib, texAttrib, uniColor, projectionUniform, id;
 	
 	private float tabVertex[];
 	private int elements[];
@@ -119,7 +119,7 @@ public class DessinMenu {
 		    decoder.decode(pixelData, 4*width, Format.RGBA);
 		    pixelData.flip();
 		    //Generate and bind the texture
-		    int id = GL11.glGenTextures();
+		    id = GL11.glGenTextures();
 		    GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
 		        //Upload the buffer's content to the VRAM
 		        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, pixelData);
@@ -128,7 +128,7 @@ public class DessinMenu {
 		        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 		        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 		        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-		    GL11.glBindTexture(GL11.GL_TEXTURE_2D, texAttrib);
+		    GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
 		    
 		}catch(IOException e){
 		    e.printStackTrace();
@@ -191,7 +191,8 @@ public class DessinMenu {
 				
 				System.out.println("posAttrib: ".concat(String.valueOf(posAttrib)));
 				System.out.println("colAttrib: ".concat(String.valueOf(colAttrib)));
-				
+				System.out.println("texAttrib: ".concat(String.valueOf(texAttrib)));
+				//System.out.println("uniColor: ".concat(String.valueOf(uniColor)));
 				
 				glDetachShader(program, vs);
 				glDetachShader(program, fs);
@@ -257,12 +258,12 @@ public class DessinMenu {
 	{
 		//System.out.println("	dessiner dMenu");
 		
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		/*glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, vboBuffer);
 		
 		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, eboBuffer);
+		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, eboBuffer);*/
 		
 		
 		glClear(GL_COLOR_BUFFER_BIT);
