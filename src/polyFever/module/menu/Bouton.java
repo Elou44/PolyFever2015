@@ -1,4 +1,4 @@
-package src.polyFever.module.menu;
+package polyFever.module.menu;
 
 import java.awt.Rectangle;
  

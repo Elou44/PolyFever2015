@@ -1,4 +1,4 @@
-package menu;
+package polyFever.module.menu;
 
 public class MenuParametres extends Menu {
 	private Parametres param;

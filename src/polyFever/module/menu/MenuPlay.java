@@ -1,4 +1,4 @@
-package menu;
+package polyFever.module.menu;
 /**
  * Classe représentant le pseudo-menu du plateau de jeu
  * @author Ambre
