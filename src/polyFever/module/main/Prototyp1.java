@@ -41,7 +41,7 @@ public class Prototyp1 extends PolyFever {
 	@Override
 	public void init() {
 		
-		affichage.initMenu();
+		affichage.initMenu(this, partie);
 		partie.initialiserPartie();
 		affichage.initJeu(this, partie);
 		

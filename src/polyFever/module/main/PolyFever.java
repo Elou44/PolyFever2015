@@ -1,6 +1,6 @@
 package polyFever.module.main;
 
-import static org.lwjgl.opengl.GL11.*;
+//import static org.lwjgl.opengl.GL11.*;
 
 import java.util.*;
 
@@ -8,6 +8,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
 
 import polyFever.module.moteurDeJeu.Partie;
@@ -15,6 +16,12 @@ import polyFever.module.util.*;
 import polyFever.module.moteurDeJeu.*;
 import polyFever.module.affichage.*;
 import polyFever.module.evenements.Evenements;
+
+
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
 
 /**
  * This class defines an entry point for OpenGL programs as it handles context creation and the game loop.
@@ -145,6 +152,7 @@ public abstract class PolyFever {
 		
 		fps = 30;
 		
+		/*	*/
 		
 	}
 	
@@ -338,18 +346,22 @@ public abstract class PolyFever {
 			}
 		}
 		
+
 		gameLoop();
 	}
+	
+	
+
 	
 	private void gameLoop() {
 		try {
 			init();
 			
-			Utils.checkGLError("init");
+			//Utils.checkGLError("init");
 			
 			resized();
 			
-			Utils.checkGLError("resized");
+			//Utils.checkGLError("resized");
 			
 			long lastTime, lastFPS;
 			lastTime = lastFPS = System.nanoTime();
@@ -389,11 +401,11 @@ public abstract class PolyFever {
 				*/
 				update(deltaTime);
 				
-				Utils.checkGLError("update");
+				//Utils.checkGLError("update");
 				
 				render();
 				
-				Utils.checkGLError("render");
+				//Utils.checkGLError("render");
 				
 				Display.update();
 				
@@ -429,7 +441,7 @@ public abstract class PolyFever {
 	 * the <code>glViewport</code>!
 	 */
 	public void resized() {
-		glViewport(0, 0, getWIDTH(), getHEIGHT());
+		GL11.glViewport(0, 0, getWIDTH(), getHEIGHT());
 
 		this.RATIO = (float) getWIDTH() / (float) getHEIGHT();
 		glOrtho.setGlOrtho(-1.0f*RATIO,1.0f*RATIO,-1.0f,1.0f,-1.0f,1.0f);

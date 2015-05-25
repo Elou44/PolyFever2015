@@ -260,7 +260,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, eboBuffer);
 		
 		
-		glClear(GL_COLOR_BUFFER_BIT);
+		//glClear(GL_COLOR_BUFFER_BIT);
 		
 		glUseProgram(program);
 		
