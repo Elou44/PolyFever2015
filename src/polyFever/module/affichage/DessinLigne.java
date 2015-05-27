@@ -29,9 +29,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	private PolyFever polyFever;
 	private Partie partie;
 	private Joueur j;
-	
-	private float decalage; // PROVISOIRE ONLY FOR TEST PURPOSE
-	
+		
 	private int program, ebo,vbo, posAttrib, colAttrib, uniColor, projectionUniform;
 	
 	private float tabVertex[];
@@ -51,9 +49,9 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	
 	private long t_start;
 	
-	public DessinLigne(Affichage a, PolyFever p, Partie partie, float d)
+	public DessinLigne(Affichage a, PolyFever p, Partie partie)
 	{
-		this.decalage = d; // PROVISOIRE
+
 		this.colDelta = 0.01f;
 		
 		
@@ -162,11 +160,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		this.addRectangle(new Vector3(-1.0f,0.0f,1.0f), 0.0f, 0.005f, -2.0f, new Vector3(1.0f,1.0f,1.0f));*/
 		
 		//InitDessinJoueurs
-		
-
 		initDessinJoueurs();
-		
-		
 		
 		// Dessin des bords du plateau
 		dessinerBordsPlateau(new Vector2(0.0f,0.0f));
@@ -178,9 +172,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 		//glBindBuffer(GL_ARRAY_BUFFER, 0);
 		
-		System.out.println("ça passe ...........");
 		
-
 	}
 	
 	
@@ -195,57 +187,10 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		while(e.hasNext()) // A déplacer dans Init();
 		{
 			j = e.next();
-			if(j.getPosition().z() == 1.0f && j.getEtat() == Etat.VIVANT)
+			if(j.getPosition().z() == 1.0f && j.getEtat() == Etat.VIVANT && !partie.isRoundEnPause())
 			{
 				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse(), new Vector3(1.0f,0.0f,0.0f));
-				//this.decalage += 0.03f;
-				/*this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,0.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(0.0f,0.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,1.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				this.decalage += 0.03f;
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse2(), new Vector3(1.0f,0.0f,1.0f));
-				*/
-
+				
 			}
 		}
 		
@@ -348,25 +293,25 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	private void ajouterVector2Rect(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector3 c)
 	{
 	
-		this.tabVertex[this.lenTabV] = p4.x()+decalage; // Top Left
+		this.tabVertex[this.lenTabV] = p4.x(); // Top Left
 		this.tabVertex[this.lenTabV+1] = p4.y(); 	
 		this.tabVertex[this.lenTabV+2] = c.x(); 
 		this.tabVertex[this.lenTabV+3] = c.y()+colDelta; 
 		this.tabVertex[this.lenTabV+4] = c.z(); 
 		
-		this.tabVertex[this.lenTabV+5] = p1.x()+decalage; // Top Right
+		this.tabVertex[this.lenTabV+5] = p1.x(); // Top Right
 		this.tabVertex[this.lenTabV+6] = p1.y();
 		this.tabVertex[this.lenTabV+7] = c.x(); 
 		this.tabVertex[this.lenTabV+8] = c.y()+colDelta; 
 		this.tabVertex[this.lenTabV+9] = c.z(); 
 
-		this.tabVertex[this.lenTabV+10] = p2.x()+decalage; // Bottom Right
+		this.tabVertex[this.lenTabV+10] = p2.x(); // Bottom Right
 		this.tabVertex[this.lenTabV+11] = p2.y();
 		this.tabVertex[this.lenTabV+12] = c.x(); 
 		this.tabVertex[this.lenTabV+13] = c.y()+colDelta; 
 		this.tabVertex[this.lenTabV+14] = c.z(); 
 
-		this.tabVertex[this.lenTabV+15] = p3.x()+decalage; // Bottom Left
+		this.tabVertex[this.lenTabV+15] = p3.x(); // Bottom Left
 		this.tabVertex[this.lenTabV+16] = p3.y();
 		this.tabVertex[this.lenTabV+17] = c.x(); 
 		this.tabVertex[this.lenTabV+18] = c.y()+colDelta; 
@@ -374,8 +319,8 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 		
 		
-		this.partie.envoyerTabVertex(new Vector4(p4.x()+decalage,p4.y(),p3.x()+decalage,p3.y()),
-				new Vector4(p1.x()+decalage,p1.y(),p2.x()+decalage,p2.y()));
+		this.partie.envoyerTabVertex(new Vector4(p4.x(),p4.y(),p3.x(),p3.y()),
+				new Vector4(p1.x(),p1.y(),p2.x(),p2.y()));
 		
 		this.lenTabV += 20;
 
@@ -486,7 +431,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	
 	public void updatePosJoueurs()
 	{
-		if(!this.partie.isRoundEnPause())
+		if(/*!this.partie.isRoundEnPause()*/true)
 		{
 			int i = 0;
 			Iterator<Joueur> e = this.partie.getJoueurs().iterator();
@@ -509,27 +454,31 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		Vector2 vecDiff = new Vector2(p.x()-lastp.x(),p.y()-lastp.y());
 		//System.out.println(" Gap_-__-___-___-___-___-___-_____________:"+ vecDiff.x() + "," + vecDiff.y());
 
-		if(!isRedimension) // Si l'épaisseur n'a pas changé
+
+		if(isRedimension || partie.getNvRound()) // Si l'épaisseur a changé // A CHANGER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   NOUVEAU ROUND A DETECTER | A REMTTRE A FALSE QUAND ON ENLEVE LA PAUSE
 		{
-			for(int j = i*(5*(this.NBCOTES+1)); j<this.NBCOTES+1+i*(5*(this.NBCOTES+1)); j++)
+			double alpha = 2*Math.PI / this.NBCOTES;
+			//System.out.println("NOUVEAU ROUND !!");
+			this.tabVertex[0+i*5*(this.NBCOTES+1)] = p.x();
+			this.tabVertex[1+i*5*(this.NBCOTES+1)] = p.y();
+			for(int j = i*(this.NBCOTES+1)+1, k = 0; j<this.NBCOTES+1+i*(this.NBCOTES+1); j++, k++)
+			{
+				this.tabVertex[5*j] = (float)Math.cos(alpha*(k))*r+p.x();
+				this.tabVertex[(5*j)+1] = (float)Math.sin(alpha*(k))*r+p.y();
+			}
+			
+			//clearTabVertex(); // On vide le talbeau de vertex
+		}
+		else if(!isRedimension) // Si l'épaisseur n'a pas changé
+		{
+			for(int j = i*(this.NBCOTES+1); j<this.NBCOTES+1+i*(this.NBCOTES+1); j++)
 			{
 				this.tabVertex[5*j] += vecDiff.x();
 				this.tabVertex[(5*j)+1] += vecDiff.y();
 			}
 
 		}
-		else
-		{
-			double alpha = 2*Math.PI / this.NBCOTES;
-			
-			this.tabVertex[0] = p.x();
-			this.tabVertex[1] = p.y();
-			for(int j = i*(5*(this.NBCOTES+1))+1, k = 0; j<this.NBCOTES+1+i*(5*(this.NBCOTES+1)); j++, k++)
-			{
-				this.tabVertex[5*j] = (float)Math.cos(alpha*(k))*r+p.x();
-				this.tabVertex[(5*j)+1] = (float)Math.sin(alpha*(k))*r+p.y();
-			}
-		}
+		
 		
 		this.vboBuffer.put(this.tabVertex); // On met a jour le buffer VBO 
 		this.vboBuffer.clear();
@@ -541,6 +490,13 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 
 	}
 	
+	public void clearTabVertex() {
+		
+		this.nbVertex = (this.NBCOTES*3)*partie.getNbJoueurs()+4*6; // 4 vertex par bord * 4 bords + 3 vertex par coté * nb joueur
+		this.lenTabV = ((this.NBCOTES*3)*partie.getNbJoueurs()+4*6)*5; // 5 floats par vertex
+		this.lenTabE = (this.NBCOTES*3)*partie.getNbJoueurs()+6*4;  // 6 floats par board + 3 vertex par coté * nb joueur
+	}
+	
 	
 	public void dessinerBordsPlateau(Vector2 p)
 	{
@@ -548,6 +504,9 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		this.addRectangle(new Vector3(1.0f-p.x(),1.0f-p.y(),1.0f),(float) Math.PI/2, 0.01f, 2.0f, new Vector3(1.0f,1.0f,0.0f)); // RIGHT
 		this.addRectangle(new Vector3(1.0f-p.x(),-1.0f-p.y(),1.0f), 0.0f, 0.02f, 1.99f, new Vector3(1.0f,1.0f,0.0f)); // BOTTOM
 		this.addRectangle(new Vector3(1.0f-p.x(),1.0f-p.y(),1.0f), 0.0f, 0.01f, 1.99f, new Vector3(1.0f,1.0f,0.0f)); // RIGHT
+		
+		System.out.println("nbVertex: " + nbVertex);
+		System.out.println("lenTabE: " + lenTabE);
 	}
 	
 	
