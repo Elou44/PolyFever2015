@@ -15,6 +15,7 @@ public class Partie {
 	private long tpsPause;				// Variable donnant le temps écoulé durant une pause
 	private boolean roundEnPause;		// Booléen indiquant si le round est en pause ou non, permet aussi de démarrer les parties (false = pas en pause ; true = en pause)
 	private boolean jeu;				// Booléen indiquant si une partie est toujours en cours ou si elle est terminée
+	private long tpsBonus;				// Variable indiquant le temps à partir duquel un bonus peut appraitre
 	
 	private final int nbSousGrilles = 16;	// Variable donnant le nombre de sous grilles voulues
 	
@@ -32,8 +33,9 @@ public class Partie {
 		this.temps = System.currentTimeMillis();		// Définition de l'heure de début de la partie
 		this.tpsPause = 0;								// Initialisation du temps d'une pause à 0
 		this.trace = new ArrayList<List<Vector4>>();	// Création de la list trace
-		this.roundEnPause = false;						// Initialisation du jeu en "pas en pause"
+		this.roundEnPause = true;						// Initialisation du jeu en "pas en pause"
 		this.jeu = true;								// Initialisation de l'état de jeu à "en cours"
+		this.tpsBonus = (long) (Math.random() * (9000 - 5800) + 5800);	// Initialisation du temps d'apparition d'un bonus
 		
 		// Initialisation des tableaux contenant les traces
 		for (int i = 0; i < nbSousGrilles; i++)
@@ -148,7 +150,8 @@ public class Partie {
 	
 	// Méthode changeant l'état du jeu, de "pause" à "en cours" ou "en cours" à "pause"
 	public void pause()
-	{		
+	{
+		System.out.println("PAUSE");
 		// Si le jeu est déjà en pause
 		if(this.roundEnPause)
 		{
@@ -167,74 +170,28 @@ public class Partie {
 	// Méthode initialisant le début d'un round
 	public void initialiserRound()
 	{
-		//System.out.println("\n\n====> NOUVEAU ROUND <====\n");
+		System.out.println("\n\n====> NOUVEAU ROUND <====\n");
 		
 		// Calcul des positions de base des joueurs & définition du temps de traçage de trou
 		for(Joueur e : joueurs)		// Boucle de parcours de la liste des joueurs
 		{
 			e.getPosition().set((float) (Math.random() * (0.5 + 0.5) - 0.5), (float) (Math.random() * (0.5 + 0.5) - 0.5), 1);	// Calcul de la position en x et y, entre -0.5 et 0.5
+			e.getAnciennePosition().set(new Vector3(0f, 0f, 0));	// Remise à zéro de l'ancienne position
+			e.getDroiteJoueur().set(new Vector4());					// Remise à zéro de la droite joueur
+			e.getAncienneDroiteJoueur().set(new Vector4());			// Remise à zéro de l'ancienne droite joueur
 			e.setDirection((double) (Math.random() * 2*Math.PI));	// Calcul d'une direction entre 0 et 2 PI
 			e.getLigne().setTpsTrou((long) (Math.random() * (4500 - 3000) + 3000));	// Calcul du temps de traçage de trou
+			e.setEtat(Etat.VIVANT);
+		}
+		
+		// Remise à zéro des sous grilles
+		for(int i = 0; i < this.trace.size(); i++)
+		{
+			trace.get(i).clear();
 		}
 		
 		// Changement de l'état du jeu à "pause" pour attendre le départ donnée par un joueur
 		this.roundEnPause = true;
-	}
-	
-	private boolean circleIntersection(float epaisseur, Vector3 position, Vector4 trace)
-	{
-		// compute the euclidean distance between A and B
-		float LAB;
-		LAB = (float) Math.sqrt( Math.pow(trace.z() - trace.x(), 2) + Math.pow(trace.w() - trace.y(), 2) );
-
-		// compute the direction vector D from A to B
-		float Dx, Dy;
-		Dx = (trace.z() - trace.x())/LAB;
-		Dy = (trace.w() - trace.y())/LAB;
-
-		// Now the line equation is x = Dx*t + Ax, y = Dy*t + Ay with 0 <= t <= 1.
-
-		// compute the value t of the closest point to the circle center (Cx, Cy)
-		float t;
-		t = Dx * (position.x() - trace.x()) + Dy * (position.y() - trace.y());
-
-		// This is the projection of C on the line from A to B.
-
-		// compute the coordinates of the point E on line and closest to C
-		float Ex, Ey;
-		Ex = t * Dx + trace.x();
-		Ey = t * Dy + trace.y();
-
-		// compute the euclidean distance from E to C
-		float LEC;
-		LEC = (float) Math.sqrt( Math.pow(Ex - position.x(), 2) + Math.pow(Ey - position.y(), 2) );
-
-		// test if the line intersects the circle
-		if( LEC < (epaisseur/2) )
-		{
-		    // compute distance from t to circle intersection point
-			float dt;
-		    dt = (float) Math.sqrt(Math.pow(epaisseur/2, 2) - Math.pow(LEC, 2));
-
-		    // compute first intersection point
-		    float Fx, Fy;
-		    Fx = (t-dt)*Dx + trace.x();
-		    Fy = (t-dt)*Dy + trace.y();
-
-		    // compute second intersection point
-		    float Gx, Gy;
-		    Gx = (t+dt)*Dx + trace.x();
-		    Gy = (t+dt)*Dy + trace.y();
-		    
-		    return true;
-		}
-		// else test if the line is tangent to circle
-		else if( LEC == (epaisseur/2) ) // tangent point to circle is E
-		{
-			return true;
-		}
-		else // line doesn't touch circle
-		{ return false; }
 	}
 	
 	// Méthode testant l'intersection de 2 segments
@@ -270,48 +227,6 @@ public class Partie {
 		return true;
 	}
 	
-	private Vector2 pointPlusProche(Vector3 position, Vector4 droiteJoueur, Vector4 pointGrille)
-	{
-		Vector2 segV = new Vector2();
-		segV.x(Math.abs(droiteJoueur.x() - droiteJoueur.z()));
-		segV.y(Math.abs(droiteJoueur.z() - droiteJoueur.w()));
-		
-		Vector2 ptV = new Vector2();
-		ptV.x(Math.abs(position.x() - pointGrille.x()));
-		ptV.y(Math.abs(position.y() - pointGrille.y()));
-		
-		Vector2 segVUnit = new Vector2();
-		segVUnit.x(segV.x() / segV.length());
-		segVUnit.y(segV.y() / segV.length());
-		
-		float projV;
-		projV = ptV.dot(segVUnit);
-		
-		if(projV <= 0)
-		{
-			return new Vector2(droiteJoueur.x(), droiteJoueur.y());
-		}
-		else if (projV >= segV.length())
-		{
-			return new Vector2(droiteJoueur.z(), droiteJoueur.w());
-		}
-		
-		Vector2 proj = new Vector2();
-		proj.x(segVUnit.x() * projV);
-		proj.y(segVUnit.y() * projV);
-		
-		Vector2 pres = new Vector2();
-		pres.x(proj.x() + droiteJoueur.x());
-		pres.y(proj.y() + droiteJoueur.y());
-		
-		return pres;
-	}
-	
-	/*private boolean collision(Vector2 position, Vector2 pointProche, Vector4 droiteJoueur, float epaisseur)
-	{
-		
-	}*/
-	
 	// Méthode de détection des collisions, entre le joueur / bords du plateau et joueur / trace
 	public void repererCollisions()
 	{
@@ -322,9 +237,14 @@ public class Partie {
 		 * 						 - appeler la méthode modifier score pour mettre à jour le score des joueurs
 		 */
 		
+		boolean collision = false;
+				
 		// Parmis tous les joueurs de la partie
 		for(Joueur e : joueurs)
 		{
+			//System.out.println("Score des joueurs : "+e.getScore());
+			collision = false;
+			
 			// Si le joueur étudié est en vie
 			if(e.getEtat() == Etat.VIVANT)
 			{				
@@ -374,8 +294,9 @@ public class Partie {
 					float indiceF = ( ( ( (droiteD.x() * droiteD.w()) - (droiteD.y() * droiteD.z()) ) * (pointGrille.y() - pointGrille.w()) ) - ( (droiteD.y() - droiteD.w()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur3;
 					boolean contactD = false;
 					
-					if( ( (contactG = ligneIntersection(indiceC, indiceD, droiteG, pointGrille)) || (contactD = ligneIntersection(indiceE, indiceF, droiteD, pointGrille)) || ligneIntersection(indiceA, indiceB, droite, pointGrille) ) && e.getPosition().z() == 1)
+					if( ( (contactG = ligneIntersection(indiceC, indiceD, droiteG, pointGrille)) || (contactD = ligneIntersection(indiceE, indiceF, droiteD, pointGrille)) || ligneIntersection(indiceA, indiceB, droite, pointGrille) ) && e.getPosition().z() == 1 && collision == false)
 					{
+						collision = true;
 						/*
 						System.out.println("Ancienne pos : ("+droite.x()+","+droite.y()+") ; Nouvelle pos : ("+droite.z()+","+droite.w()+")");
 						System.out.println("INDICE A = "+indiceA);
@@ -403,10 +324,11 @@ public class Partie {
 						// On met à jour le score des autres joueurs
 						this.modifierScore();
 						
-						System.out.println("POS actuelle : ("+e.getPosition().x()+","+e.getPosition().y()+")");
+						System.out.println("Joueur mort : ("+e.getPosition().x()+","+e.getPosition().y()+")");
 					}
 				}
 			}
+			collision = false;
 		}
 	}
 
@@ -431,6 +353,7 @@ public class Partie {
 		
 	}
 	
+	// Méthode faisant apparaitre les bonus
 	public void apparaitreBonus()
 	{
 		/* 
@@ -439,14 +362,69 @@ public class Partie {
 		 */
 		
 		//long delaiApparitionBonus;	// Délai d'apparition d'un bonus
-		
-		//if(/* Il est temps de faire apparaitre un bonus */)
+		if( ( (System.currentTimeMillis() - temps) >= tpsBonus) )
 		{
+			// Instanciation d'un objet Bonus
+			Bonus bonus = new BonusEpaisseur();
+			
+			// Affectation de coordonnées
+			float x;
+			float y;
+			bonus.setCoordonnees(new Vector4(x = ((float) (Math.random() * (0.5 + 0.5) - 0.5)), y = ((float) (Math.random() * (0.5 + 0.5) - 0.5)), x + 0.03f, y + 0.03f));
+			this.envoyerTabVertex(bonus.getCoordonnees(), bonus.getCoordonnees());
+			
+			// Affectation du temps de départ
+			bonus.setTpsDepart((System.currentTimeMillis() - temps));
+			
+			// Affectation d'une durée d'effet
+			bonus.setDuree((long) (Math.random() * (4500 - 1800) + 1800));
+			
+			// Affectation de l'index au bonus
+			bonus.setIndexTab(this.bonusPresents.size());
+			
+			// Ajout du bonus dans le tableau des bonus présents
+			this.bonusPresents.add(bonus);
+			
 			// Je regarde parmis les bonus existants
 			// J'en fais apparaitre un au hasard
 			
-			// Je définis sa position sur le plateau
+			tpsBonus = tpsBonus + (long) (Math.random() * (10000 - 3000) + 3000);
+			System.out.println(this.bonusPresents.size()+"  BONUS "+(System.currentTimeMillis() - temps)+" -- Prochain "+tpsBonus+"\nApparu en ("+bonus.getCoordonnees().x()+","+bonus.getCoordonnees().y()+") pendant "+bonus.getDuree());
 		}
+	}
+	
+	// Méthode vérifiant si la durée d'un bonus est dépassée
+	public void verifBonus()
+	{
+		/* 
+		 * Méthode qui devra repérer si un joueur rentre en contact avec bonus
+		 * affectera le bonus au joueur
+		 */
+		
+		// Parmis tous les bonus présents sur le plateau
+		Iterator<Bonus> it = bonusPresents.iterator();
+		
+		while(it.hasNext())
+		{
+			Bonus b = it.next();
+			
+			// Si le temps de départ + la durée du bonus est inférieure ou égale au temps courant de la partie
+			if( (b.getTpsDepart() + b.getDuree()) <= (System.currentTimeMillis() - temps) )
+			{
+				// Arrêt de l'effet sur le joueur
+				//b.retablirParametres();
+				
+				// Alors le bonus ne doit plus faire effet
+				it.remove();
+				
+				System.out.println("Suppression du bonus "+b.getIndexTab()+" à "+(System.currentTimeMillis() - temps));
+			}
+			
+			// Suppression du bonus
+			b = null;
+			
+		}
+		
 	}
 	
 	// Méthode ajoutant un objet joueur dans la partie
@@ -458,17 +436,9 @@ public class Partie {
 		// Ajout du joueur dans la liste des joueurs présents dans la partie
 		joueurs.add(joueur);
 		
-		Iterator<Joueur> i = joueurs.iterator();
+		// Instanciation d'une ligne pour le joueur
+		joueur.setLigne(new Ligne(p));
 		
-		// Instanciation d'une ligne pour ce joueur
-		while(i.hasNext())
-		{
-			Joueur player = i.next();
-			if(player == joueur)
-			{
-				joueur.setLigne(new Ligne(p)); // ça me semble inutile à priori , autant instancier la ligne dans le constructeur de Joueur, ça complique la compréhension por rien.
-			}
-		}
 		System.out.println("\t\tANCIEN : "+joueur.getLigne().toString()+"\n\t\tNB JOUEURS : "+joueurs.size());
 		
 		// Connection de la ligne avec le joueur
@@ -484,14 +454,6 @@ public class Partie {
 			e.printStackTrace();
 		}
 
-	}
-	
-	public void repererBonus()
-	{
-		/* 
-		 * Méthode qui devra repérer si un joueur rentre en contact avec bonus
-		 * affectera le bonus au joueur
-		 */
 	}
 	
 	// Méthode remplissant les tableaux des sous grilles avec les traces des joueurs
@@ -657,10 +619,10 @@ public class Partie {
 		this.repererCollisions();	// Si collisions il y a, alors la méthode repererCollisions se charge de mettre à jour les scores et l'état des joueurs
 		
 		// On repère si des joueurs prennent un bonus
-		//this.repererBonus();	// Si bonus pris il y a, alors la méthode repererBonus se charge de modifier les paramètres des lignes concernées et de vider le tableau des bonus présents
+		this.verifBonus();	// Si bonus pris il y a, alors la méthode repererBonus se charge de modifier les paramètres des lignes concernées et de vider le tableau des bonus présents
 		
 		// Voir si on fait apparaitre des bonus ou non
-		//this.apparaitreBonus();
+		this.apparaitreBonus();
 		
 		// Voir si il ne reste plus qu'un joueur en vie, donc fin du round
 		if(nbJoueursVivant() <= 1)
@@ -671,6 +633,7 @@ public class Partie {
 			 * 		Si oui : vérifier que l'écart avec le 2ème et de plus de 2 points
 			 * 		Si non : repartir sur un nouveau round
 			 */
+			boolean nvRound = false;
 			
 			// Parmis tous les joueurs
 			for(Joueur e : joueurs)
@@ -681,12 +644,17 @@ public class Partie {
 					// On vérifie si il a plus de 2 points par rapport aux autres joueurs
 					if(verifGagnant(e))
 					{
+						System.out.println("Grand gagnant");
 						//arreterPartie();
 						// FIN DE LA PARTIE
 					}
 				}
-				// Si non, alors on initialise un nouveau round
-				else { this.initialiserRound(); }
+				// Si non, alors on initialise un nouveau round, si on ne l'a pas déjà fait
+				else if(!nvRound)
+				{
+					this.initialiserRound();
+					nvRound = true;
+				}
 			}
 		}
 		

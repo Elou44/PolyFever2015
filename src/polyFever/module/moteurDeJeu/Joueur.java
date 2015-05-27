@@ -31,6 +31,8 @@ public class Joueur {
 	private boolean redimension;		// Booléen indiquant si l'épaisseur de la ligne du joueur a été modifiée
 	
 	// Constructeur
+	public Joueur()	{ }
+	
 	public Joueur(Partie partie)	// Par défaut
 	{
 		System.out.println("Instanciation d'un objet Joueur (sp)...");

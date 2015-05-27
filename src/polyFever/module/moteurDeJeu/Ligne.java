@@ -54,8 +54,8 @@ public class Ligne {
 		return polyfever;
 	}
 
-	public void setVitesse(float vitesse) {
-		this.vitesse = vitesse;
+	public void setVitesse(float d) {
+		this.vitesse = d;
 	}
 	
 	public int getCouleur() {

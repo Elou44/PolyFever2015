@@ -18,13 +18,19 @@ public class BonusVitesse extends Bonus{
 	// Méthode
 	public void modifierParametres()
 	{
-		/* Changer la vitesse du joueur affecté
-		 * 
+		/* 
+		 * Changer la vitesse du joueur affecté
 		 */
-		float ancienneVitesse;
+		Ligne ligne = joueur.getLigne();
 		
-		ancienneVitesse = joueur.getLigne().getVitesse();
-		joueur.getLigne().setEpaisseur(ancienneVitesse+1);
+		ligne.setVitesse(ligne.getVitesse()*1.5f);
+	}
+	
+	public void retablirParametres()
+	{
+		Ligne ligne = joueur.getLigne();
+		
+		ligne.setVitesse(ligne.getVitesse()/1.5f);
 	}
 	
 }
