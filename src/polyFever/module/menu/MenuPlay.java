@@ -10,7 +10,16 @@ public class MenuPlay extends Menu {
 		super(t);
 	}
 	
-	public void lancerPartie(){
-		//lancer une partie
+	@Override
+	public Menu changementMenu(Menu nouv){
+		Menu.isMenu = false;
+		return nouv;
+	}
+	
+	@Override
+	public Menu retour(){
+		Menu.isMenu = true;
+		Menu prev = this.pere;
+		return prev;
 	}
 }

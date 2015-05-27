@@ -13,17 +13,33 @@ public class Menu {
 	protected String titre;
 	protected Menu pere;
 	protected Set<Menu> fils;
+	protected Set<Bouton> boutons;
 	
+	protected static boolean isMenu;
+	
+	public static boolean isMenu() {
+		return isMenu;
+	}
+
+	
+
 	/**
 	 * Constructeur de menu grâce au titre
 	 * @param titre : Titre du menu
 	 */
+	
 	public Menu(String titre) {
 		this.titre = titre;
 		this.pere = null;
 		this.fils = new HashSet<Menu>();
+		this.boutons = new HashSet<Bouton>();
 	}
 	
+	public Set<Bouton> getBoutons() {
+		return boutons;
+	}
+
+
 	/**
 	 * Methode permettant de définir le père du menu en question
 	 * @param pere : Objet Menu qui sera le père du menu concerné dans l'arborescence
