@@ -27,6 +27,8 @@ public class Prototyp1 extends PolyFever {
 		Joueur j1 = new Joueur(partie, "joueurTest", Keyboard.KEY_LEFT, Keyboard.KEY_RIGHT, 0);
         Evenements ev = new Evenements();
 		partie.ajouterJoueur(j1,this);
+		Joueur j2 = new Joueur(partie, "Joueur test2", Keyboard.KEY_A, Keyboard.KEY_Z, 0);
+		partie.ajouterJoueur(j2, this);
 		ev.initControles(partie);
 		
 		System.out.println("Création de l'objet Affichage...");
