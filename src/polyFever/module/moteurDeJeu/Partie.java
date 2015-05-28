@@ -47,16 +47,17 @@ public class Partie {
 	private long tpsBonus;				// Variable indiquant le temps à partir duquel un bonus peut appraitre
 	private final int nbSousGrilles = 16;	// Variable donnant le nombre de sous grilles voulues
 	private List<List<Vector4>> trace;		// Tableau de tableau de List de Vector4, donnant les traces sur les 16 sous grilles du plateau
-	
+	private PolyFever p;
 	// Constructeur
 	/**
 	 * Constructeur d'un objet Partie
 	 * Ce constructeur instancie un objet Partie par défaut, initialisant les tableaux, variables nécessaires au stockage d'une partie.
 	 * Génére aussi les sous grilles découpant le plateau de jeu.
 	 */
-	public Partie()	// Par défaut
+	public Partie(PolyFever p)	// Par défaut
 	{
 		System.out.println("Instanciation d'un objet Partie...");
+		this.p = p;
 		this.scoreMax = 0;								// Score max initialiser à 0 mais à calculer
 		this.nbJoueurs = 0;								// Nombre de joueurs initialisé à 0
 		this.joueurs = new HashSet<Joueur>();			// Création de la liste des joueurs
@@ -220,7 +221,7 @@ public class Partie {
 		}
 		
 		// Remise à zéro du tableau de vertex du module Affichage
-		polyFever.affichage.dJeu.dPlateau.dLigne.clearTabVertex();
+		p.affichage.dJeu.dPlateau.dLigne.clearTabVertex();
 		
 		// Changement de l'état du jeu à "pause" pour attendre le départ donnée par un joueur
 		this.roundEnPause = true;

@@ -10,7 +10,7 @@ package polyFever.module.moteurDeJeu;
  * 		Test sur les coordonnées des nouvelles positions renvoyées
  *
  */
-
+/*
 public class Main {
 	
 	public static void main (String [] args)
@@ -48,3 +48,4 @@ public class Main {
 	}
 
 }
+*/

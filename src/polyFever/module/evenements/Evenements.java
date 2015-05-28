@@ -29,7 +29,6 @@ public class Evenements {
 	 */
 	public Evenements() {
 		System.out.println("Instanciation d'un objet Evenements...");
-		this.partie = new Partie();				//partie geree
 		this.controles = new Hashtable();		//table associant les joueurs a leurs controles
 		this.entree = new StringBuilder();		//buffer pour les entrees utilisateurs
 	}
@@ -159,7 +158,7 @@ public class Evenements {
 	public void initControles(Partie p) {
 		this.partie = p;	//Récupérer la liste des joueurs
 		
-		Joueur j = new Joueur(p);
+		Joueur j;
 		Iterator<Joueur> i = this.partie.getJoueurs().iterator();		//Pour parcourir la liste de joueurs
 		
 		while(i.hasNext()) {

@@ -23,7 +23,7 @@ public class Prototyp1 extends PolyFever {
 	public Prototyp1() {
 		super("Prototyp1", 900, 600, true); // on interdit le redimensionnement de la fenetre
 
-		Partie partie = new Partie(); // Devra etre instanciée par le Menu
+		Partie partie = new Partie(this); // Devra etre instanciée par le Menu
 		Joueur j1 = new Joueur(partie, "joueurTest", Keyboard.KEY_LEFT, Keyboard.KEY_RIGHT, 0);
         Evenements ev = new Evenements();
 		partie.ajouterJoueur(j1,this);
