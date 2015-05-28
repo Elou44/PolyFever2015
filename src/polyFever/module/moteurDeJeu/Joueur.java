@@ -8,6 +8,49 @@ import polyFever.module.util.math.*;
  * Et gérant les paramètres du joueur
  */
 
+/**
+ * Ceci est la classe Joueur
+ * Classe stockant les informations liés à un joueur
+ * Et gérant les paramètres du joueur
+ * 
+ * @param pseudo
+ * 			Chaine de caractères accueillant le pseudo du joueur
+ * @param toucheG
+ * 			Entier stockant la valeur de la touche clavier permettant au joueur de tourner à gauche
+ * @param toucheD
+ * 			Entier stockant la valeur de la touche clavier permettant au joueur de tourner à droite
+ * @param score
+ * 			Entier stockant le score du joueur
+ * @param etat
+ * 			Variable accueillant la valeur d'une énumération Etat, indiquant le statut du joueur, soit MORT, VIVANT ou QUITTE
+ * @param type
+ * 			Variable accueillant la valeur d'une énumération Role, indiquant le rôle du joueur dans la partie, soit HOTE ou CLIENT
+ * @param ligne
+ * 			Objet Ligne que le joueur contrôle
+ * @param position
+ * 			Vector3 indiquant la position du joueur sur le plateau de jeu, en x, en y et si il laisse une trace (z=1) ou non (z=0)
+ * @param direction
+ * 			Double indiquant la direction du joueur, en radians (entre 0 et 2PI)
+ * @param toucheGPresse
+ * 			Booléen indiquant si la toucheG du joueur est déclenché (true) ou relachée (false)
+ * @param toucheDPresse
+ * 			Booléen indiquant si la toucheD du joueur est déclenché (true) ou relachée (false)
+ * @param partie
+ * 			Objet Partie auquel est rattaché le joueur
+ * @param grille
+ * 			Entier donnant l'index de la sous grille du plateau de jeu ou se trouve actuellement le joueur
+ * @param anciennePosition
+ * 			Vector3 donnant la position antérieure à la position courante du joueur
+ * @param DroiteJoueur
+ * 			Vector4 donant les coordonnées des points formant la droite de contact du joueur
+ * @param ancienneDroiteJoueur
+ * 			Vector4 donant les coordonnées des précédent points formant la collision de contact du joueur
+ * @param redimension
+ * 			Booléen indiquant si l'épaisseur de la ligne du joueur a été modifiée
+ * 
+ * @author Frédéric Llorca
+ *
+ */
 public class Joueur {
 
 	private String pseudo;				// Pseudo du joueur
@@ -25,14 +68,18 @@ public class Joueur {
 	private Partie partie;				// Objet Partie auquel est rattaché le joueur
 	private int grille;					// Entier donnant l'index de la sous grille du plateau de jeu ou se trouve actuellement le joueur
 	private Vector3 anciennePosition;	// Position antérieure à la position courante du joueur
-	private Vector4 ancienneDroiteJoueur;	// Coordonnées des précédent points formant la collision de contact du joueur
-	private Vector2 pointCollision;		// Coordonnées du point de collision
 	private Vector4 droiteJoueur;		// Coordonnées des points formant la droite de contact du joueur
+	private Vector4 ancienneDroiteJoueur;	// Coordonnées des précédent points formant la collision de contact du joueur
 	private boolean redimension;		// Booléen indiquant si l'épaisseur de la ligne du joueur a été modifiée
 	
 	// Constructeur
-	public Joueur()	{ }
-	
+	/**
+	 * Constructeur d'un objet Joueur
+	 * Prend en paramètre un objet Partie auquel rattaché le joueur
+	 * Ce constructeur initialise les variables nécessaires à l'utilisation d'un joueur
+	 * 
+	 * @param partie
+	 */
 	public Joueur(Partie partie)	// Par défaut
 	{
 		System.out.println("Instanciation d'un objet Joueur (sp)...");
@@ -49,11 +96,20 @@ public class Joueur {
 		this.partie = partie;
 		this.anciennePosition = new Vector3();
 		this.ancienneDroiteJoueur = new Vector4();
-		this.pointCollision = new Vector2();
 		this.droiteJoueur = new Vector4();
 		this.redimension = false;
 	}
 
+	/**
+	 * Constructeur d'un objet Joueur
+	 * Ce constructeur prend en paramètres un objet Partie, le pseudo du Joueur, ses touches de jeu ainsi que sa couleur
+	 * 
+	 * @param partie
+	 * @param pseudo
+	 * @param toucheG
+	 * @param toucheD
+	 * @param couleur
+	 */
 	public Joueur(Partie partie, String pseudo, int toucheG, int toucheD, int couleur)	// Avec paramètres
 	{
 		this(partie);
@@ -92,15 +148,6 @@ public class Joueur {
 
 	public void setDroiteJoueur(Vector4 droiteJoueur) {
 		this.droiteJoueur = droiteJoueur;
-	}
-	
-	public Vector2 getPointCollision() {
-		return pointCollision;
-	}
-
-	public void setPointCollision(float x, float y) {
-		this.pointCollision.x(x);
-		this.pointCollision.y(y);
 	}
 	
 	public Vector3 getAnciennePosition() {
@@ -218,15 +265,16 @@ public class Joueur {
 	/* 
 	 * Autres méthodes de gestion des joueurs
 	 */
-	
-
-	public void mettrePause()	// Mise en pause d'une partie
-	{
-		/* Il faut arrêter tous les traitements, ne plus envoyer d'informations pour tracer ou afficher
-		 * et attendre le signal pour enlever la pause
-		 */
-	}
-	
+		
+	/**
+	 * Méthode permettant à un joueur présent dans la partie de la quitter sans pour autant arrêter la partie entièrement
+	 * 
+	 * Principe :
+	 *		Vérifier si le joueur quittant la partie est l'hébergeur de la partie
+	 * 		Si oui : il faut faire quitter tout le monde
+	 * 		Si non : - changer l'état du joueur en mort
+	 * 			- ne plus envoyer d'informations par rapport à ce joueur (liste joueur ayant quittés?)
+	 */
 	public void quitterPartie()	// Quitter la partie par un joueur
 	{
 		/* 
@@ -239,108 +287,109 @@ public class Joueur {
 		
 		
 	}
-	
-	
-	public void priseBonus()
-	{
-		/* Vérifier si les coordonnées de la ligne touchent les coordonnées d'un bonus
-		 * Faire disparaitre le bonus du plateau
-		 * Changer les paramètres du joueur concerné
-		 */
-	}
 
+	/**
+	 * Méthode mettant à jour l'attribut "grille" d'un Joueur selon sa position courante
+	 * 
+	 * Principe :
+	 * 		Avec la position on regarde dans quelle sous grille il se trouve
+	 * 		On modifie son attribut "grille"
+	 */
+	// Méthode mettant à jour l'attribut "grille" du joueur selon sa position
+	public void majGrille()
+	{
+		// Si le curseur se situe dans la 0ème sous grille
+		if(this.position.x() <= -0.5 && this.position.y() >= 0.5)
+		{
+			// Mise à jour de la sous grille actuelle ou se trouve le joueur
+			this.setGrille(0);
+		}
+		// Si le curseur se situe dans la 1ère sous grille
+		else if( (this.position.x() >= -0.5 && this.position.x() <= 0) && this.position.y() >= 0.5)
+		{
+			this.setGrille(1);
+		}
+		// Si le curseur se situe dans la 2ème sous grille
+		else if( (this.position.x() >= 0 && this.position.x() <= 0.5) && this.position.y() >= 0.5)
+		{
+			this.setGrille(2);
+		}
+		// Si le curseur se situe dans la 3ème sous grille
+		else if(this.position.x() >= 0.5 && this.position.y() >= 0.5)
+		{
+			this.setGrille(3);
+		}
+		// Si le curseur se situe dans la 4ème sous grille
+		else if(this.position.x() <= -0.5 && (this.position.y() >= 0 && this.position.y() <= 0.5) )
+		{
+			this.setGrille(4);
+		}
+		// Si le curseur se situe dans la 5ème sous grille
+		else if( (this.position.x() >= -0.5 && this.position.x() <= 0) && (this.position.y() >= 0 && this.position.y() <= 0.5) )
+		{
+			this.setGrille(5);
+		}
+		// Si le curseur se situe dans la 6ème sous grille
+		else if( (this.position.x() >= 0 && this.position.x() <= 0.5) && (this.position.y() >= 0 && this.position.y() <= 0.5) )
+		{
+			this.setGrille(6);
+		}
+		// Si le curseur se situe dans la 7ème sous grille
+		else if(this.position.x() >= 0.5 && (this.position.y() >= 0 && this.position.y() <= 0.5) )
+		{
+			this.setGrille(7);
+		}
+		// Si le curseur se situe dans la 8ème sous grille
+		else if(this.position.x() <= -0.5 && (this.position.y() >= -0.5 && this.position.y() <= 0) )
+		{
+			this.setGrille(8);
+		}
+		// Si le curseur se situe dans la 9ème sous grille
+		else if( (this.position.x() >= -0.5 && this.position.x() <= 0) && (this.position.y() >= -0.5 && this.position.y() <= 0) )
+		{
+			this.setGrille(9);
+		}
+		// Si le curseur se situe dans la 10ème sous grille
+		else if( (this.position.x() >= 0 && this.position.x() <= 0.5) && (this.position.y() >= -0.5 && this.position.y() <= 0) )
+		{
+			this.setGrille(10);
+		}
+		// Si le curseur se situe dans la 11ème sous grille
+		else if(this.position.x() >= 0.5 && (this.position.y() >= -0.5 && this.position.y() <= 0) )
+		{
+			this.setGrille(11);
+		}
+		// Si le curseur se situe dans la 12ème sous grille
+		else if(this.position.x() <= -0.5 && this.position.y() <= -0.5)
+		{
+			this.setGrille(12);
+		}
+		// Si le curseur se situe dans la 13ème sous grille
+		else if( (this.position.x() >= -0.5 && this.position.x() <= 0) && this.position.y() <= -0.5)
+		{
+			this.setGrille(13);
+		}
+		// Si le curseur se situe dans la 14ème sous grille
+		else if( (this.position.x() >= 0 && this.position.x() <= 0.5) && this.position.y() <= -0.5)
+		{
+			this.setGrille(14);
+		}
+		// Si le curseur se situe dans la 15ème sous grille
+		else if(this.position.x() >= 0.5 && this.position.y() <= -0.5)
+		{
+			this.setGrille(15);
+		}
+	}
+	
+	/**
+	 * Méthode renvoyant une chaine de caractères décrivant un objet Joueur
+	 */
 	@Override
 	public String toString() {
 		return "Joueur [pseudo=" + pseudo + ", toucheG=" + toucheG
 				+ ", toucheD=" + toucheD + ", score=" + score + ", etat="
 				+ etat + ", type=" + type + ", ligne=" + ligne + ", position.x="
 				+ position.x() + ", position.y="+ position.y() + ", direction=" + direction + "]";
-	}
-
-	// Méthode mettant à jour l'attribut "grille" du joueur selon sa position
-	public void majGrille(Vector3 position)
-	{
-		// Si le curseur se situe dans la 0ème sous grille
-		if(position.x() <= -0.5 && position.y() >= 0.5)
-		{
-			// Mise à jour de la sous grille actuelle ou se trouve le joueur
-			this.setGrille(0);
-		}
-		// Si le curseur se situe dans la 1ère sous grille
-		else if( (position.x() >= -0.5 && position.x() <= 0) && position.y() >= 0.5)
-		{
-			this.setGrille(1);
-		}
-		// Si le curseur se situe dans la 2ème sous grille
-		else if( (position.x() >= 0 && position.x() <= 0.5) && position.y() >= 0.5)
-		{
-			this.setGrille(2);
-		}
-		// Si le curseur se situe dans la 3ème sous grille
-		else if(position.x() >= 0.5 && position.y() >= 0.5)
-		{
-			this.setGrille(3);
-		}
-		// Si le curseur se situe dans la 4ème sous grille
-		else if(position.x() <= -0.5 && (position.y() >= 0 && position.y() <= 0.5) )
-		{
-			this.setGrille(4);
-		}
-		// Si le curseur se situe dans la 5ème sous grille
-		else if( (position.x() >= -0.5 && position.x() <= 0) && (position.y() >= 0 && position.y() <= 0.5) )
-		{
-			this.setGrille(5);
-		}
-		// Si le curseur se situe dans la 6ème sous grille
-		else if( (position.x() >= 0 && position.x() <= 0.5) && (position.y() >= 0 && position.y() <= 0.5) )
-		{
-			this.setGrille(6);
-		}
-		// Si le curseur se situe dans la 7ème sous grille
-		else if(position.x() >= 0.5 && (position.y() >= 0 && position.y() <= 0.5) )
-		{
-			this.setGrille(7);
-		}
-		// Si le curseur se situe dans la 8ème sous grille
-		else if(position.x() <= -0.5 && (position.y() >= -0.5 && position.y() <= 0) )
-		{
-			this.setGrille(8);
-		}
-		// Si le curseur se situe dans la 9ème sous grille
-		else if( (position.x() >= -0.5 && position.x() <= 0) && (position.y() >= -0.5 && position.y() <= 0) )
-		{
-			this.setGrille(9);
-		}
-		// Si le curseur se situe dans la 10ème sous grille
-		else if( (position.x() >= 0 && position.x() <= 0.5) && (position.y() >= -0.5 && position.y() <= 0) )
-		{
-			this.setGrille(10);
-		}
-		// Si le curseur se situe dans la 11ème sous grille
-		else if(position.x() >= 0.5 && (position.y() >= -0.5 && position.y() <= 0) )
-		{
-			this.setGrille(11);
-		}
-		// Si le curseur se situe dans la 12ème sous grille
-		else if(position.x() <= -0.5 && position.y() <= -0.5)
-		{
-			this.setGrille(12);
-		}
-		// Si le curseur se situe dans la 13ème sous grille
-		else if( (position.x() >= -0.5 && position.x() <= 0) && position.y() <= -0.5)
-		{
-			this.setGrille(13);
-		}
-		// Si le curseur se situe dans la 14ème sous grille
-		else if( (position.x() >= 0 && position.x() <= 0.5) && position.y() <= -0.5)
-		{
-			this.setGrille(14);
-		}
-		// Si le curseur se situe dans la 15ème sous grille
-		else if(position.x() >= 0.5 && position.y() <= -0.5)
-		{
-			this.setGrille(15);
-		}
 	}
 	
 }

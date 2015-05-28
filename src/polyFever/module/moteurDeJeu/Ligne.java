@@ -8,6 +8,35 @@ package polyFever.module.moteurDeJeu;
 import polyFever.module.util.math.Vector4;
 import polyFever.module.main.*;
 
+/**
+ * Ceci est la classe Ligne
+ * Classe stockant les informations liés à une ligne contrôlée par un joueur
+ * Et gérant les paramètres de la ligne
+ * 
+ * @param couleur
+ * 			Entier indiquant la couleur de la ligne
+ * @param joueur
+ * 			Objet Joueur controlant la ligne
+ * @param vitesse
+ * 			Float indiquant la vitesse de la ligne
+ * @param vitesseInit
+ * 			Float indiquant la vitesse initiale de la ligne. Utile au module Affichage
+ * @param epaisseur
+ * 			Float donnant l'épaisseur du trait
+ * @param courbe
+ * 			Double donnant le rayon de courbure de la ligne (en radians)
+ * @param tpsEnVie
+ * 			Long donnant le temps passé en vie durant un round (en millisecondes)
+ * @param tpsTrou
+ * 			Long donnant le temps définissant le moment ou la ligne trace un trou (en millisecondes)
+ * @param polyFever
+ * 			Objet PolyFever permettant l'association à l'objet PolyFever. Utile au module Affichage, notamment pour que le traçage de la ligne ne se fasse pas en fontion des FPS du joueur
+ * @param longueurTrou
+ * 			Long constant, donant le temps en millisecondes correspondant au traçage d'un trou
+ * 
+ * @author Frédéric Llorca
+ *
+ */
 public class Ligne {
 
 	// COULEUR AFFECTEE LORS DE L'INSTANCIATION D'UN JOUEUR
@@ -17,12 +46,19 @@ public class Ligne {
 	private float vitesseInit;
 	private float epaisseur;			// Epaisseur du trait
 	private double courbe;				// Rayon de courbure de la ligne (en radians)
-	private int tpsEnVie;				// Temps passé en vie durant un round (en secondes)
+	private long tpsEnVie;				// Temps passé en vie durant un round (en secondes)
 	private long tpsTrou;				// Temps définissant le moment ou la ligne trace un trou (en millisecondes)
 	private PolyFever polyfever;		// Connexion à l'objet PolyFever
 	private final long longueurTrou;	// Temps en millisecondes correspondant au traçage d'un trou
 	
 	// Constructeur
+	/**
+	 * Constructeur d'un objet Ligne
+	 * Prend en paramètre un objet PolyFever permettant son association au module Affichage
+	 * Ce constructeur initialise les variables nécessaires à l'utilisation d'une ligne
+	 * 
+	 * @param polyFever
+	 */
 	public Ligne(PolyFever p)	// Par défaut
 	{
 		//System.out.println("Instanciation d'un objet Ligne (sp)...");
@@ -37,6 +73,12 @@ public class Ligne {
 		this.longueurTrou = (long) (2.3/vitesse);//230;
 	}
 	
+	/**
+	 * Constructeur d'un objet Ligne avec la couleur en paramètres
+	 * 
+	 * @param couleur
+	 * @param polyFever
+	 */
 	public Ligne(int couleur, PolyFever p)	// Avec paramètres
 	{
 		this(p);
@@ -94,11 +136,11 @@ public class Ligne {
 		this.courbe = courbe;
 	}
 
-	public int getTpsEnVie() {
+	public long getTpsEnVie() {
 		return tpsEnVie;
 	}
 
-	public void setTpsEnVie(int tpsEnVie) {
+	public void setTpsEnVie(long tpsEnVie) {
 		this.tpsEnVie = tpsEnVie;
 	}
 	
@@ -114,6 +156,11 @@ public class Ligne {
 	 * Autres méthodes de gestion des lignes
 	 */
 	
+	/**
+	 * Méthode 
+	 * 
+	 * @return Ne retourne rien
+	 */
 	public void majVitessesCourbe() {
 		/*
 		 * Mise à jour des Vitesses (vitesse et vitesse2) -> réalisé à chaque frame (sachant que les fps sont maj toutes les secondes, peu utile)
@@ -131,6 +178,19 @@ public class Ligne {
 
 	}
 	
+	/**
+	 * Méthode calculant la nouvelle position d'un joueur si ce dernier veut tourner à droite
+	 * 
+	 * Principe :
+	 * 		On calcule tout d'abord l'angle de rotation, l'angle que fait la nouvelle direction avec l'axe des abscisses
+	 * 		Grâce à cet angle et le théorème de Pythagore, on calcule la translation en x et en y nécessaire pour atteindre la nouvelle position
+	 * 		On ajoute ces valeurs à la position courante du Joueur et ainsi définir une nouvelle position
+	 * 		Selon le temps de la partie, on remplira le z de la nouvelle position à 1 si la ligne doit laisser une trace ou bien à 0 si la ligne ne doit pas en laisser
+	 * 			Pour cela on vérifie juste si le modulo du temps de la partie et de l'attribut tpsTrou du Joueur est comprise entre 0 et l'attribut longueurTrou
+	 * 		On met à jour la grille courante du Joueur
+	 * 		On met à jour la droiteJoueur
+	 * 		On met à jour la direction du Joueur
+	 */
 	public void tournerDroite()	// Méthode calculant la prochaine position, si le joueur veut tourner à droite
 	{
 		/* Calculer les nouvelles coordonnées
@@ -219,7 +279,7 @@ public class Ligne {
 			else { joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1); }
 			
 			// Mise à jour de la sous grille courante
-			joueur.majGrille(joueur.getPosition());
+			joueur.majGrille();
 			
 			// Mise à jour de la droite du joueur, permettant la détection de collision
 			joueur.setDroiteJoueur(new Vector4( (float) (joueur.getPosition().x() + (epaisseur/2)*Math.cos((Math.PI/2) - joueur.getAngleRectangle())),
@@ -241,6 +301,19 @@ public class Ligne {
 				
 	}
 	
+	/**
+	 * Méthode calculant la nouvelle position d'un joueur si ce dernier veut tourner à gauche
+	 * 
+	 * Principe :
+	 * 		On calcule tout d'abord l'angle de rotation, l'angle que fait la nouvelle direction avec l'axe des abscisses
+	 * 		Grâce à cet angle et le théorème de Pythagore, on calcule la translation en x et en y nécessaire pour atteindre la nouvelle position
+	 * 		On ajoute ces valeurs à la position courante du Joueur et ainsi définir une nouvelle position
+	 * 		Selon le temps de la partie, on remplira le z de la nouvelle position à 1 si la ligne doit laisser une trace ou bien à 0 si la ligne ne doit pas en laisser
+	 * 			Pour cela on vérifie juste si le modulo du temps de la partie et de l'attribut tpsTrou du Joueur est comprise entre 0 et l'attribut longueurTrou
+	 * 		On met à jour la grille courante du Joueur
+	 * 		On met à jour la droiteJoueur
+	 * 		On met à jour la direction du Joueur
+	 */
 	public void tournerGauche()	// Méthode calculant la prochaine position, si le joueur veut tourner à droite
 	{
 		/* Calculer les nouvelles coordonnées
@@ -332,7 +405,7 @@ public class Ligne {
 			else { joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1); }
 		
 			// Mise à jour de la sous grille courante
-			joueur.majGrille(joueur.getPosition());
+			joueur.majGrille();
 			
 			// Mise à jour de la droite du joueur, permettant la détection de collision
 			joueur.setDroiteJoueur(new Vector4( (float) (joueur.getPosition().x() + (epaisseur/2)*Math.cos((Math.PI/2) - joueur.getAngleRectangle())),
@@ -354,6 +427,19 @@ public class Ligne {
 		
 	}
 	
+	/**
+	 * Méthode calculant la nouvelle position d'un joueur si ce dernier ne veut pas tourner
+	 * 
+	 * Principe :
+	 * 		On calcule tout d'abord l'angle de rotation, l'angle que fait la nouvelle direction avec l'axe des abscisses
+	 * 		Grâce à cet angle et le théorème de Pythagore, on calcule la translation en x et en y nécessaire pour atteindre la nouvelle position
+	 * 		On ajoute ces valeurs à la position courante du Joueur et ainsi définir une nouvelle position
+	 * 		Selon le temps de la partie, on remplira le z de la nouvelle position à 1 si la ligne doit laisser une trace ou bien à 0 si la ligne ne doit pas en laisser
+	 * 			Pour cela on vérifie juste si le modulo du temps de la partie et de l'attribut tpsTrou du Joueur est comprise entre 0 et l'attribut longueurTrou
+	 * 		On met à jour la grille courante du Joueur
+	 * 		On met à jour la droiteJoueur
+	 * 		On ne met pas à jour la direction du Joueur puisqu'elle ne change pas
+	 */
 	public void pasTourner()
 	{
 		/* Calculer les nouvelles coordonnées
@@ -436,7 +522,7 @@ public class Ligne {
 			else { joueur.getPosition().set((float)nouvPositionX, (float)nouvPositionY, 1); }
 			
 			// Mis à jour de la sous grille courante
-			joueur.majGrille(joueur.getPosition());
+			joueur.majGrille();
 			
 			// Pas de mise à jour de la direction, vu qu'elle ne change pas
 			
@@ -448,23 +534,10 @@ public class Ligne {
 		}
 		
 	}
-	
-	public void tracerTrou()
-	{
-		/* 
-		 * Méthode calculant le moment pour un joueur de tracer un trou
-		 * Si trace trou ne pas écrire dans le tableau des coordonnées des lignes !
-		 * Juste changer les coordonnées pos_x et pos_y du joueur
-		 * 
-		 * Principe :
-		 * A l'initialisation du joueur on définit un temps constant pour le reste de la partie
-		 * Ce temps définira tous les combiens un trou sera tracé
-		 * Ce temps sera aléatoire (sinon si tous les joueurs ont le même temps, ils traceraient des trous au même moment
-		 * Quand le temps vient, on change le dernier bit du Vector Position en 0 pour pas tracer
-		 */
-		
-	}
 
+	/**
+	 * Méthode renvoyant une chaine de caractères décrivant un objet Ligne
+	 */
 	@Override
 	public String toString() {
 		return "Ligne [couleur=" + couleur +", vitesse=" + vitesse + ", epaisseur=" + epaisseur

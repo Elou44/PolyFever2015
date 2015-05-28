@@ -53,6 +53,7 @@ public class Partie {
 	 * Constructeur d'un objet Partie
 	 * Ce constructeur instancie un objet Partie par défaut, initialisant les tableaux, variables nécessaires au stockage d'une partie.
 	 * Génére aussi les sous grilles découpant le plateau de jeu.
+	 * Constructeur sans paramètres
 	 */
 	public Partie(PolyFever p)	// Par défaut
 	{
@@ -62,7 +63,7 @@ public class Partie {
 		this.nbJoueurs = 0;								// Nombre de joueurs initialisé à 0
 		this.joueurs = new HashSet<Joueur>();			// Création de la liste des joueurs
 		this.bonusPresents = new ArrayList<Bonus>();	// Création de la liste des bonus
-		this.temps = System.currentTimeMillis();		// Définition de l'heure de début de la partie
+		this.temps = 0;									// Définition de l'heure de début de la partie
 		this.tpsPause = 0;								// Initialisation du temps d'une pause à 0
 		this.trace = new ArrayList<List<Vector4>>();	// Création de la list trace
 		this.roundEnPause = false;						// Initialisation du jeu en "pas en pause"
@@ -156,6 +157,9 @@ public class Partie {
 		// Calcul du scoreMax
 		scoreMax = (nbJoueurs-1) * 10;
 		
+		// Initialisation du temps du début de la partie
+		this.temps = System.currentTimeMillis();
+		
 		// Calcul des positions de base des joueurs & définition du temps de traçage de trou
 		for(Joueur e : joueurs)		// Boucle de parcours de la liste des joueurs
 		{
@@ -202,6 +206,9 @@ public class Partie {
 	{
 		System.out.println("=======> NOUVEAU ROUND <=======");
 		
+		// Remise à zéro du temps pour le début du round
+		this.temps = System.currentTimeMillis();
+		
 		// Calcul des positions de base des joueurs & définition du temps de traçage de trou
 		for(Joueur e : joueurs)		// Boucle de parcours de la liste des joueurs
 		{
@@ -213,6 +220,8 @@ public class Partie {
 			e.getLigne().setTpsTrou((long) (Math.random() * (4500 - 3000) + 3000));	// Calcul du temps de traçage de trou
 			e.setEtat(Etat.VIVANT);
 		}
+		
+		p.affichage.dJeu.dPlateau.dLigne.updatePosJoueurs(true);
 		
 		// Remise à zéro des sous grilles
 		for(int i = 0; i < this.trace.size(); i++)

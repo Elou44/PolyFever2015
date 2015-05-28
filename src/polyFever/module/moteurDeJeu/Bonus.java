@@ -6,20 +6,47 @@ import polyFever.module.util.math.Vector4;
  * Classe abstraite définissant les attributs et un prototype de méthode pour les bonus
  */
 
+/**
+ * Ceci est la classe Abstract Bonus
+ * Classe abstraite définissant les attributs et les prototypes des méthodes pour les bonus
+ * 
+ * @param nom
+ * 			Chaine de caractères accueillant le nom du Bonus
+ * @param couleur
+ * 			Variable définissant la portée du bonus et donc la couleur lorsque le bonus est sur le plateau de jeu, valeur de l'énumération Portee
+ * @param coordonnees
+ * 			Vector4 définissant la position sur le plateau de jeu du bonus
+ * @param joueur
+ * 			Objet joueur affecté par le bonus
+ * @param id
+ * 			Entier servant à différencier chaque Bonus, id unique pour chaque Bonus instancié
+ * @param tpsDepart
+ * 			Long donnant le temps (en millisecondes) ou le bonus a commencé à prendre effet
+ * @param duree
+ * 			Long donnant la durée d'effet du bonus
+ * @param indexTab
+ * 			Entier index du bonus dans le tableau des bonusPresents de l'objet Partie
+ * 
+ * @author Frédéric Llorca
+ *
+ */
 public abstract class Bonus {
 
 	// A VOIR SI C'EST UTILE OU NON
 	protected String nom;				// Nom du bonus
 	protected Portee couleur;			// Variable définissant la portée du bonus et donc la couleur lorsque le bonus est sur le plateau de jeu
-	protected Vector4 coordonnees;		// Vector2 définissant la position sur le plateau de jeu du bonus
+	protected Vector4 coordonnees;		// Vector4 définissant la position sur le plateau de jeu du bonus
 	// A VOIR SI C'EST UTILE OU NON
 	protected Joueur joueur;			// Objet joueur prenant le bonus
 	protected static int id = 0;		// Entier servant à différencier chaque Bonus, id unique pour chaque Bonus instancié
-	protected long tpsDepart;			// Variable donnant le temps ou le bonus a commencé ) prendre effet
+	protected long tpsDepart;			// Variable donnant le temps ou le bonus a commencé à prendre effet
 	protected long duree;				// Variable donnant la durée d'effet du bonus
 	protected int indexTab;				// Index du bonus dans le tableau des bonusPresents de l'objet Partie
 	
 	// Constructeur
+	/**
+	 * Constructeur d'un objet Bonus
+	 */
 	public Bonus()
 	{
 		this.coordonnees = new Vector4();
