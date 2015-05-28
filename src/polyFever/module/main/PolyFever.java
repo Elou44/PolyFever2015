@@ -1,6 +1,6 @@
 package polyFever.module.main;
 
-//import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.*;
 
 import java.util.*;
 
@@ -17,11 +17,6 @@ import polyFever.module.moteurDeJeu.*;
 import polyFever.module.affichage.*;
 import polyFever.module.evenements.Evenements;
 
-
-import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.GL11;
 
 /**
  * This class defines an entry point for OpenGL programs as it handles context creation and the game loop.
@@ -41,13 +36,12 @@ public abstract class PolyFever {
 	private boolean isAAAvailable = true; // l'Anti-Aliasing est t-il disponible ? Oui par défaut
 	
 	private Partie partie;
+	public Affichage affichage;
 	private GlOrtho glOrtho;
 	private Evenements evenements;
 	
 	private final int MSAA = 8; // AntiAliasing x8 
 	private String name;
-	
-	boolean isLeftHeld, isRightHeld;
 	
 	/**
 	 * Initializes the application in fullscreen mode.
@@ -61,12 +55,9 @@ public abstract class PolyFever {
 		System.out.println("Création du context openGL...");
 		
 		this.glOrtho = new GlOrtho(-1.0f*((float)width/(float)height),1.0f*((float)width/(float)height),-1.0f,1.0f,-1.0f,1.0f);
-		
-		isLeftHeld = false;
-		isRightHeld = false;
-		
-		
+				
 		this.partie = null;
+		this.affichage = null;
 		this.evenements = null;
 		this.WIDTH = width; 
 		this.HEIGHT = height;
@@ -109,6 +100,11 @@ public abstract class PolyFever {
 		this.partie = p;
 	}
 	
+	public void setAffichage(Affichage a)
+	{
+		this.affichage = a;
+	}
+	
 	public void setEvenements(Evenements e)
     {
             this.evenements = e;
@@ -134,6 +130,7 @@ public abstract class PolyFever {
 		
 		this.name = name;
 		this.partie = null;
+		this.affichage = null;
 		this.evenements = null;
 		Display.setTitle(this.name);
 		this.WIDTH = width; 
@@ -374,31 +371,9 @@ public abstract class PolyFever {
 				if(Display.wasResized())
 					resized();
 				
+				// Gestion des Evenements
 				this.evenements.gestionJeu();
-				/*
-				while(Keyboard.next()) {
-					if(Keyboard.getEventKeyState())
-						keyPressed(Keyboard.getEventKey(), Keyboard.getEventCharacter());
-					else
-					{
-						keyReleased(Keyboard.getEventKey(), Keyboard.getEventCharacter());
-						
-						
-					}
-
-				}
 				
-				if(Keyboard.next()== false && !isLeftHeld && !isRightHeld)
-				{
-					Iterator<Joueur> e = this.partie.getJoueurs().iterator();
-					while(e.hasNext())
-					{
-						e.next().getLigne().pasTourner();
-					}
-				}
-				
-				traitementEvenements(isLeftHeld, isRightHeld);
-				*/
 				update(deltaTime);
 				
 				//Utils.checkGLError("update");
@@ -459,88 +434,7 @@ public abstract class PolyFever {
 	public boolean shouldStop() {
 		return Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE);
 	}
-	
-	/**
-	 * Called when a key has been pressed.
-	 * 
-	 * @param key The @see org.lwjgl.input.Keyboard keycode of the pressed key.
-	 * @param c The literal character of the pressed key.
-	 */
-	public void keyPressed(int key, char c) {
 		
-		//System.out.println(isLeftHeld);
-		//System.out.println(isRightHeld);
-		
-		if(key == Keyboard.KEY_LEFT)
-		{
-			//System.out.println("Gauche");
-			isLeftHeld = true;
-			isRightHeld = false;
-			
-		}
-		else if(key == Keyboard.KEY_RIGHT)
-		{
-			//System.out.println("Droite");	
-			isLeftHeld = false;
-			isRightHeld = true;
-			
-		}
-
-		
-	}
-	
-	/**
-	 * Called when a key has been released.
-	 *
-	 * @param key The @see org.lwjgl.input.Keyboard keycode of the released key.
-	 * @param c The literal character of the released key.
-	 */
-	public void keyReleased(int key, char c) 
-	{
-		
-		if(key == Keyboard.KEY_LEFT)
-		{
-			//System.out.println("Relaché Gauche");
-			isLeftHeld = false;
-			
-		}
-		else if(key == Keyboard.KEY_RIGHT)
-		{
-			//System.out.println("Relaché Droite");
-			isRightHeld = false;
-			
-		}
-		
-	}
-	
-	public void traitementEvenements(boolean isLeftHeld, boolean isRightHeld)
-	{
-		
-		if(isLeftHeld && !isRightHeld)
-		{
-			//System.out.println("Gauche");
-			Iterator<Joueur> e = this.partie.getJoueurs().iterator();
-			while(e.hasNext())
-			{
-				e.next().getLigne().tournerGauche();
-			}
-		}
-		else if(isRightHeld && !isLeftHeld)
-		{
-			
-			//System.out.println("Droite");
-			Iterator<Joueur> e = this.partie.getJoueurs().iterator();
-			while(e.hasNext())
-			{
-				e.next().getLigne().tournerDroite();
-			}
-			
-		}
-		
-	}
-	
-
-	
 	/**
 	 * Called once per frame and given the elapsed time since the last call
 	 * to this method.

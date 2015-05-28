@@ -5,8 +5,8 @@ import polyFever.module.moteurDeJeu.*;
 
 public class Affichage {
 	
-	private DessinJeu dJeu;
-	private DessinMenu dMenu;
+	public DessinJeu dJeu;
+	public DessinMenu dMenu;
 	
 	public Affichage()
 	{

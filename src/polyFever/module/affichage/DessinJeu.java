@@ -4,8 +4,8 @@ import polyFever.module.moteurDeJeu.*;
 
 public class DessinJeu {
 	
-	private DessinPlateau dPlateau;
-	private DessinScores dScores;
+	public DessinPlateau dPlateau;
+	public DessinScores dScores;
 	
 	
 	public DessinJeu(Affichage a, PolyFever p, Partie partie)
