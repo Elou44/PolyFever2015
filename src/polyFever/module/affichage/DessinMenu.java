@@ -135,6 +135,10 @@ public class DessinMenu {
 		}
 	}
 	
+	/**
+	 * 
+	 */
+	
 	public void init()
 	{
 		
@@ -221,19 +225,34 @@ public class DessinMenu {
 				
 				vbo = glGenBuffers(); // ebo : Elements Buffer Object (plus adapté que les vbo (vertex buffer object pour le dessin de multiple objets)
 				vboBuffer = (FloatBuffer)BufferUtils.createFloatBuffer(this.tabVertex.length).put(
-						new float[] {-01.0f,1.0f,1.0f,1.0f,1.0f,0.0f,0.0f,
+						new float[] {-1.0f,1.0f,1.0f,1.0f,1.0f,0.0f,0.0f,
 						1.0f,1.0f,1.0f,0.0f,1.0f,1.0f,0.0f,
 						1.0f,-1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,
-						-1.0f,-1.0f,1.0f,1.0f,1.0f,0.0f,1.0f}/*this.tabVertex*/).flip();  // IMPORTANT : TRACER LES JOUEURS AU DEBUT DU BUFFER DE VERTEX
+						-1.0f,-1.0f,1.0f,1.0f,1.0f,0.0f,1.0f,
+						
+						-1.0f,1.0f,1.0f,1.0f,1.0f,0.0f,0.0f,
+						1.0f,1.0f,1.0f,0.0f,1.0f,2.0f,0.0f,
+						1.0f,-1.0f,1.0f,1.0f,1.0f,2.0f,2.0f,
+						-1.0f,-1.0f,1.0f,1.0f,1.0f,0.0f,2.0f
+						
+						
+						}/*this.tabVertex*/).flip();  // IMPORTANT : TRACER LES JOUEURS AU DEBUT DU BUFFER DE VERTEX
 				glBindBuffer(GL_ARRAY_BUFFER, vbo);  // Fait en sorte que le ebo soit l'objet actif
 
-				this.nbVertex += 6 ; 
+				this.nbVertex += 12 ; 
 				glBufferData(GL_ARRAY_BUFFER, vboBuffer, GL_STREAM_DRAW); // Est appliqué sur le vbo actif
 				
 
 				ebo = glGenBuffers(); // ebo : Elements Buffer Object (plus adapté que les vbo (vertex buffer object pour le dessin de multiple objets)
-				eboBuffer = (IntBuffer)BufferUtils.createIntBuffer(this.elements.length).put(new int[] {0, 1, 2,
-						   0, 2, 3}/*this.elements*/).flip();
+				eboBuffer = (IntBuffer)BufferUtils.createIntBuffer(this.elements.length).put(new int[] {
+						0, 1, 2,
+						   0, 2, 3,
+						   
+						   4, 5, 6,
+						   4, 6, 7
+						   
+				
+				}/*this.elements*/).flip();
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);  // Fait en sorte que le ebo soit l'objet actif
 				
 				

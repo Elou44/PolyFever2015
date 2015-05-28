@@ -97,6 +97,8 @@ public class Prototyp1 extends PolyFever {
 		
 		affichage.dessinerJeu();
 		
+		
+		
 				
 	}
 

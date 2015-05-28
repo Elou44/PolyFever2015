@@ -194,7 +194,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 			}
 		}
 		
-		updatePosJoueurs(true); // On bouge le point du joueur
+		updatePosJoueurs(false); // On bouge le point du joueur
 		
 		
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -459,7 +459,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		if(isUpdateNeeded) // Si l'épaisseur a changé // A CHANGER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   NOUVEAU ROUND A DETECTER | A REMTTRE A FALSE QUAND ON ENLEVE LA PAUSE
 		{
 			double alpha = 2*Math.PI / this.NBCOTES;
-			//System.out.println("NOUVEAU ROUND !!");
+			//System.out.println("player point's vertices have been updated");
 			this.tabVertex[0+i*5*(this.NBCOTES+1)] = p.x();
 			this.tabVertex[1+i*5*(this.NBCOTES+1)] = p.y();
 			for(int j = i*(this.NBCOTES+1)+1, k = 0; j<this.NBCOTES+1+i*(this.NBCOTES+1); j++, k++)
