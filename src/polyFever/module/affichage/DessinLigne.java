@@ -487,15 +487,22 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		this.eboBuffer.put(this.elements);
 		this.eboBuffer.clear();
 		
-		//printTabVertex();
+		printTabVertex();
 
 	}
 	
 	public void clearTabVertex() {
 		
 		this.nbVertex = (this.NBCOTES*3)*partie.getNbJoueurs()+4*6; // 4 vertex par bord * 4 bords + 3 vertex par coté * nb joueur
-		this.lenTabV = ((this.NBCOTES*3)*partie.getNbJoueurs()+4*6)*5; // 5 floats par vertex
+		this.lenTabV = ((this.NBCOTES+1)*partie.getNbJoueurs()+4*4)*5; // NBCOTES+1 vertex par point de joueur * nb le nombre de joueurs + 4 vertex par board (5 floats par vertex)
 		this.lenTabE = (this.NBCOTES*3)*partie.getNbJoueurs()+6*4;  // 6 floats par board + 3 vertex par coté * nb joueur
+		this.indexTabE = ((this.NBCOTES+1)*partie.getNbJoueurs()+4*4); // NBCOTES+1 vertex par point de joueur * nb le nombre de joueurs + 4 vertex par board
+		System.out.println("TabVertex has been cleared !");
+		
+		System.out.println("nbVertex: " + nbVertex);
+		System.out.println("lenTabE: " + lenTabE);
+		System.out.println("lenTabV: " + lenTabV);
+		System.out.println("indexTabE: " + indexTabE);
 	}
 	
 	
@@ -508,12 +515,14 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 		System.out.println("nbVertex: " + nbVertex);
 		System.out.println("lenTabE: " + lenTabE);
+		System.out.println("lenTabV: " + lenTabV);
+		System.out.println("indexTabE: " + indexTabE);
 	}
 	
 	
 	public void printTabVertex()
 	{
-		for(int i = 0; i<50; i++)
+		for(int i = 0; i<80; i++)
 		{
 			System.out.print(this.tabVertex[i]+", ");
 		}
