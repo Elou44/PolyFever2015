@@ -487,7 +487,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		this.eboBuffer.put(this.elements);
 		this.eboBuffer.clear();
 		
-		printTabVertex();
+		//printTabVertex();
 
 	}
 	
@@ -499,10 +499,10 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		this.indexTabE = ((this.NBCOTES+1)*partie.getNbJoueurs()+4*4); // NBCOTES+1 vertex par point de joueur * nb le nombre de joueurs + 4 vertex par board
 		System.out.println("TabVertex has been cleared !");
 		
-		System.out.println("nbVertex: " + nbVertex);
-		System.out.println("lenTabE: " + lenTabE);
-		System.out.println("lenTabV: " + lenTabV);
-		System.out.println("indexTabE: " + indexTabE);
+		//System.out.println("nbVertex: " + nbVertex);
+		//System.out.println("lenTabE: " + lenTabE);
+		//System.out.println("lenTabV: " + lenTabV);
+		//System.out.println("indexTabE: " + indexTabE);
 	}
 	
 	
