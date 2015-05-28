@@ -3,6 +3,7 @@ package polyFever.module.evenements;
 import java.util.*;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import polyFever.module.moteurDeJeu.*;
 import polyFever.module.menu.*;
@@ -32,17 +33,35 @@ public class Evenements {
 		this.controles = new Hashtable();		//table associant les joueurs a leurs controles
 		this.entree = new StringBuilder();		//buffer pour les entrees utilisateurs
 	}
-	/*
-	//Retourne les coordonnées du clic au menu, donc c'est un couple
-	public void gestionMenu() {
-		//Renvoie les coordonnées de la souris quand l'utilisateur clic
+	
+	/**
+	 * Traite les clics de l'utilisateur dans le menu, et regarde s'ils sont dans la hitbox d'un bouton.
+	 * @param boutons Ensemble des objets Bouton du menu concerné, contenant les hitbox.
+	 */
+	public void gestionMenu(Set<Bouton> boutons) {
+		//Renvoie les coordonnees de la souris quand l'utilisateur clic
+		//0 = left mouse button ; 1 = right mouse button
+		while(Mouse.next()) {
+			
+			if(Mouse.getEventButton() == 0 && Mouse.getEventButtonState()) { //Clic gauche avec la souris
+				
+				Iterator<Bouton> i = boutons.iterator();
+				while(i.hasNext()) { //On parcours les Bouton de l'ensemble passe en parametre
+					i.next();
+					
+					//if(i.hitbox.contains(Mouse.getEventX(), Mouse.getEventY())) //Le clic est dans la hitbox
+						//What to do ?
+					
+				}
+			}
+		}
 	}
-	*/
+	
 	/**
 	 * Gestion des entrées au clavier des utilisateurs : saisie de pseudo, adresse IP, port.
 	 * @param param	L'objet Parametres dans lequel modifier la chaine correspondante.
 	 */
-	public void entreeUtilisateur(Parametres param) {
+	public void entreeUtilisateurPseudo(Parametres param) {
 		//Renvoie la chaine saisie par l'utilisateur (pour les pseudos et les adresses)
 		//Choix : ESCAPE pour arreter la saisie, RETURN pour la valider, BACK pour effacer
 		while(Keyboard.next()) {
@@ -62,13 +81,63 @@ public class Evenements {
 		//getEventCharacter envoie le caractere (en char) associe (fonctionne avec Keyboard.next, les evenements)
 		//getKeyName envoie le nom de la Key saisie en parametre (en String) (fonctionne avec l'int KEY_xxx)
 	}
+
+	/**
+	 * Gestion des entrées au clavier des utilisateurs : saisie de pseudo, adresse IP, port.
+	 * @param param	L'objet Parametres dans lequel modifier la chaine correspondante.
+	 */
+	public void entreeUtilisateurIp(Parametres param) {
+		//Renvoie la chaine saisie par l'utilisateur (pour les pseudos et les adresses)
+		//Choix : ESCAPE pour arreter la saisie, RETURN pour la valider, BACK pour effacer
+		while(Keyboard.next()) {
+			
+			if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
+				param.setIp(new String());		//On renvoie une chaine vide quand l'utilisateur annule la saisie
+			
+			} else if(Keyboard.getEventKey() == Keyboard.KEY_RETURN) {
+				this.entree.deleteCharAt(this.entree.length()-1);	//On efface le dernier caractere
+			
+			} else if(Keyboard.getEventKey() == Keyboard.KEY_BACK) {
+				param.setPseudo(this.entree.toString());	//On envoie la chaine courante (en String)
+				
+			} else this.entree.append(Keyboard.getEventCharacter());	//On ajoute le caractere associe a la touche
+			
+		}
+		//getEventCharacter envoie le caractere (en char) associe (fonctionne avec Keyboard.next, les evenements)
+		//getKeyName envoie le nom de la Key saisie en parametre (en String) (fonctionne avec l'int KEY_xxx)
+	}
+
+	/**
+	 * Gestion des entrées au clavier des utilisateurs : saisie de pseudo, adresse IP, port.
+	 * @param param	L'objet Parametres dans lequel modifier la chaine correspondante.
+	 */
+	public void entreeUtilisateurPort(Parametres param) {
+		//Renvoie la chaine saisie par l'utilisateur (pour les pseudos et les adresses)
+		//Choix : ESCAPE pour arreter la saisie, RETURN pour la valider, BACK pour effacer
+		while(Keyboard.next()) {
+			
+			if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
+				param.setPort(new String());		//On renvoie une chaine vide quand l'utilisateur annule la saisie
+			
+			} else if(Keyboard.getEventKey() == Keyboard.KEY_RETURN) {
+				this.entree.deleteCharAt(this.entree.length()-1);	//On efface le dernier caractere
+			
+			} else if(Keyboard.getEventKey() == Keyboard.KEY_BACK) {
+				param.setPseudo(this.entree.toString());	//On envoie la chaine courante (en String)
+				
+			} else this.entree.append(Keyboard.getEventCharacter());	//On ajoute le caractere associe a la touche
+			
+		}
+		//getEventCharacter envoie le caractere (en char) associe (fonctionne avec Keyboard.next, les evenements)
+		//getKeyName envoie le nom de la Key saisie en parametre (en String) (fonctionne avec l'int KEY_xxx)
+	}
 	
-	//Retourne les deux touches pour tourner entrées par un joueur, donc c'est un couple
-	//Retourne les entiers KEY_xxx : utiliser Keyboard.getKeyName()
+
 	/**
 	 * Fonction qui permet aux joueurs de choisir leurs touches.
 	 * @param param	Objet Parametres où modifier les touches.
 	 */
+	//Retourne les entiers KEY_xxx : utiliser Keyboard.getKeyName()
 	public void entreeControles(Parametres param) {
 		//Renvoie les deux premiers caractères valides entrés par l'utilisateur
 		while(Keyboard.next()) {
