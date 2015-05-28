@@ -369,7 +369,7 @@ public class Partie {
 		 */
 		
 		//long delaiApparitionBonus;	// Délai d'apparition d'un bonus
-		if( ( (System.currentTimeMillis() - temps) >= tpsBonus)/* && this.roundEnPause == false*/)
+		if( ( (System.currentTimeMillis() - temps) >= tpsBonus) && this.roundEnPause == false)
 		{
 			System.out.println("BONUS");
 			// Instanciation d'un objet Bonus
@@ -417,7 +417,7 @@ public class Partie {
 			Bonus b = it.next();
 			
 			// Si le temps de départ + la durée du bonus est inférieure ou égale au temps courant de la partie
-			if( (b.getTpsDepart() + b.getDuree()) <= (System.currentTimeMillis() - temps) )
+			if( (b.getTpsDepart() + b.getDuree()) <= (System.currentTimeMillis() - temps) && this.roundEnPause == false )
 			{
 				// Arrêt de l'effet sur le joueur
 				//b.retablirParametres();
