@@ -33,7 +33,8 @@ public class Partie {
 		this.temps = System.currentTimeMillis();		// Définition de l'heure de début de la partie
 		this.tpsPause = 0;								// Initialisation du temps d'une pause à 0
 		this.trace = new ArrayList<List<Vector4>>();	// Création de la list trace
-		this.roundEnPause = true;						// Initialisation du jeu en "pas en pause"
+		this.roundEnPause = false;						// Initialisation du jeu en "pas en pause"
+		this.pause();									// Appel de la méthode pause pour mettre le jeu en pause
 		this.jeu = true;								// Initialisation de l'état de jeu à "en cours"
 		this.tpsBonus = (long) (Math.random() * (9000 - 5800) + 5800);	// Initialisation du temps d'apparition d'un bonus
 		
@@ -159,6 +160,11 @@ public class Partie {
 			tpsPause = System.currentTimeMillis() - tpsPause;
 			// On rajoute cette durée au temps général de la partie, pour ne pas perdre le traçage des trous
 			temps = temps + tpsPause;
+			// On ajoute cette durée à la durée des bonus pour que l'effet persiste bien le temps voulu
+			for(Bonus b : this.bonusPresents)
+			{
+				b.setTpsDepart(b.getTpsDepart()+tpsPause);
+			}
 			// On change l'état du jeu à "pas en pause"
 			this.roundEnPause = false;
 		}
@@ -170,13 +176,13 @@ public class Partie {
 	// Méthode initialisant le début d'un round
 	public void initialiserRound()
 	{
-		System.out.println("\n\n====> NOUVEAU ROUND <====\n");
+		System.out.println("=======> NOUVEAU ROUND <=======");
 		
 		// Calcul des positions de base des joueurs & définition du temps de traçage de trou
 		for(Joueur e : joueurs)		// Boucle de parcours de la liste des joueurs
 		{
 			e.getPosition().set((float) (Math.random() * (0.5 + 0.5) - 0.5), (float) (Math.random() * (0.5 + 0.5) - 0.5), 1);	// Calcul de la position en x et y, entre -0.5 et 0.5
-			e.getAnciennePosition().set(new Vector3(0f, 0f, 0));	// Remise à zéro de l'ancienne position
+			e.getAnciennePosition().set(new Vector3());	// Remise à zéro de l'ancienne position
 			e.getDroiteJoueur().set(new Vector4());					// Remise à zéro de la droite joueur
 			e.getAncienneDroiteJoueur().set(new Vector4());			// Remise à zéro de l'ancienne droite joueur
 			e.setDirection((double) (Math.random() * 2*Math.PI));	// Calcul d'une direction entre 0 et 2 PI
@@ -230,7 +236,8 @@ public class Partie {
 	// Méthode de détection des collisions, entre le joueur / bords du plateau et joueur / trace
 	public void repererCollisions()
 	{
-		/* Vérifier les coordonnées de chaque joueur; qu'elles soient pas égales
+		/* 
+		 * Vérifier les coordonnées de chaque joueur; qu'elles soient pas égales
 		 * Collision contre un mur du plateau de jeu (coord > plateau)
 		 * Collisison avec un autre tracé
 		 * 		- Si collision : - appeler la méthode modifier Etat pour mettre à jour l'état du joueur décédé
@@ -362,8 +369,9 @@ public class Partie {
 		 */
 		
 		//long delaiApparitionBonus;	// Délai d'apparition d'un bonus
-		if( ( (System.currentTimeMillis() - temps) >= tpsBonus) )
+		if( ( (System.currentTimeMillis() - temps) >= tpsBonus)/* && this.roundEnPause == false*/)
 		{
+			System.out.println("BONUS");
 			// Instanciation d'un objet Bonus
 			Bonus bonus = new BonusEpaisseur();
 			
@@ -614,7 +622,7 @@ public class Partie {
 	 */
 	
 	public void update()
-	{
+	{		
 		// On repère si des joueurs sont en collision avec une trace ou un mur
 		this.repererCollisions();	// Si collisions il y a, alors la méthode repererCollisions se charge de mettre à jour les scores et l'état des joueurs
 		
@@ -644,7 +652,7 @@ public class Partie {
 					// On vérifie si il a plus de 2 points par rapport aux autres joueurs
 					if(verifGagnant(e))
 					{
-						System.out.println("Grand gagnant");
+						//System.out.println("Grand gagnant");
 						//arreterPartie();
 						// FIN DE LA PARTIE
 					}
