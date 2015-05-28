@@ -194,7 +194,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 			}
 		}
 		
-		updatePosJoueurs(); // On bouge le point du joueur
+		updatePosJoueurs(true); // On bouge le point du joueur
 		
 		
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -429,9 +429,9 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		this.nbVertex += (this.NBCOTES)*3; // On doit utiliser l'équivalent de 3*NBCOTES pour tracer le point
 	}
 	
-	public void updatePosJoueurs()
+	public void updatePosJoueurs(boolean isUpdateNeeded)
 	{
-		if(/*!this.partie.isRoundEnPause()*/true)
+		if(!this.partie.isRoundEnPause())
 		{
 			int i = 0;
 			Iterator<Joueur> e = this.partie.getJoueurs().iterator();
@@ -442,7 +442,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 				j = e.next();
 				if(j.getEtat() == Etat.VIVANT)
 				{
-					moveVertexJoueur(j.getAnciennePosition(), j.getPosition(),j.getLigne().getEpaisseur()/2,j.isRedimension(), i);
+					moveVertexJoueur(j.getAnciennePosition(), j.getPosition(),j.getLigne().getEpaisseur()/2,j.isRedimension(), isUpdateNeeded,  i);
 					
 				}
 				i++;
@@ -450,13 +450,13 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		}	
 	}
 	
-	public void moveVertexJoueur(Vector3 lastp, Vector3 p, float r, boolean isRedimension, int i) // i : indice du joueur
+	public void moveVertexJoueur(Vector3 lastp, Vector3 p, float r, boolean isRedimension, boolean isUpdateNeeded, int i) // i : indice du joueur
 	{
 		Vector2 vecDiff = new Vector2(p.x()-lastp.x(),p.y()-lastp.y());
 		//System.out.println(" Gap_-__-___-___-___-___-___-_____________:"+ vecDiff.x() + "," + vecDiff.y());
 
 
-		if(isRedimension || /*partie.getNvRound()*/true) // Si l'épaisseur a changé // A CHANGER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   NOUVEAU ROUND A DETECTER | A REMTTRE A FALSE QUAND ON ENLEVE LA PAUSE
+		if(isUpdateNeeded) // Si l'épaisseur a changé // A CHANGER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   NOUVEAU ROUND A DETECTER | A REMTTRE A FALSE QUAND ON ENLEVE LA PAUSE
 		{
 			double alpha = 2*Math.PI / this.NBCOTES;
 			//System.out.println("NOUVEAU ROUND !!");
@@ -470,7 +470,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 			
 			//clearTabVertex(); // On vide le talbeau de vertex
 		}
-		else if(!isRedimension) // Si l'épaisseur n'a pas changé
+		else if(!isUpdateNeeded) // Si l'épaisseur n'a pas changé
 		{
 			for(int j = i*(this.NBCOTES+1); j<this.NBCOTES+1+i*(this.NBCOTES+1); j++)
 			{
