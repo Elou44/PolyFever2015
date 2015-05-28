@@ -151,6 +151,9 @@ public class Partie {
 	 * Autres méthodes de gestion de la partie
 	 */
 	
+	/**
+	 * Méthode
+	 */
 	public void initialiserPartie()
 	{
 		System.out.println("Initialisation de la partie...");

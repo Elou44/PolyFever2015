@@ -46,6 +46,9 @@ public abstract class Bonus {
 	// Constructeur
 	/**
 	 * Constructeur d'un objet Bonus
+	 * Constructeur par défaut ne prenant aucun paramètres
+	 * Ce constructeur initalise les variables nécessaires à l'utilisation d'un objet Bonus
+	 * Ce constructeur est appelé lors de l'instanciation d'un objet Bonus fils
 	 */
 	public Bonus()
 	{
@@ -57,18 +60,28 @@ public abstract class Bonus {
 	}
 	
 	// Méthodes
+	/**
+	 * Méthode modifiant les paramètres du Joueur affecté selon l'effet du Bonus
+	 */
 	public void modifierParametres(){} // Prototype de la méthode modifiant les paramètres des joueurs ou lignes concernées
 	
+	/**
+	 * Méthode rétablissant les paramètres originaux du Joueur affecté
+	 */
 	public void retablirParametres(){}	// Prototype de la méthode rétablissant les paramètres du joueur après effet du bonus
 	
+	/**
+	 * Retourne le nom du Bonus
+	 * @return un String contenant le nom du Bonus
+	 */
 	public String getNom() {
 		return nom;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
+	/**
+	 * Retourne l'entier donnant la couleur du Bonus
+	 * @return l'entier couleur
+	 */
 	public Portee getCouleur() {
 		return couleur;
 	}
@@ -117,6 +130,9 @@ public abstract class Bonus {
 		this.indexTab = indexTab;
 	}
 
+	/**
+	 * Méthode renvoyant une chaine de caractères décrivant un objet Bonus
+	 */
 	@Override
 	public String toString() {
 		return "Bonus [nom=" + nom + ", couleur=" + couleur + ", coordonnees="
