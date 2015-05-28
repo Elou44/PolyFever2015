@@ -1,34 +1,65 @@
 package polyFever.module.moteurDeJeu;
 import polyFever.module.main.*;
 import polyFever.module.util.math.*;
-
 import java.util.*;
+
+/**
+ * Ceci est la classe Partie.
+ * Classe créant des objets Partie servant à stocker toutes les informations relatives à une partie de PolyFever.
+ * 
+ * @param scoreMax
+ * 			Entier donnant le score maximum qu'un joueur doit atteindre pour gagner une partie
+ * @param nbJoueurs
+ * 			Entier donannt le nombre de joueurs ajoutés dans l'objet Partie
+ * @param joueurs
+ * 			Tableau Set contenant les objets Joueur de chaque joueur présent dans la partie
+ * @param bonusPresents
+ * 			Tableau List contenant tous les objets Bonus présents sur le plateau de jeu
+ * @param temps
+ * 			Long donnant le temps (en millisecondes) du début de la partie (à son instanciation), pour calculer le traçage des trous et apparition des Bonus
+ * @param tpsPause
+ * 			Long donnant le temps (en millisecondes) du début d'une pause, pour calculer la durée d'une pause et l'ajouter à la variable temps et respecter le traçage des trous et gestion des Bonus
+ * @param roundEnPause
+ * 			Booléen indiquant si la partie est en pause (true) ou non (false)
+ * @param jeu
+ * 			Booléen indiquant si une partie est terminée (true) ou non (false)
+ * @param tpsBonus
+ * 			Long donnant le temps (en millisecondes) à partir duquel un Bonus peut apparaitre
+ * @param nbSousGrilles
+ * 			Entier constant, indiquant le nombre de sous grilles choisies pour découper le plateau. Utile pour la détection des collisions
+ * @param trace
+ * 			Tableau List de List contenant les Vector4 des traces laissés par les joueurs. Utile pour la détection des collisions
+ * 
+ * @author Frédéric Llorca
+ *
+ */
 
 public class Partie {
 
 	private int scoreMax;				// Score à atteindre pour terminer une partie
 	private int nbJoueurs;				// Nombre de joueurs présents dans la partie
 	private Set<Joueur> joueurs;		// Liste des joueurs de la partie (objet Joueur)
-	private float dimensionPlateau;		// Dimensions du plateau de jeu
 	private List<Bonus> bonusPresents;	// Liste des bonus présents sur le plateau de jeu
 	private long temps;					// Variable mesurant le temps d'une partie
 	private long tpsPause;				// Variable donnant le temps écoulé durant une pause
 	private boolean roundEnPause;		// Booléen indiquant si le round est en pause ou non, permet aussi de démarrer les parties (false = pas en pause ; true = en pause)
 	private boolean jeu;				// Booléen indiquant si une partie est toujours en cours ou si elle est terminée
 	private long tpsBonus;				// Variable indiquant le temps à partir duquel un bonus peut appraitre
-	
 	private final int nbSousGrilles = 16;	// Variable donnant le nombre de sous grilles voulues
-	
 	private List<List<Vector4>> trace;		// Tableau de tableau de List de Vector4, donnant les traces sur les 16 sous grilles du plateau
 	
 	// Constructeur
+	/**
+	 * Constructeur d'un objet Partie
+	 * Ce constructeur instancie un objet Partie par défaut, initialisant les tableaux, variables nécessaires au stockage d'une partie.
+	 * Génére aussi les sous grilles découpant le plateau de jeu.
+	 */
 	public Partie()	// Par défaut
 	{
 		System.out.println("Instanciation d'un objet Partie...");
 		this.scoreMax = 0;								// Score max initialiser à 0 mais à calculer
 		this.nbJoueurs = 0;								// Nombre de joueurs initialisé à 0
 		this.joueurs = new HashSet<Joueur>();			// Création de la liste des joueurs
-		this.dimensionPlateau = 0.0f;					// Création du vecteur des dimensions du plateau
 		this.bonusPresents = new ArrayList<Bonus>();	// Création de la liste des bonus
 		this.temps = System.currentTimeMillis();		// Définition de l'heure de début de la partie
 		this.tpsPause = 0;								// Initialisation du temps d'une pause à 0
@@ -50,7 +81,10 @@ public class Partie {
 	/*
 	 * Assesseurs et mutateurs
 	 */
-	
+	/**
+	 * Retourne un booléen indiquant si la partie est en cours (true) ou si elle est terminée (false)
+	 * @return booléen 
+	 */
 	public boolean isJeu() {
 		return jeu;
 	}
@@ -95,14 +129,6 @@ public class Partie {
 		this.joueurs = joueurs;
 	}
 
-	public float getDimensionPlateau() {
-		return dimensionPlateau;
-	}
-
-	public void setDimensionPlateau(float dimensionPlateau) {
-		this.dimensionPlateau = dimensionPlateau;
-	}
-
 	public List<Bonus> getBonusPresents() {
 		return bonusPresents;
 	}
@@ -128,9 +154,6 @@ public class Partie {
 		System.out.println("Initialisation de la partie...");
 		// Calcul du scoreMax
 		scoreMax = (nbJoueurs-1) * 10;
-		
-		// Calcul des dimensions du plateau
-		dimensionPlateau = nbJoueurs * 100;
 		
 		// Calcul des positions de base des joueurs & définition du temps de traçage de trou
 		for(Joueur e : joueurs)		// Boucle de parcours de la liste des joueurs
@@ -195,6 +218,9 @@ public class Partie {
 		{
 			trace.get(i).clear();
 		}
+		
+		// Remise à zéro du tableau de vertex du module Affichage
+		polyFever.affichage.dJeu.dPlateau.dLigne.clearTabVertex();
 		
 		// Changement de l'état du jeu à "pause" pour attendre le départ donnée par un joueur
 		this.roundEnPause = true;
@@ -671,8 +697,7 @@ public class Partie {
 	@Override
 	public String toString() {
 		return "Partie [scoreMax=" + scoreMax + ", nbJoueurs=" + nbJoueurs
-				+ ", joueurs=" + joueurs + ", dimensionPlateau="
-				+ dimensionPlateau + ", bonusPresents=" + bonusPresents + "]";
+				+ ", joueurs=" + joueurs + ", bonusPresents=" + bonusPresents + "]";
 	}
 	
 }
