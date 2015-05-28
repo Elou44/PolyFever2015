@@ -443,8 +443,9 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 				if(j.getEtat() == Etat.VIVANT)
 				{
 					moveVertexJoueur(j.getAnciennePosition(), j.getPosition(),j.getLigne().getEpaisseur()/2,j.isRedimension(), i);
-					i++;
+					
 				}
+				i++;
 			}
 		}	
 	}
@@ -455,7 +456,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		//System.out.println(" Gap_-__-___-___-___-___-___-_____________:"+ vecDiff.x() + "," + vecDiff.y());
 
 
-		if(isRedimension || partie.getNvRound()) // Si l'épaisseur a changé // A CHANGER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   NOUVEAU ROUND A DETECTER | A REMTTRE A FALSE QUAND ON ENLEVE LA PAUSE
+		if(isRedimension || /*partie.getNvRound()*/true) // Si l'épaisseur a changé // A CHANGER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   NOUVEAU ROUND A DETECTER | A REMTTRE A FALSE QUAND ON ENLEVE LA PAUSE
 		{
 			double alpha = 2*Math.PI / this.NBCOTES;
 			//System.out.println("NOUVEAU ROUND !!");
