@@ -82,6 +82,11 @@ public class StructureMenu {
 		this.curMenu = home;
 	}
 
+	/**
+	 * Methode permettant de récupérer le menu courant
+	 * @return Menu courant
+	 */
+	
 	public Menu getCurMenu() {
 		return curMenu;
 	}
