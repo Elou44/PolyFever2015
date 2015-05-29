@@ -60,17 +60,50 @@ import polyFever.module.util.PNGDecoder;
 import polyFever.module.util.PNGDecoder.Format;
 import polyFever.module.util.math.Vector2;
 
-
+/**
+ * <p>
+ * La classe DessinMenu affiche le menu du jeu. 
+ * </p>
+ *  
+ * @author Elouarn Lainé 
+ *
+ */
 public class DessinMenu {
 	
+	/**
+	 * Description des attributs :
+	 * - nbVertex : 
+	 * - affichage :
+	 * - polyFever :
+	 * - j :
+	 * - program : 
+	 * - ebo : 
+	 * - vbo :
+	 * - posAttrib : 
+	 * - colAttrib :
+	 * - texAttrib :
+	 * - projectionUniform : 
+	 * - id : 
+	 * - tabVertex :
+	 * - elements :
+	 * - lenTabV : 
+	 * - lenTabE :
+	 * - indexTabE : 
+	 * - vboBuffer :
+	 * - eboBuffer : 
+	 * - NBCOTES :
+	 * - ProjectionMatrix :
+	 * 
+	 * @author Elouarn Lainé
+	 */
 	private int nbVertex;
 
 	private Affichage affichage;
 	private PolyFever polyFever;
-	private Partie partie;
+	//private Partie partie;
 	private Joueur j;
 	
-	private float decalage; // PROVISOIRE ONLY FOR TEST PURPOSE
+	//private float decalage; // PROVISOIRE ONLY FOR TEST PURPOSE
 	
 	private int program, ebo,vbo, posAttrib, colAttrib, texAttrib, uniColor, projectionUniform, id;
 	
@@ -83,19 +116,19 @@ public class DessinMenu {
 	IntBuffer eboBuffer;
 	
 	private final int NBCOTES = 15; // Nombre de côtés du point du joueur
-	private float colDelta;
+	//private float colDelta;
 	
 	private FloatBuffer projectionMatrix;
 	
 	public DessinMenu(Affichage a, PolyFever p, Partie partie)
 	{
 
-		this.colDelta = 0.01f;
+		//this.colDelta = 0.01f;
 		
 		
 		this.affichage = a;
 		this.polyFever = p;
-		this.partie = partie;
+		//this.partie = partie;
 		
 		
 		
