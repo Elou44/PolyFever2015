@@ -4,6 +4,8 @@ import polyFever.module.main.*;
 public class StructureMenu {
 	private Menu curMenu;
 	private MenuPlay m_partie;
+	private Menu m_home;
+	
 	
 	/**
 	 * Constructeur de la structure du menu
@@ -13,7 +15,7 @@ public class StructureMenu {
 	
 	public StructureMenu(PolyFever p) {
 		
-		Menu m_home = new Menu(p, "Home");
+		m_home = new Menu(p, "Home");
 		m_home.setPere(m_home);
 		
 		Menu m_play = new Menu(p, "Play");
@@ -93,7 +95,12 @@ public class StructureMenu {
 		return curMenu;
 	}
 	
-	public Menu getMenuPlay(){
+	public void setCurMenu(boolean isMenu)
+	{
+		curMenu = m_home;
+	}
+	
+	public MenuPlay getMenuPlay(){
 		return m_partie;
 	}
 

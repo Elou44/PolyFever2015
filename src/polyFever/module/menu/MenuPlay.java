@@ -43,6 +43,10 @@ public class MenuPlay extends Menu {
 		partie.ajouterJoueur(j4, p);
 		partie.initialiserPartie();
 		
+		p.getAffichage().initJeu(p, partie);
+		
+		p.getEvenements().initControles(partie);
+		
 		return this;
 	}
 	

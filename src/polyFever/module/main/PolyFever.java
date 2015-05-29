@@ -11,6 +11,7 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
 
+import polyFever.module.menu.Menu;
 import polyFever.module.moteurDeJeu.Partie;
 import polyFever.module.util.*;
 import polyFever.module.moteurDeJeu.*;
@@ -105,10 +106,20 @@ public abstract class PolyFever {
 		this.affichage = a;
 	}
 	
+	public Affichage getAffichage()
+	{
+		return affichage;
+	}
+	
 	public void setEvenements(Evenements e)
     {
             this.evenements = e;
     }
+	
+	public Evenements getEvenements()
+	{
+		return evenements;
+	}
 	
 	public boolean getIsAAAvailable()
 	{
@@ -372,7 +383,15 @@ public abstract class PolyFever {
 					resized();
 				
 				// Gestion des Evenements
-				this.evenements.gestionJeu();
+				if(Menu.isMenu())
+				{
+					this.evenements.gestionMenu();
+				}
+				else
+				{
+					this.evenements.gestionJeu();
+				}
+				
 				
 				update(deltaTime);
 				

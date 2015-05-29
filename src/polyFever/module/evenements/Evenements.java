@@ -19,6 +19,7 @@ import polyFever.module.main.*;
  *
  */
 public class Evenements {
+	private StructureMenu structMenu;
 	private Partie partie;			//Partie
 	private Hashtable controles;	//Liste des touches associes aux joueurs
 	private StringBuilder entree;	//Entree utilisateur
@@ -30,8 +31,9 @@ public class Evenements {
 	 * Sera appelé dés le début de l'éxécution pour la navugation dans les menus, lorsque les contrôles et le nombre de joueurs seront encore inconnus.
 	 * @param p Objet PolyFever, pour récupérer le ratio des pixels pour le traitement de la souris.
 	 */
-	public Evenements(PolyFever p) {
+	public Evenements(PolyFever p, StructureMenu sm) {
 		System.out.println("Instanciation d'un objet Evenements...");
+		this.structMenu = sm;
 		this.controles = new Hashtable();		//table associant les joueurs a leurs controles
 		this.entree = new StringBuilder();		//buffer pour les entrees utilisateurs
 		this.polyfever = p;						//pour récupérer le ratio des pixels
@@ -58,9 +60,10 @@ public class Evenements {
 	 * Traite les clics de l'utilisateur dans le menu, et regarde s'ils sont dans la hitbox d'un bouton. Effectue l'action appropriée le cas échéant.
 	 * @param boutons Ensemble des objets Bouton du menu concerné, contenant les hitbox.
 	 */
-	public void gestionMenu(Set<Bouton> boutons) {
+	public void gestionMenu() {
 		//Renvoie les coordonnees de la souris quand l'utilisateur clic
 		//0 = left mouse button ; 1 = right mouse button
+		Set<Bouton> boutons = structMenu.getCurMenu().getBoutons();
 		Bouton b;
 		
 		while(Mouse.next()) {
