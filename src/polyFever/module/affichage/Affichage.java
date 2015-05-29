@@ -40,13 +40,12 @@ public class Affichage {
 	 * </p>
 	 * @param p
 	 * 		référence vers un objet de type PolyFever {@link PolyFever} (classe créant le contexte OpenGL) 
-	 * @param partie
-	 * 		ne sera pas utilisé (A ENLEVER)
+	 * 
 	 * @author Elouarn Lainé
 	 */
 	public void initMenu(PolyFever p, Partie partie)
 	{
-		dMenu = new DessinMenu(this, p, partie);
+		dMenu = new DessinMenu(this, p);
 		dMenu.init();
 	}
 	

@@ -100,12 +100,11 @@ public class DessinMenu {
 
 	private Affichage affichage;
 	private PolyFever polyFever;
-	//private Partie partie;
 	private Joueur j;
 	
 	//private float decalage; // PROVISOIRE ONLY FOR TEST PURPOSE
 	
-	private int program, ebo,vbo, posAttrib, colAttrib, texAttrib, uniColor, projectionUniform, id;
+	private int program, ebo,vbo, posAttrib, colAttrib, texAttrib, uniColor, projectionUniform, idTex1, idTex2;
 	
 	private float tabVertex[];
 	private int elements[];
@@ -120,7 +119,7 @@ public class DessinMenu {
 	
 	private FloatBuffer projectionMatrix;
 	
-	public DessinMenu(Affichage a, PolyFever p, Partie partie)
+	public DessinMenu(Affichage a, PolyFever p)
 	{
 
 		//this.colDelta = 0.01f;
@@ -142,30 +141,25 @@ public class DessinMenu {
 		this.projectionMatrix = this.polyFever.getGlOrtho().getProjectionBuf();
 	};	
 	
-	public void PNGtoTex()
+	public ByteBuffer PNGtoTex(String path)
 	{
-		try(BufferedInputStream is = new BufferedInputStream(new FileInputStream("cat.png"))){
+		ByteBuffer pixelData = BufferUtils.createByteBuffer(0); // On initialise le ByteBuffer avec une texture vide
+		try(BufferedInputStream is = new BufferedInputStream(new FileInputStream(path))){
 		    //Create the PNGDecoder object and decode the texture to a buffer
 		    PNGDecoder decoder = new PNGDecoder(is);
 		    int width = decoder.getWidth(), height = decoder.getHeight();
-		    ByteBuffer pixelData = BufferUtils.createByteBuffer(4*width*height);
+		    pixelData = BufferUtils.createByteBuffer(4*width*height);
 		    decoder.decode(pixelData, 4*width, Format.RGBA);
 		    pixelData.flip();
 		    //Generate and bind the texture
-		    id = GL11.glGenTextures();
-		    GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
-		        //Upload the buffer's content to the VRAM
-		        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, pixelData);
-		        //Apply filters
-		        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-		        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
-		        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-		        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-		    GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
+		    
 		    
 		}catch(IOException e){
 		    e.printStackTrace();
 		}
+		return pixelData;
+		
+
 	}
 	
 	/**
@@ -238,7 +232,7 @@ public class DessinMenu {
 				glBindAttribLocation(program, colAttrib, "color"); // on bind l'attribut position à // PB CERTAINEMENT ICI !!!!!!!!!!!!!!!!!!!!
 				glBindAttribLocation(program, texAttrib, "texcoord");
 				
-				PNGtoTex();
+				//PNGtoTex();
 				
 				
 				glDeleteShader(vs);
@@ -264,9 +258,9 @@ public class DessinMenu {
 						-1.0f,-1.0f,1.0f,1.0f,1.0f,0.0f,1.0f,
 						
 						-1.0f,1.0f,1.0f,1.0f,1.0f,0.0f,0.0f,
-						1.0f,1.0f,1.0f,0.0f,1.0f,2.0f,0.0f,
-						1.0f,-1.0f,1.0f,1.0f,1.0f,2.0f,2.0f,
-						-1.0f,-1.0f,1.0f,1.0f,1.0f,0.0f,2.0f
+						0.0f,1.0f,1.0f,0.0f,1.0f,2.0f,0.0f,
+						0.0f,0.0f,1.0f,1.0f,1.0f,2.0f,2.0f,
+						-1.0f,0.0f,1.0f,1.0f,1.0f,0.0f,2.0f
 						
 						
 						}/*this.tabVertex*/).flip();  // IMPORTANT : TRACER LES JOUEURS AU DEBUT DU BUFFER DE VERTEX
@@ -291,17 +285,38 @@ public class DessinMenu {
 				
 				glBufferData(GL_ELEMENT_ARRAY_BUFFER, eboBuffer, GL_STREAM_DRAW); // Est appliqué sur le vbo actif
 				
-
+				
 				glBindVertexArray(glGenVertexArrays()); // Création d'un VAO : Vertex Array Object avec glGenVertexArrays() . le VAO stock les liens entre les attributs et les VBO
 				// le VAO contient une référence vers le VBO
 				
 				//glBindBuffer(GL_ARRAY_BUFFER, 0);
 				
 				
+				// CHARGEMENT DES TEXTURES // 
 
+				idTex1 = GL11.glGenTextures();
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTex1);
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 900, 900, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/cat.png"));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTex1);
 				
+			    
+			    idTex2 = GL11.glGenTextures();
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTex2);
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 353, 282, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/puppy.png"));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTex2);
 				
-				System.out.println("ça passe ...........");
 
 	}
 	
@@ -348,9 +363,13 @@ public class DessinMenu {
 		
 		
 		
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTex1); // On bind la premiere texture
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); 
 		
-		glDrawElements(GL_TRIANGLES, this.nbVertex, GL_UNSIGNED_INT, 0); // essayer avec glDrawElements (https://open.gl/drawing)
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0); // On met la texture à NULL
+		
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTex2); // On bind la deuxième texture
+		glDrawElements(GL_TRIANGLES, 12/*this.nbVertex*/, GL_UNSIGNED_INT,6*4);
 		
 		glDisableVertexAttribArray(posAttrib);
 		glDisableVertexAttribArray(colAttrib);
