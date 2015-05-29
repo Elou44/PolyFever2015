@@ -34,7 +34,7 @@ public class Evenements {
 	}
 	
 	/**
-	 * Traite les clics de l'utilisateur dans le menu, et regarde s'ils sont dans la hitbox d'un bouton.
+	 * Traite les clics de l'utilisateur dans le menu, et regarde s'ils sont dans la hitbox d'un bouton. Effectue l'action appropriée le cas échéant.
 	 * @param boutons Ensemble des objets Bouton du menu concerné, contenant les hitbox.
 	 */
 	public void gestionMenu(Set<Bouton> boutons) {
