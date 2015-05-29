@@ -17,12 +17,7 @@ public class Menu {
 	
 	protected static boolean isMenu;
 	
-	public static boolean isMenu() {
-		return isMenu;
-	}
-
 	
-
 	/**
 	 * Constructeur de menu grâce au titre
 	 * @param titre : Titre du menu
@@ -35,6 +30,11 @@ public class Menu {
 		this.boutons = new HashSet<Bouton>();
 	}
 	
+	/**
+	 * Methode permettant de récupérer les boutons du menu
+	 * @return : Ensemble des boutons du menu courant
+	 */
+	
 	public Set<Bouton> getBoutons() {
 		return boutons;
 	}
@@ -44,6 +44,7 @@ public class Menu {
 	 * Methode permettant de définir le père du menu en question
 	 * @param pere : Objet Menu qui sera le père du menu concerné dans l'arborescence
 	 */
+	
 	public void setPere(Menu pere) {
 		this.pere = pere;
 		System.out.println("Le père de "+this.titre+" est "+this.pere.titre);
@@ -86,6 +87,14 @@ public class Menu {
 		return prev;
 	}
 	
+	/**
+	 * Methode permettant de renvoyer l'état du menu (menu classique ou jeu)
+	 * @return Boolean isMenu
+	 */
+	
+	public static boolean isMenu() {
+		return isMenu;
+	}
 	
 	@Override
 	public String toString() {
