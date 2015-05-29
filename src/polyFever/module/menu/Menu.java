@@ -17,7 +17,7 @@ public class Menu {
 	protected Set<Menu> fils;
 	protected Set<Bouton> boutons;
 	
-	protected static boolean isMenu = true;
+	public static boolean isMenu = true;
 	
 	
 	/**

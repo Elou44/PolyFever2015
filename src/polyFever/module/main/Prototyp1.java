@@ -28,13 +28,12 @@ public class Prototyp1 extends PolyFever {
 		this.affichage = new Affichage(); // Instanciation de l'affichage
 		System.out.println("Affichage créé avec succès...");
 		
-		Evenements ev = new Evenements(this, structMenu); // Instanciation de la gestion des evenements
-		
-		this.setEvenements(ev);
 		this.setAffichage(affichage);
 		
 		this.structMenu = new StructureMenu(this); // Instanciation de la gestion des menus
 		
+		Evenements ev = new Evenements(this, structMenu); // Instanciation de la gestion des evenements
+		this.setEvenements(ev);
 	}
 	
 	@Override
