@@ -1,6 +1,9 @@
 package polyFever.module.moteurDeJeu;
 import polyFever.module.main.*;
+import polyFever.module.menu.Menu;
+import polyFever.module.menu.StructureMenu;
 import polyFever.module.util.math.*;
+
 import java.util.*;
 
 /**
@@ -27,6 +30,10 @@ import java.util.*;
  * 			Entier constant, indiquant le nombre de sous grilles choisies pour découper le plateau. Utile pour la détection des collisions
  * @param trace
  * 			Tableau List de List contenant les Vector4 des traces laissés par les joueurs. Utile pour la détection des collisions
+ * @param p
+ * 			Objet polyFever permettant la connexion avec le module Main
+ * @param structMenu
+ * 			Objet StructureMenu permettant la connexion avec le module Menu, l'arrêt d'une partie et le changement de menu courant
  * 
  * @author Frédéric Llorca
  *
@@ -46,6 +53,8 @@ public class Partie {
 	private final int nbSousGrilles = 16;	// Variable donnant le nombre de sous grilles voulues
 	private List<List<Vector4>> trace;		// Tableau de tableau de List de Vector4, donnant les traces sur les 16 sous grilles du plateau
 	private PolyFever p;
+	private StructureMenu structMenu;	// Objet StructureMenu
+	
 	// Constructeur
 	/**
 	 * Constructeur d'un objet Partie
@@ -53,7 +62,7 @@ public class Partie {
 	 * Génére aussi les sous grilles découpant le plateau de jeu.
 	 * Constructeur sans paramètres
 	 */
-	public Partie(PolyFever p)	// Par défaut
+	public Partie(PolyFever p, StructureMenu structMenu)	// Par défaut
 	{
 		System.out.println("Instanciation d'un objet Partie...");
 		this.p = p;
@@ -68,6 +77,7 @@ public class Partie {
 		this.pause();									// Appel de la méthode pause pour mettre le jeu en pause
 		this.jeu = true;								// Initialisation de l'état de jeu à "en cours"
 		this.tpsBonus = (long) (Math.random() * (9000 - 5800) + 5800);	// Initialisation du temps d'apparition d'un bonus
+		this.structMenu = structMenu;
 		
 		// Initialisation des tableaux contenant les traces
 		for (int i = 0; i < nbSousGrilles; i++)
@@ -713,7 +723,7 @@ public class Partie {
 	{
 		// Mise à l'état de pause du jeu
 		//this.pause();
-		/*
+		
 		// "Suppression" des joueurs et de leurs lignes, pour que le ramasse-miettes les suppriment vraiment
 		for(Joueur e : joueurs)
 		{
@@ -725,10 +735,16 @@ public class Partie {
 		for(Bonus b : bonusPresents)
 		{
 			b = null;
-		}*/
+		}
 		
 		// Changement de l'état de la partie
 		this.jeu = false;
+		
+		// Mise à vrai du booléen indiquant que l'on se trouve dans le Menu
+		Menu.isMenu = true;
+		
+		// Changement du menu courant
+		this.structMenu.setCurMenu(this.structMenu.getM_home());
 	}
 	
 	// Méhode comptant le nombre de joueurs encore en vie dans la partie
