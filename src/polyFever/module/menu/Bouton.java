@@ -37,6 +37,14 @@ public abstract class Bouton {
 		return hitbox;
 	}
 
+	/**
+	 * Methode permettant de récupérer l'état du bouton 
+	 * @return boolean de l'état du bouton
+	 */
+
+	public boolean isSelected() {
+		return isSelected;
+	}
 
 	/**
 	 * Methode abstraite qui permettra de définir l'action à effectuer en cas de clic sur la hitbox
