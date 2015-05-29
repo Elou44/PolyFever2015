@@ -25,7 +25,7 @@ public class Prototyp1 extends PolyFever {
 
 		Partie partie = new Partie(this); // Devra etre instanciée par le Menu
 		Joueur j1 = new Joueur(partie, "joueurTest", Keyboard.KEY_LEFT, Keyboard.KEY_RIGHT, 0);
-        Evenements ev = new Evenements();
+        Evenements ev = new Evenements(this);
 		partie.ajouterJoueur(j1,this);
 		Joueur j2 = new Joueur(partie, "Joueur test2", Keyboard.KEY_A, Keyboard.KEY_Z, 0);
 		partie.ajouterJoueur(j2, this);

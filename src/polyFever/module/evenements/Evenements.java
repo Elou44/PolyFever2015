@@ -7,6 +7,7 @@ import org.lwjgl.input.Mouse;
 
 import polyFever.module.moteurDeJeu.*;
 import polyFever.module.menu.*;
+import polyFever.module.main.*;
 
 
 //implementation : http://pastebin.com/i7TYjrbM
@@ -21,16 +22,35 @@ public class Evenements {
 	private Partie partie;			//Partie
 	private Hashtable controles;	//Liste des touches associes aux joueurs
 	private StringBuilder entree;	//Entree utilisateur
+	private PolyFever polyfever;	//Objet PolyFever
 	
 	//Rappel : vous m'appelez pour les menus, donc vous n'initialiserez jamais directement avec la liste des joueurs
 	/**
-	 * Constructeur par défaut, aucun paramètre.
+	 * Constructeur par défaut.
 	 * Sera appelé dés le début de l'éxécution pour la navugation dans les menus, lorsque les contrôles et le nombre de joueurs seront encore inconnus.
+	 * @param p Objet PolyFever, pour récupérer le ratio des pixels pour le traitement de la souris.
 	 */
-	public Evenements() {
+	public Evenements(PolyFever p) {
 		System.out.println("Instanciation d'un objet Evenements...");
 		this.controles = new Hashtable();		//table associant les joueurs a leurs controles
 		this.entree = new StringBuilder();		//buffer pour les entrees utilisateurs
+		this.polyfever = p;						//pour récupérer le ratio des pixels
+	}
+	
+	
+	
+	/**
+	 * Regarde si les coordonnées sont dans la hitbox donnée.
+	 * @param x La coordonnée x absolue en int (en heut à gauche de la fenêtre).
+	 * @param y La coordonnée y absolue en int (en heut à gauche de la fenêtre).
+	 * @return La nouvelle coordonnée selon openGL.
+	 */
+	private boolean isInsideHitbox(int x, int y, Bouton b) {
+		float coord1, coord2;
+		coord1 = ((float) x) * polyfever.getRATIO();
+		coord2 = ((float) y) * polyfever.getRATIO();
+		return (((coord1 >= Bouton.getX()-(Bouton.getLargeur()/2)) && (coord2 <= Bouton.getX()+(Bouton.getLargeur()/2)))
+				&& ((coord2 >= Bouton.getY()-(Bouton.getLongueur()/2)) && (coord2 <= Bouton.getY()+(Bouton.getLongueur()/2))));
 	}
 	
 	/**
@@ -50,7 +70,7 @@ public class Evenements {
 				while(i.hasNext()) { //On parcours les Bouton de l'ensemble passe en parametre
 					b = i.next();
 					
-					if(b.getHitbox().contains(Mouse.getEventX(), Mouse.getEventY())) //Le clic est dans la hitbox
+					if(isInsideHitbox(Mouse.getEventX(), Mouse.getEventY(), b)) //Le clic est dans la hitbox
 						b.action();
 					
 				}
