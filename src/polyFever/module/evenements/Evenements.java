@@ -75,6 +75,7 @@ public class Evenements {
 					b = i.next();
 					
 					if(isInsideHitbox(Mouse.getEventX(), Mouse.getEventY(), b)) //Le clic est dans la hitbox
+						System.out.println("..........Cliquer sur bouton...............");
 						b.action();
 					
 				}

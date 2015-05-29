@@ -95,9 +95,9 @@ public class StructureMenu {
 		return curMenu;
 	}
 	
-	public void setCurMenu(boolean isMenu)
+	public void setCurMenu(Menu m)
 	{
-		curMenu = m_home;
+		curMenu = m;
 	}
 	
 	public MenuPlay getMenuPlay(){
