@@ -1,4 +1,6 @@
 package polyFever.module.menu;
+import polyFever.module.main.*;
+
 /**
  * Classe permettant d'afficher un contenu dans un menu, typiquement le menu Crédits
  * @author Ambre
@@ -13,8 +15,8 @@ public class MenuFeuille extends Menu {
 	 * @param c : String, contenu informatif à afficher
 	 */
 	
-	public MenuFeuille(String t, String c){
-		super(t);
+	public MenuFeuille(PolyFever p, String t, String c){
+		super(p, t);
 		this.contenu = c;
 	}
 }

@@ -1,4 +1,5 @@
 package polyFever.module.menu;
+import polyFever.module.main.*;
 
 import org.lwjgl.input.Keyboard;
 
@@ -17,8 +18,8 @@ public class MenuPlay extends Menu {
 	 * @param t : Titre du menu qui sera affiché
 	 */
 	
-	public MenuPlay(String t){
-		super(t);
+	public MenuPlay(PolyFever p, String t){
+		super(p, t);
 	}
 	
 	/**
@@ -28,15 +29,15 @@ public class MenuPlay extends Menu {
 	
 	public Menu changementMenu(){
 		Menu.isMenu = false;
-		Partie partie = new Partie(polyFever);
+		Partie partie = new Partie(p);
 		Joueur j1 = new Joueur(partie, "Joueur 1", Keyboard.KEY_LEFT, Keyboard.KEY_RIGHT);
 		Joueur j2 = new Joueur(partie, "Joueur 2", Keyboard.KEY_V, Keyboard.KEY_B);
 		Joueur j3 = new Joueur(partie, "Joueur 3", Keyboard.KEY_A, Keyboard.KEY_Z);
 		Joueur j4 = new Joueur(partie, "Joueur 4", Keyboard.KEY_K, Keyboard.KEY_L);
-		partie.ajouterJoueur(j1, polyFever);
-		partie.ajouterJoueur(j2, polyFever);
-		partie.ajouterJoueur(j3, polyFever);
-		partie.ajouterJoueur(j4, polyFever);
+		partie.ajouterJoueur(j1, p);
+		partie.ajouterJoueur(j2, p);
+		partie.ajouterJoueur(j3, p);
+		partie.ajouterJoueur(j4, p);
 		partie.initialiserPartie();
 		
 		return this;

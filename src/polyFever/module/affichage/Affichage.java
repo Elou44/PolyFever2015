@@ -43,7 +43,7 @@ public class Affichage {
 	 * 
 	 * @author Elouarn Lainé
 	 */
-	public void initMenu(PolyFever p, Partie partie)
+	public void initMenu(PolyFever p)
 	{
 		dMenu = new DessinMenu(this, p);
 		dMenu.init();

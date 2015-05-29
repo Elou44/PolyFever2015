@@ -1,4 +1,5 @@
 package polyFever.module.menu;
+import polyFever.module.main.*;
 
 /**
  * Classe définissant le menu des paramêtres
@@ -13,8 +14,8 @@ public class MenuParametres extends Menu {
 	 * @param titre : String représentant le nom du menu
 	 */
 	
-	public MenuParametres(String titre) {
-		super(titre);
+	public MenuParametres(PolyFever p, String titre) {
+		super(p, titre);
 		
 	}
 

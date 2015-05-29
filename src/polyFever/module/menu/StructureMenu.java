@@ -1,4 +1,5 @@
 package polyFever.module.menu;
+import polyFever.module.main.*;
 
 public class StructureMenu {
 	private Menu curMenu;
@@ -9,44 +10,44 @@ public class StructureMenu {
 	 * Créé également les boutons associés
 	 */
 	
-	public StructureMenu() {
+	public StructureMenu(PolyFever p) {
 		
-		Menu home = new Menu("Home");
+		Menu home = new Menu(p, "Home");
 		home.setPere(home);
 		
-		Menu play = new Menu("Play");
+		Menu play = new Menu(p, "Play");
 		home.addFils(play);
 		play.setPere(home);
 		
-		Menu settings = new Menu("Settings");
+		Menu settings = new Menu(p, "Settings");
 		home.addFils(settings);
 		settings.setPere(home);
 		
-		MenuFeuille credit = new MenuFeuille("Credit","LLORCA Frederic\n LAINE Elouarn\n GITARD Valentin\n PERSON Ambre");
+		MenuFeuille credit = new MenuFeuille(p, "Credit","LLORCA Frederic\n LAINE Elouarn\n GITARD Valentin\n PERSON Ambre");
 		home.addFils(credit);
 		credit.setPere(home);
 		
-		Menu quit = new Menu("Quit");
+		Menu quit = new Menu(p, "Quit");
 		home.addFils(quit);
 		quit.setPere(home);
 		
-		Menu local = new MenuPlay("Local Multi");
+		Menu local = new MenuPlay(p, "Local Multi");
 		play.addFils(local);
 		local.setPere(play);
 		
-		Menu lan = new Menu("LAN Multi");
+		Menu lan = new Menu(p, "LAN Multi");
 		play.addFils(lan);
 		lan.setPere(play);		
 		
-		Menu host = new Menu("Héberger");
+		Menu host = new Menu(p, "Héberger");
 		lan.addFils(host);
 		host.setPere(lan);
 		
-		Menu join = new Menu("Rejoindre");
+		Menu join = new Menu(p, "Rejoindre");
 		lan.addFils(join);
 		join.setPere(lan);
 		
-		MenuPlay partie = new MenuPlay("Jeu");
+		MenuPlay partie = new MenuPlay(p, "Jeu");
 		local.addFils(partie);
 		partie.setPere(local);
 		
