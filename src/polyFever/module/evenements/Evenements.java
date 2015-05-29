@@ -43,6 +43,7 @@ public class Evenements {
 	 * Regarde si les coordonnées sont dans la hitbox donnée.
 	 * @param x La coordonnée x absolue en int (en heut à gauche de la fenêtre).
 	 * @param y La coordonnée y absolue en int (en heut à gauche de la fenêtre).
+	 * @param b Le Bouton qui contient la Hitbox à vérifier.
 	 * @return La nouvelle coordonnée selon openGL.
 	 */
 	private boolean isInsideHitbox(int x, int y, Bouton b) {
