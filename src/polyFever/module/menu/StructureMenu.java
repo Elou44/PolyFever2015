@@ -3,6 +3,12 @@ package polyFever.module.menu;
 public class StructureMenu {
 	private Menu curMenu;
 	
+	/**
+	 * Constructeur de la structure du menu
+	 * L'attribut curMenu représente le menu courant qui permet de naviguer entre les menus créés
+	 * Créé également les boutons associés
+	 */
+	
 	public StructureMenu() {
 		
 		Menu home = new Menu("Home");
