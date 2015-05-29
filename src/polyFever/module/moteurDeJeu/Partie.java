@@ -157,7 +157,7 @@ public class Partie {
 	{
 		System.out.println("Initialisation de la partie...");
 		// Calcul du scoreMax
-		scoreMax = (nbJoueurs-1) * 10;
+		scoreMax = /*(nbJoueurs-1) * */10;
 		
 		// Initialisation du temps du début de la partie
 		this.temps = System.currentTimeMillis();
@@ -246,7 +246,7 @@ public class Partie {
 		p.affichage.dJeu.dPlateau.dLigne.clearTabVertex();
 		
 		// Changement de l'état du jeu à "pause" pour attendre le départ donnée par un joueur
-		this.roundEnPause = true;
+		this.pause();
 	}
 	
 	// Méthode testant l'intersection de 2 segments
@@ -767,7 +767,13 @@ public class Partie {
 	 * vérifier si l'un des Joueurs a gagné la partie. 
 	 */
 	public void update()
-	{		
+	{
+		System.out.println("Scores : ");
+		for(Joueur j : this.joueurs)
+		{
+			System.out.println(j.getScore());
+		}
+		
 		// On repère si des joueurs sont en collision avec une trace ou un mur
 		this.repererCollisions();	// Si collisions il y a, alors la méthode repererCollisions se charge de mettre à jour les scores et l'état des joueurs
 		
@@ -797,8 +803,8 @@ public class Partie {
 					// On vérifie si il a plus de 2 points par rapport aux autres joueurs
 					if(verifGagnant(e))
 					{
-						//System.out.println("Grand gagnant");
-						//arreterPartie();
+						System.out.println("Grand gagnant");
+						arreterPartie();
 						// FIN DE LA PARTIE
 					}
 				}
