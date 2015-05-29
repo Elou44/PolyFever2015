@@ -157,7 +157,7 @@ public class Partie {
 	{
 		System.out.println("Initialisation de la partie...");
 		// Calcul du scoreMax
-		scoreMax = /*(nbJoueurs-1) * */3;
+		scoreMax = (nbJoueurs-1) * 3;
 		
 		// Initialisation du temps du début de la partie
 		this.temps = System.currentTimeMillis();
