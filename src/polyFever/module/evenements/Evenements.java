@@ -34,22 +34,24 @@ public class Evenements {
 	}
 	
 	/**
-	 * Traite les clics de l'utilisateur dans le menu, et regarde s'ils sont dans la hitbox d'un bouton.
+	 * Traite les clics de l'utilisateur dans le menu, et regarde s'ils sont dans la hitbox d'un bouton. Effectue l'action appropriée le cas échéant.
 	 * @param boutons Ensemble des objets Bouton du menu concerné, contenant les hitbox.
 	 */
 	public void gestionMenu(Set<Bouton> boutons) {
 		//Renvoie les coordonnees de la souris quand l'utilisateur clic
 		//0 = left mouse button ; 1 = right mouse button
+		Bouton b;
+		
 		while(Mouse.next()) {
 			
 			if(Mouse.getEventButton() == 0 && Mouse.getEventButtonState()) { //Clic gauche avec la souris
 				
 				Iterator<Bouton> i = boutons.iterator();
 				while(i.hasNext()) { //On parcours les Bouton de l'ensemble passe en parametre
-					i.next();
+					b = i.next();
 					
-					//if(i.hitbox.contains(Mouse.getEventX(), Mouse.getEventY())) //Le clic est dans la hitbox
-						//What to do ?
+					if(b.getHitbox().contains(Mouse.getEventX(), Mouse.getEventY())) //Le clic est dans la hitbox
+						b.action();
 					
 				}
 			}
