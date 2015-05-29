@@ -30,6 +30,10 @@ public class Menu {
 		this.boutons = new HashSet<Bouton>();
 	}
 	
+	public void addBouton(Bouton b){
+		this.boutons.add(b);
+	}
+	
 	/**
 	 * Methode permettant de récupérer les boutons du menu
 	 * @return : Ensemble des boutons du menu courant

@@ -17,8 +17,8 @@ public class BoutonRetour extends Bouton {
 	 * @param w : Largeur de la hitbox
 	 * @param h : Hauteur de la hitbox
 	 */
-	public BoutonRetour(Menu m, int x, int y, int w, int h){
-		super(x,y,w,h);
+	public BoutonRetour(Menu m, float x, float y, float l, float h){
+		super(x,y,l,h);
 		this.menu = m;
 	}
 	 

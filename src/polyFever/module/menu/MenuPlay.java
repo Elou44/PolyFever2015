@@ -22,9 +22,10 @@ public class MenuPlay extends Menu {
 	 * Modification du booléen isMenu pour indiquer au module d'affichage qu'il faut afficher la partie et plus le menu
 	 */
 	
-	public void changementMenu(){
+	public Menu changementMenu(){
 		Menu.isMenu = false;
 		//lancer le jeu
+		return this;
 	}
 	/**
 	 * Réécriture de la méthode Menu retour()

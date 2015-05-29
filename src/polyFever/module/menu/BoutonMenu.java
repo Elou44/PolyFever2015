@@ -21,26 +21,14 @@ public class BoutonMenu extends Bouton {
 	 * @param h : Hauteur de la hitbox
 	 */
 	
-	public BoutonMenu(Menu p, Menu f, int x, int y, int w, int h){
-		super(x, y, w, h);
+	public BoutonMenu(Menu p, Menu f, float x, float y, float l, float h){
+		super(x, y, l, h);
 		this.pere = p;
 		this.fils = f;
 		
 	}
 	
-	/**
-	 * Constructeur BoutonMenu avec les paramêtres de la hitbox par défaut
-	 * @param p : Menu courant, celui qui est affiché
-	 * @param f : Menu fils, celui que le bouton a pour cible
-	 */
-	
-	public BoutonMenu(Menu p, Menu f){
-		super();
-		this.pere = p;
-		this.fils = f;
-		
-	}
-	 
+
 	/**
 	 * Redéfinition de la méthode abstraite action() pour la navigation descendante
 	 * Appel à la fonction changementMenu() du menu courant (pere)

@@ -10,7 +10,8 @@ import java.awt.Rectangle;
 
 public abstract class Bouton {
 	
-	Rectangle hitbox;
+	protected Hitbox hitbox;
+	protected boolean isSelected;
 	
 	/**
 	 * Constructeur de la classe bouton prennant les paramêtres de la hitbox
@@ -20,17 +21,11 @@ public abstract class Bouton {
 	 * @param h : Hauteur de la hitbox
 	 */
 	
-	public Bouton(int x, int y, int w, int h){
-		this.hitbox = new Rectangle(x, y, w, h);
+	public Bouton(float x, float y, float l, float h){
+		this.hitbox = new Hitbox(x, y, l, h);
+		this.isSelected = false;
 	}
 	
-	/**
-	 * Constructeur par défaut sans paramêtres
-	 */
-	
-	public Bouton(){
-		this.hitbox = new Rectangle();
-	}
 	
 	/**
 	 * Methode permettant de récupérer la hitbox associée au bouton
@@ -38,7 +33,7 @@ public abstract class Bouton {
 	 */
 	
 	
-	public Rectangle getHitbox() {
+	public Hitbox getHitbox() {
 		return hitbox;
 	}
 
