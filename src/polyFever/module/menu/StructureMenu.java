@@ -103,6 +103,11 @@ public class StructureMenu {
 	public MenuPlay getMenuPlay(){
 		return m_partie;
 	}
+	
+	public Menu getM_home()
+	{
+		return m_home;
+	}
 
 
 	
