@@ -767,13 +767,7 @@ public class Partie {
 	 * vérifier si l'un des Joueurs a gagné la partie. 
 	 */
 	public void update()
-	{
-		System.out.println("Scores : ");
-		for(Joueur j : this.joueurs)
-		{
-			System.out.println(j.getScore());
-		}
-		
+	{		
 		// On repère si des joueurs sont en collision avec une trace ou un mur
 		this.repererCollisions();	// Si collisions il y a, alors la méthode repererCollisions se charge de mettre à jour les scores et l'état des joueurs
 		
