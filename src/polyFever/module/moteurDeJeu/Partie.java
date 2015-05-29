@@ -4,13 +4,11 @@ import polyFever.module.util.math.*;
 import java.util.*;
 
 /**
- * Ceci est la classe Partie.
+ * Ceci est la classe Partie. 
  * Classe créant des objets Partie servant à stocker toutes les informations relatives à une partie de PolyFever.
  * 
- * @param scoreMax
- * 			Entier donnant le score maximum qu'un joueur doit atteindre pour gagner une partie
- * @param nbJoueurs
- * 			Entier donannt le nombre de joueurs ajoutés dans l'objet Partie
+ * @param scoreMax Entier donnant le score maximum qu'un joueur doit atteindre pour gagner une partie.
+ * @param nbJoueurs Entier donannt le nombre de joueurs ajoutés dans l'objet Partie.
  * @param joueurs
  * 			Tableau Set contenant les objets Joueur de chaque joueur présent dans la partie
  * @param bonusPresents
@@ -152,7 +150,8 @@ public class Partie {
 	 */
 	
 	/**
-	 * Méthode
+	 * Méthode initialisant un objet Partie pour le début d'une Partie. 
+	 * Initialise le score à atteindre pour gagner, définit le temps de début de la Partie, positionne chaque Joueur avec une direction et un temps de trou de manière aléatoire. 
 	 */
 	public void initialiserPartie()
 	{
@@ -173,14 +172,15 @@ public class Partie {
 		System.out.println("Score MAX = "+getScoreMax());
 	}
 	
-	// Méthode faisant débuter une partie
-	public void demarrerPartie()
-	{
-		// On change l'état du jeu à "non en pause"
-		this.roundEnPause = false;
-	}
-	
 	// Méthode changeant l'état du jeu, de "pause" à "en cours" ou "en cours" à "pause"
+	/**
+	 * Méthode mettant le jeu en pause. Stoppe les Joueurs, l'apparition de Bonus et le traçage des trous. 
+	 * 
+	 * Principe : 
+	 * 
+	 * 		A l'activation d'une pause on définit le temps de début pour calculer la durée de la pause et ensuite l'ajouter au temps général de la Partie. 
+	 * 		Ceci permet de respecter le traçage des trous par les Joueurs et l'apparition et durée d'effet des Bonus.
+	 */
 	public void pause()
 	{
 		System.out.println("PAUSE");
@@ -205,6 +205,16 @@ public class Partie {
 	}
 	
 	// Méthode initialisant le début d'un round
+	/**
+	 * Méthode initialisant les variables pour un nouveau Round. 
+	 * 
+	 * Principe : 
+	 * 
+	 * 		On redéfinit le temps général de la Partie 
+	 * 		Repositionnement des Joueurs 
+	 * 		Effacement du contenu des sous grilles servant à la détection des collisions 
+	 * 		Effacement du contenu du tableau de vertex du module Affichage, permettant l'effacement des traces déjà présentes 
+	 */
 	public void initialiserRound()
 	{
 		System.out.println("=======> NOUVEAU ROUND <=======");
@@ -240,6 +250,20 @@ public class Partie {
 	}
 	
 	// Méthode testant l'intersection de 2 segments
+	/**
+	 * Méthode permettant de détecter l'intersection de deux lignes. 
+	 * 
+	 * Principe : 
+	 * 		Les indices donnés en paramètres sont les coordonnées du point supposé de collision. 
+	 * 		Ensuite selon la position en x et en y de la droite représentant le joueur et la droite de la trace, 
+	 * 		on peut déduire qu'il y a eu collision ou non
+	 * 
+	 * @param indiceA
+	 * @param indiceB
+	 * @param joueur
+	 * @param trace
+	 * @return
+	 */
 	private boolean ligneIntersection(float indiceA, float indiceB, Vector4 joueur, Vector4 trace)
 	{
 		if(indiceA == 0.0 || indiceB == 0.0)
@@ -273,6 +297,21 @@ public class Partie {
 	}
 	
 	// Méthode de détection des collisions, entre le joueur / bords du plateau et joueur / trace
+	/**
+	 * Méthode de détection des collisisons. 
+	 * 
+	 * Principe : 
+	 * 		Pour chaque Joueur VIVANT présent dans la partie, on vérifie si sa droite de contact gauche, droite et centrale n'intersecte aucune trace 
+	 * se trouvant dans la sous grille courante du Joueur (@see ligneIntersection). 
+	 * 		Si une collision est repérée, on change la position du Joueur en lui attribuant la position du point de collision. 
+	 * 		On passe l'état du Joueur à MORT (@see setEtat). 
+	 * 		On modifie le score des autres Joueurs (@see modifierScore). 
+	 * 
+	 * Concernant les droites de contact des Joueurs. La droite de contact centrale est le segment formé par la position courante 
+	 * du Joueur et sa position précédente. La droite de contact gauche est le segment formé par un point situé à gauche de la 
+	 * position courante du Joueur et le point situé de la même façon à gauche de sa position précédente. La droite de contact droite 
+	 * est construite selon la même logique que la droite de contact gauche. 
+	 */
 	public void repererCollisions()
 	{
 		/* 
@@ -340,6 +379,7 @@ public class Partie {
 					float indiceF = ( ( ( (droiteD.x() * droiteD.w()) - (droiteD.y() * droiteD.z()) ) * (pointGrille.y() - pointGrille.w()) ) - ( (droiteD.y() - droiteD.w()) * ( (pointGrille.x() * pointGrille.w()) - (pointGrille.y() * pointGrille.z()) ) ) ) / denominateur3;
 					boolean contactD = false;
 					
+					// Si l'on repère une intersection avec la droite de contact gauche, droite ou centrale ET que le Joueur est en train de laisser une trace ET qu'il n'est pas déjà rentré en collision
 					if( ( (contactG = ligneIntersection(indiceC, indiceD, droiteG, pointGrille)) || (contactD = ligneIntersection(indiceE, indiceF, droiteD, pointGrille)) || ligneIntersection(indiceA, indiceB, droite, pointGrille) ) && e.getPosition().z() == 1 && collision == false)
 					{
 						collision = true;
@@ -379,6 +419,10 @@ public class Partie {
 	}
 
 	// Méthode incrémentant le score des joueurs en vie
+	/**
+	 * Méthode incrémentant le score des Joueurs encore en vie dans la partie. 
+	 * Cette méthode est appelée à la mort d'un Joueur. 
+	 */
 	public void modifierScore()
 	{
 		/* Rajouter +1 aux scores des joueurs encore en vie
@@ -400,6 +444,16 @@ public class Partie {
 	}
 	
 	// Méthode faisant apparaitre les bonus
+	/**
+	 * Méthode calculant l'apparition des Bonus sur le plateau de jeu. 
+	 * 
+	 * Principe : 
+	 * 		Selon la valeur du temps écoulé depuis le début de la partie, on définit un temps à partir duquel un Bonus 
+	 * pourra apparaître. Une fois ce temps atteint ou dépassé (car un test se fait toutes les 40 millisecondes 
+	 * approximativemement) un Bonus apparait à une position aléatoire sr le plateau. Une durée aléatoire lui est aussi 
+	 * attribuée. De plus, on stocke l'index de ce Bonus dans le tableau des BonusPresents pour pouvoir facilement l'en retirer 
+	 * lorsqu'il aura été pris. Pour finir on définit un nouveau temps à partir duquel un nouveau Bonus pourra apparaitre. 
+	 */
 	public void apparaitreBonus()
 	{
 		/* 
@@ -441,6 +495,13 @@ public class Partie {
 	}
 	
 	// Méthode vérifiant si la durée d'un bonus est dépassée
+	/**
+	 * Méthode vérifiant si un Bonus a dépassé sa durée d'effet et doit donc être supprimé. 
+	 * 
+	 * Principe : 
+	 * 		Pour chaque Bonus présent sur le plateau de jeu, on vérifie si le temps auquel la Bonus a été pris 
+	 * plus sa durée d'effet a été atteint ou dépassé, ce qui implique de supprimer le Bonus.
+	 */
 	public void verifBonus()
 	{
 		/* 
@@ -475,6 +536,13 @@ public class Partie {
 	}
 	
 	// Méthode ajoutant un objet joueur dans la partie
+	/**
+	 * Méthode ajoutant un Joueur dans un objet Partie. 
+	 * Cette méthode ajoute un joueur dans le tableau des Joueurs de la Partie et initialise une Ligne pour chaque. 
+	 * 
+	 * @param joueur
+	 * @param p
+	 */
 	public void ajouterJoueur(Joueur joueur, PolyFever p)
 	{
 		// Incrémentation du nombre de joueurs
@@ -504,6 +572,16 @@ public class Partie {
 	}
 	
 	// Méthode remplissant les tableaux des sous grilles avec les traces des joueurs
+	/**
+	 * Méthode permettant de récupérer les droites représentant les traces laissés par les Joueurs. 
+	 * 
+	 * Principe : 
+	 * 		Selon les coordonnées en x et en y d'un des points de la droite, on place cette trace dans la sous grille 
+	 * correspondante. 
+	 * 
+	 * @param droiteA
+	 * @param droiteB
+	 */
 	public void envoyerTabVertex(Vector4 droiteA, Vector4 droiteB)
 	{		
 		Vector4[] coord = new Vector4[2];
@@ -601,6 +679,14 @@ public class Partie {
 	}
 	
 	// Méthode vérifiant si un joueur ayant atteint le scoreMax a gagné la partie ou non
+	/**
+	 * Méthode vérifiant si un Joueur ayant atteint le score maximum a vraiment gagné la partie. 
+	 * C'est à dire que cette méthode vérifie que le Joueur a bien au moins deux points de différence avec le deuxième 
+	 * Joueur ayant le plus de points. 
+	 * 
+	 * @param joueur
+	 * @return
+	 */
 	private boolean verifGagnant(Joueur joueur)
 	{
 		for(Joueur a : joueurs)
@@ -614,6 +700,12 @@ public class Partie {
 	}
 	
 	// Méthode annonçant la fin d'une partie
+	/**
+	 * Méthode arrêtant proprement la partie. 
+	 * Cette méthode donne une référence null à tous les objets relatifs à la partie pour que le 
+	 * ramasse-miettes les suppriment définitivement. On change le statut de la partie à false pour 
+	 * signifier aux autres modules que la partie est terminée. 
+	 */
 	public void arreterPartie()
 	{
 		// Mise à l'état de pause du jeu
@@ -637,6 +729,11 @@ public class Partie {
 	}
 	
 	// Méhode comptant le nombre de joueurs encore en vie dans la partie
+	/**
+	 * Méthode comptant le nombre de Joueurs encore en vie dans la partie. 
+	 * 
+	 * @return nombre de Joueurs vivants 
+	 */
 	private int nbJoueursVivant()
 	{
 		int nb = 0;		// Définition d'une variable accueillant le nombre de joueurs
@@ -659,7 +756,16 @@ public class Partie {
 	/*
 	 * Méthode définissant tout ce qu'on fait à chaque tour dans une partie
 	 */
-	
+	/**
+	 * Méthode réalisant les tests et traitements nécessaires à chaque tour de boucle du jeu. 
+	 * 
+	 * Principe : 
+	 * 		On commence par détecter si il y a des collisions (@see repererCollisions). 
+	 * 		On vérifie si des Bonus ne doivent plus avoir effet (@see verifBonus). 
+	 * 		On vérifie si l'on doit faire apparaître un Bonus (@see apparaitreBonus). 
+	 * 		Si il ne reste plus qu'un Joueur en vie alors c'est la fin d'un Round et il faut 
+	 * vérifier si l'un des Joueurs a gagné la partie. 
+	 */
 	public void update()
 	{		
 		// On repère si des joueurs sont en collision avec une trace ou un mur
@@ -707,6 +813,9 @@ public class Partie {
 		
 	}
 
+	/**
+	 * Méthode renvoyant une chaine de caractères décrivant un objet Partie
+	 */
 	@Override
 	public String toString() {
 		return "Partie [scoreMax=" + scoreMax + ", nbJoueurs=" + nbJoueurs
