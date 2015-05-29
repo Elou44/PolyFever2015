@@ -13,6 +13,8 @@ import polyFever.module.moteurDeJeu.*;
 
 public class MenuPlay extends Menu {
 	
+	private Partie partie;
+	
 	/**
 	 * Constructeur du Menu lancant le jeu
 	 * @param t : Titre du menu qui sera affiché
@@ -28,8 +30,9 @@ public class MenuPlay extends Menu {
 	 */
 	
 	public Menu changementMenu(){
+		
 		Menu.isMenu = false;
-		Partie partie = new Partie(p);
+		partie = new Partie(p);
 		Joueur j1 = new Joueur(partie, "Joueur 1", Keyboard.KEY_LEFT, Keyboard.KEY_RIGHT);
 		Joueur j2 = new Joueur(partie, "Joueur 2", Keyboard.KEY_V, Keyboard.KEY_B);
 		Joueur j3 = new Joueur(partie, "Joueur 3", Keyboard.KEY_A, Keyboard.KEY_Z);
@@ -42,6 +45,11 @@ public class MenuPlay extends Menu {
 		
 		return this;
 	}
+	
+	public Partie getPartie(){
+		return this.partie;
+	}
+	
 	/**
 	 * Réécriture de la méthode Menu retour()
 	 * Si on est sur la partie (isMenu = False), on modifie le booléen isMenu pour indiquer au module affichage qu'on est de retour sur le menu (et plus sur le jeu)

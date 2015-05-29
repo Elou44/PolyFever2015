@@ -3,6 +3,7 @@ import polyFever.module.main.*;
 
 public class StructureMenu {
 	private Menu curMenu;
+	private MenuPlay m_partie;
 	
 	/**
 	 * Constructeur de la structure du menu
@@ -12,75 +13,75 @@ public class StructureMenu {
 	
 	public StructureMenu(PolyFever p) {
 		
-		Menu home = new Menu(p, "Home");
-		home.setPere(home);
+		Menu m_home = new Menu(p, "Home");
+		m_home.setPere(m_home);
 		
-		Menu play = new Menu(p, "Play");
-		home.addFils(play);
-		play.setPere(home);
+		Menu m_play = new Menu(p, "Play");
+		m_home.addFils(m_play);
+		m_play.setPere(m_home);
 		
-		Menu settings = new Menu(p, "Settings");
-		home.addFils(settings);
-		settings.setPere(home);
+		Menu m_settings = new Menu(p, "Settings");
+		m_home.addFils(m_settings);
+		m_settings.setPere(m_home);
 		
-		MenuFeuille credit = new MenuFeuille(p, "Credit","LLORCA Frederic\n LAINE Elouarn\n GITARD Valentin\n PERSON Ambre");
-		home.addFils(credit);
-		credit.setPere(home);
+		MenuFeuille m_credit = new MenuFeuille(p, "Credit","LLORCA Frederic\n LAINE Elouarn\n GITARD Valentin\n PERSON Ambre");
+		m_home.addFils(m_credit);
+		m_credit.setPere(m_home);
 		
-		Menu quit = new Menu(p, "Quit");
-		home.addFils(quit);
-		quit.setPere(home);
+		Menu m_quit = new Menu(p, "Quit");
+		m_home.addFils(m_quit);
+		m_quit.setPere(m_home);
 		
-		Menu local = new MenuPlay(p, "Local Multi");
-		play.addFils(local);
-		local.setPere(play);
+		Menu m_local = new MenuPlay(p, "LocalMulti");
+		m_play.addFils(m_local);
+		m_local.setPere(m_play);
 		
-		Menu lan = new Menu(p, "LAN Multi");
-		play.addFils(lan);
-		lan.setPere(play);		
+		Menu m_lan = new Menu(p, "LANMulti");
+		m_play.addFils(m_lan);
+		m_lan.setPere(m_play);		
 		
-		Menu host = new Menu(p, "Héberger");
-		lan.addFils(host);
-		host.setPere(lan);
+		Menu m_host = new Menu(p, "Host");
+		m_lan.addFils(m_host);
+		m_host.setPere(m_lan);
 		
-		Menu join = new Menu(p, "Rejoindre");
-		lan.addFils(join);
-		join.setPere(lan);
+		Menu m_join = new Menu(p, "Join");
+		m_lan.addFils(m_join);
+		m_join.setPere(m_lan);
 		
-		MenuPlay partie = new MenuPlay(p, "Jeu");
-		local.addFils(partie);
-		partie.setPere(local);
+		m_partie = new MenuPlay(p, "Game");
+		m_local.addFils(m_partie);
+		m_partie.setPere(m_local);
 		
 		
-		BoutonMenu bPlay = new BoutonMenu(home,play,0f,0.4f,0.5f,0.1f);
-		BoutonMenu bSettings = new BoutonMenu(home,settings,0f,0f,0.5f,0.1f);
-		BoutonMenu bCredits = new BoutonMenu(home,credit,0f,-0.4f,0.5f,0.1f);
-		BoutonMenu bQuit = new BoutonMenu(home,quit,0f,-0.8f,0.5f,0.1f);
-		BoutonRetour bRetHome = new BoutonRetour(home,-0.8f,-0.8f,0.1f,0.1f);
+		BoutonMenu bPlay = new BoutonMenu(m_home,m_play,0f,0.4f,0.5f,0.1f);
+		BoutonMenu bSettings = new BoutonMenu(m_home,m_settings,0f,0f,0.5f,0.1f);
+		BoutonMenu bCredits = new BoutonMenu(m_home,m_credit,0f,-0.4f,0.5f,0.1f);
+		BoutonMenu bQuit = new BoutonMenu(m_home,m_quit,0f,-0.8f,0.5f,0.1f);
+		BoutonRetour bRetHome = new BoutonRetour(m_home,-0.8f,-0.8f,0.1f,0.1f);
 
-		home.addBouton(bPlay);
-		home.addBouton(bSettings);
-		home.addBouton(bCredits);
-		home.addBouton(bQuit);
-		home.addBouton(bRetHome);
+		m_home.addBouton(bPlay);
+		m_home.addBouton(bSettings);
+		m_home.addBouton(bCredits);
+		m_home.addBouton(bQuit);
+		m_home.addBouton(bRetHome);
 
-		BoutonMenu bLocal = new BoutonMenu(play,local,0f,0.4f,0.5f,0.1f);
-		BoutonMenu bMulti = new BoutonMenu(play,lan,0f,0f,0.5f,0.1f);
-		BoutonRetour bRetPlay = new BoutonRetour(play,-0.8f,-0.8f,0.1f,0.1f);
+		BoutonMenu bLocal = new BoutonMenu(m_play,m_local,0f,0.4f,0.5f,0.1f);
+		BoutonMenu bMulti = new BoutonMenu(m_play,m_lan,0f,0f,0.5f,0.1f);
+		BoutonRetour bRetPlay = new BoutonRetour(m_play,-0.8f,-0.8f,0.1f,0.1f);
 		
-		play.addBouton(bLocal);
-		play.addBouton(bMulti);
-		play.addBouton(bRetPlay);
+		m_play.addBouton(bLocal);
+		m_play.addBouton(bMulti);
+		m_play.addBouton(bRetPlay);
 
-		BoutonMenuPlay bJouer = new BoutonMenuPlay(local,partie,0f,0.4f,0.5f,0.1f);
-		BoutonRetour bRetJouer = new BoutonRetour(partie,-0.8f,-0.8f,0.1f,0.1f);
+		BoutonMenuPlay bJouer = new BoutonMenuPlay(m_local,m_partie,0f,0.4f,0.5f,0.1f);
+		BoutonRetour bRetJouer = new BoutonRetour(m_partie,-0.8f,-0.8f,0.1f,0.1f);
 
-		local.addBouton(bJouer);
-		local.addBouton(bRetJouer);
+		m_local.addBouton(bJouer);
+		m_local.addBouton(bRetJouer);
 
 		
 
-		this.curMenu = home;
+		this.curMenu = m_home;
 	}
 
 	/**
@@ -90,6 +91,10 @@ public class StructureMenu {
 	
 	public Menu getCurMenu() {
 		return curMenu;
+	}
+	
+	public Menu getMenuPlay(){
+		return m_partie;
 	}
 
 
