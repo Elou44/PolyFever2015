@@ -1,5 +1,9 @@
 package polyFever.module.menu;
 
+import org.lwjgl.input.Keyboard;
+
+import polyFever.module.moteurDeJeu.*;
+
 /**
  * Classe représentant le menu lançant le jeu
  * @author Ambre
@@ -24,7 +28,17 @@ public class MenuPlay extends Menu {
 	
 	public Menu changementMenu(){
 		Menu.isMenu = false;
-		//lancer le jeu
+		Partie partie = new Partie(polyFever);
+		Joueur j1 = new Joueur(partie, "Joueur 1", Keyboard.KEY_LEFT, Keyboard.KEY_RIGHT);
+		Joueur j2 = new Joueur(partie, "Joueur 2", Keyboard.KEY_V, Keyboard.KEY_B);
+		Joueur j3 = new Joueur(partie, "Joueur 3", Keyboard.KEY_A, Keyboard.KEY_Z);
+		Joueur j4 = new Joueur(partie, "Joueur 4", Keyboard.KEY_K, Keyboard.KEY_L);
+		partie.ajouterJoueur(j1, polyFever);
+		partie.ajouterJoueur(j2, polyFever);
+		partie.ajouterJoueur(j3, polyFever);
+		partie.ajouterJoueur(j4, polyFever);
+		partie.initialiserPartie();
+		
 		return this;
 	}
 	/**
