@@ -157,7 +157,7 @@ public class Partie {
 	{
 		System.out.println("Initialisation de la partie...");
 		// Calcul du scoreMax
-		scoreMax = /*(nbJoueurs-1) * */10;
+		scoreMax = /*(nbJoueurs-1) * */3;
 		
 		// Initialisation du temps du début de la partie
 		this.temps = System.currentTimeMillis();
@@ -183,9 +183,9 @@ public class Partie {
 	 */
 	public void pause()
 	{
-		System.out.println("PAUSE");
+		System.out.println("PAUSE "+roundEnPause);
 		// Si le jeu est déjà en pause
-		if(this.roundEnPause)
+		if(this.roundEnPause && this.jeu)
 		{
 			// On calcule le temps écoulé durant la pause
 			tpsPause = System.currentTimeMillis() - tpsPause;
@@ -217,36 +217,39 @@ public class Partie {
 	 */
 	public void initialiserRound()
 	{
-		System.out.println("=======> NOUVEAU ROUND <=======");
-		
-		// Remise à zéro du temps pour le début du round
-		this.temps = System.currentTimeMillis();
-		
-		// Calcul des positions de base des joueurs & définition du temps de traçage de trou
-		for(Joueur e : joueurs)		// Boucle de parcours de la liste des joueurs
+		if(this.jeu)
 		{
-			e.getPosition().set((float) (Math.random() * (0.5 + 0.5) - 0.5), (float) (Math.random() * (0.5 + 0.5) - 0.5), 1);	// Calcul de la position en x et y, entre -0.5 et 0.5
-			e.getAnciennePosition().set(new Vector3());	// Remise à zéro de l'ancienne position
-			e.getDroiteJoueur().set(new Vector4());					// Remise à zéro de la droite joueur
-			e.getAncienneDroiteJoueur().set(new Vector4());			// Remise à zéro de l'ancienne droite joueur
-			e.setDirection((double) (Math.random() * 2*Math.PI));	// Calcul d'une direction entre 0 et 2 PI
-			e.getLigne().setTpsTrou((long) (Math.random() * (4500 - 3000) + 3000));	// Calcul du temps de traçage de trou
-			e.setEtat(Etat.VIVANT);
+			System.out.println("=======> NOUVEAU ROUND <=======");
+			
+			// Remise à zéro du temps pour le début du round
+			this.temps = System.currentTimeMillis();
+			
+			// Calcul des positions de base des joueurs & définition du temps de traçage de trou
+			for(Joueur e : joueurs)		// Boucle de parcours de la liste des joueurs
+			{
+				e.getPosition().set((float) (Math.random() * (0.5 + 0.5) - 0.5), (float) (Math.random() * (0.5 + 0.5) - 0.5), 1);	// Calcul de la position en x et y, entre -0.5 et 0.5
+				e.getAnciennePosition().set(new Vector3());	// Remise à zéro de l'ancienne position
+				e.getDroiteJoueur().set(new Vector4());					// Remise à zéro de la droite joueur
+				e.getAncienneDroiteJoueur().set(new Vector4());			// Remise à zéro de l'ancienne droite joueur
+				e.setDirection((double) (Math.random() * 2*Math.PI));	// Calcul d'une direction entre 0 et 2 PI
+				e.getLigne().setTpsTrou((long) (Math.random() * (4500 - 3000) + 3000));	// Calcul du temps de traçage de trou
+				e.setEtat(Etat.VIVANT);
+			}
+			
+			p.affichage.dJeu.dPlateau.dLigne.updatePosJoueurs(true);
+			
+			// Remise à zéro des sous grilles
+			for(int i = 0; i < this.trace.size(); i++)
+			{
+				trace.get(i).clear();
+			}
+			
+			// Remise à zéro du tableau de vertex du module Affichage
+			p.affichage.dJeu.dPlateau.dLigne.clearTabVertex();
+			
+			// Changement de l'état du jeu à "pause" pour attendre le départ donnée par un joueur
+			this.pause();
 		}
-		
-		p.affichage.dJeu.dPlateau.dLigne.updatePosJoueurs(true);
-		
-		// Remise à zéro des sous grilles
-		for(int i = 0; i < this.trace.size(); i++)
-		{
-			trace.get(i).clear();
-		}
-		
-		// Remise à zéro du tableau de vertex du module Affichage
-		p.affichage.dJeu.dPlateau.dLigne.clearTabVertex();
-		
-		// Changement de l'état du jeu à "pause" pour attendre le départ donnée par un joueur
-		this.pause();
 	}
 	
 	// Méthode testant l'intersection de 2 segments
@@ -709,8 +712,8 @@ public class Partie {
 	public void arreterPartie()
 	{
 		// Mise à l'état de pause du jeu
-		this.roundEnPause = true;
-		
+		//this.pause();
+		/*
 		// "Suppression" des joueurs et de leurs lignes, pour que le ramasse-miettes les suppriment vraiment
 		for(Joueur e : joueurs)
 		{
@@ -722,7 +725,7 @@ public class Partie {
 		for(Bonus b : bonusPresents)
 		{
 			b = null;
-		}
+		}*/
 		
 		// Changement de l'état de la partie
 		this.jeu = false;
@@ -767,7 +770,7 @@ public class Partie {
 	 * vérifier si l'un des Joueurs a gagné la partie. 
 	 */
 	public void update()
-	{		
+	{
 		// On repère si des joueurs sont en collision avec une trace ou un mur
 		this.repererCollisions();	// Si collisions il y a, alors la méthode repererCollisions se charge de mettre à jour les scores et l'état des joueurs
 		
@@ -778,7 +781,7 @@ public class Partie {
 		this.apparaitreBonus();
 		
 		// Voir si il ne reste plus qu'un joueur en vie, donc fin du round
-		if(nbJoueursVivant() <= 1)
+		if(nbJoueursVivant() <= 1 && this.jeu)
 		{
 			/* 
 			 * Si il ne reste plus qu'un joueur en vie
