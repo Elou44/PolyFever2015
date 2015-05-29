@@ -24,12 +24,12 @@ public class Prototyp1 extends PolyFever {
 		super("Prototyp1", 900, 600, true); // on interdit le redimensionnement de la fenetre
 
 		Partie partie = new Partie(this); // Devra etre instanciée par le Menu
-		Joueur j1 = new Joueur(partie, "joueurTest", Keyboard.KEY_LEFT, Keyboard.KEY_RIGHT, 0);
+		Joueur j1 = new Joueur(partie, "joueurTest", Keyboard.KEY_LEFT, Keyboard.KEY_RIGHT);
         Evenements ev = new Evenements(this);
 		partie.ajouterJoueur(j1,this);
-		Joueur j2 = new Joueur(partie, "Joueur test2", Keyboard.KEY_A, Keyboard.KEY_Z, 0);
+		Joueur j2 = new Joueur(partie, "Joueur test2", Keyboard.KEY_A, Keyboard.KEY_Z);
 		partie.ajouterJoueur(j2, this);
-		Joueur j3 = new Joueur(partie, "Joueur test2", Keyboard.KEY_A, Keyboard.KEY_Z, 0);
+		Joueur j3 = new Joueur(partie, "Joueur test2", Keyboard.KEY_A, Keyboard.KEY_Z);
 		partie.ajouterJoueur(j3, this);
 		/*Joueur j4 = new Joueur(partie, "Joueur test2", Keyboard.KEY_A, Keyboard.KEY_Z, 0);
 		partie.ajouterJoueur(j4, this);

@@ -110,14 +110,13 @@ public class Joueur {
 	 * @param toucheD
 	 * @param couleur
 	 */
-	public Joueur(Partie partie, String pseudo, int toucheG, int toucheD, int couleur)	// Avec paramètres
+	public Joueur(Partie partie, String pseudo, int toucheG, int toucheD)	// Avec paramètres
 	{
 		this(partie);
 		System.out.println("Instanciation d'un objet Joueur (ap)...");
 		this.pseudo = pseudo;
 		this.toucheG = toucheG;
 		this.toucheD = toucheD;
-		//this.ligne.setCouleur(couleur);
 	}
 
 	// Méthodes
