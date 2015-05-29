@@ -49,8 +49,8 @@ public class Evenements {
 		float coord1, coord2;
 		coord1 = ((float) x) * polyfever.getRATIO();
 		coord2 = ((float) y) * polyfever.getRATIO();
-		return (((coord1 >= Bouton.getX()-(Bouton.getLargeur()/2)) && (coord2 <= Bouton.getX()+(Bouton.getLargeur()/2)))
-				&& ((coord2 >= Bouton.getY()-(Bouton.getLongueur()/2)) && (coord2 <= Bouton.getY()+(Bouton.getLongueur()/2))));
+		return (((coord1 >= b.getHitbox().getX()-(b.getHitbox().getLargeur()/2)) && (coord2 <= b.getHitbox().getX()+(b.getHitbox().getLargeur()/2)))
+				&& ((coord2 >= b.getHitbox().getY()-(b.getHitbox().getHauteur()/2)) && (coord2 <= b.getHitbox().getY()+(b.getHitbox().getHauteur()/2))));
 	}
 	
 	/**
