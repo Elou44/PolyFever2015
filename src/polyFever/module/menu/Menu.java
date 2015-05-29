@@ -30,6 +30,11 @@ public class Menu {
 		this.boutons = new HashSet<Bouton>();
 	}
 	
+	/**
+	 * Methode ajoutant un bouton à la liste des boutons du menu
+	 * @param b : Bouton à ajouter
+	 */
+	
 	public void addBouton(Bouton b){
 		this.boutons.add(b);
 	}
@@ -85,6 +90,7 @@ public class Menu {
 	 * Methode permettant de revenir en arrière d'un étage dans l'arborescence, à utiliser sur le pseudo menu de parcours
 	 * @return : Objet Menu qui est le père du menu courant
 	 */
+	
 	public Menu retour(){
 		Menu prev = this.pere;
 		System.out.println("Retour au menu précédent : "+prev.titre);

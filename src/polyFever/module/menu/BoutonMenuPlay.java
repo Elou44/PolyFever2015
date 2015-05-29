@@ -26,6 +26,10 @@ public class BoutonMenuPlay extends Bouton {
 		this.fils = f;
 		
 	}
+	/**
+	 * Methode appellée lors du clik sur le bouton
+	 * @return Menu lancant le jeu
+	 */
 	
 	
 	@Override
