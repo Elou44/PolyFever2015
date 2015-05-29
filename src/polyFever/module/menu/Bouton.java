@@ -33,6 +33,17 @@ public abstract class Bouton {
 	}
 	
 	/**
+	 * Methode permettant de récupérer la hitbox associée au bouton
+	 * @return : Rectangle représentant la hitbox du bouton
+	 */
+	
+	
+	public Rectangle getHitbox() {
+		return hitbox;
+	}
+
+
+	/**
 	 * Methode abstraite qui permettra de définir l'action à effectuer en cas de clic sur la hitbox
 	 * @return Nouveau menu courant
 	 */
