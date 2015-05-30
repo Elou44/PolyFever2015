@@ -15,8 +15,8 @@ public class MenuFeuille extends Menu {
 	 * @param c : String, contenu informatif à afficher
 	 */
 	
-	public MenuFeuille(StructureMenu sm, PolyFever p, String t, String c){
-		super(sm, p, t);
+	public MenuFeuille(StructureMenu sm, PolyFever p, String t, String c, String imgT, String imgF){
+		super(sm, p, t, imgT, imgF);
 		this.contenu = c;
 	}
 }

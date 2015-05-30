@@ -106,7 +106,9 @@ public class DessinMenu {
 	//private float decalage; // PROVISOIRE ONLY FOR TEST PURPOSE
 	
 	private int program, ebo,vbo, posAttrib, colAttrib, texAttrib, uniColor, projectionUniform;
-	private int idTexMenuTheme4pipes, idTexTitlePolyFever;  // indentifiant des textures
+	private int idTexMenuTheme4pipes, idTexTitlePolyFever, idTexMenuTheme2pipes, idTexTitlePlay;  // indentifiant des textures
+	
+	private int idTexFond, idTexTitre;
 	
 	private float tabVertex[];
 	private int elements[];
@@ -173,10 +175,10 @@ public class DessinMenu {
 		
 		//partie.envoyerTabVertex(tabVertex, lenTabV); // Envoie de la référence du tableau à l'objet partie
 		
-				System.out.println("Initialisation pour traçage des Lignes...");
+				System.out.println("Initialisation de l'affichage du MENU...");
 				
 				glClearColor(0, 0, 0, 0);
-				
+								
 				int vs = glCreateShader(GL_VERTEX_SHADER);
 				glShaderSource(vs, polyFever.readFromFile("vert_shaderM.vert")); // Chargement du vertex shader (vs)
 				
@@ -255,19 +257,7 @@ public class DessinMenu {
 				
 				
 				vbo = glGenBuffers(); // ebo : Elements Buffer Object (plus adapté que les vbo (vertex buffer object pour le dessin de multiple objets)
-				vboBuffer = (FloatBuffer)BufferUtils.createFloatBuffer(this.tabVertex.length).put(
-						new float[] {-1.0f,1.0f,1.0f,1.0f,1.0f,0.0f,0.0f,
-						1.0f,1.0f,1.0f,0.0f,1.0f,1.0f,0.0f,
-						1.0f,-1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,
-						-1.0f,-1.0f,1.0f,1.0f,1.0f,0.0f,1.0f,
-						
-						-1.0f,1.0f,1.0f,1.0f,1.0f,0.0f,0.0f,
-						0.0f,1.0f,1.0f,0.0f,1.0f,2.0f,0.0f,
-						0.0f,0.0f,1.0f,1.0f,1.0f,2.0f,2.0f,
-						-1.0f,0.0f,1.0f,1.0f,1.0f,0.0f,2.0f
-						
-						
-						}/*this.tabVertex*/).flip();  // IMPORTANT : TRACER LES JOUEURS AU DEBUT DU BUFFER DE VERTEX
+				vboBuffer = (FloatBuffer)BufferUtils.createFloatBuffer(this.tabVertex.length).put(this.tabVertex).flip();  // IMPORTANT : TRACER LES JOUEURS AU DEBUT DU BUFFER DE VERTEX
 				glBindBuffer(GL_ARRAY_BUFFER, vbo);  // Fait en sorte que le ebo soit l'objet actif
 
 				this.nbVertex += 12 ; 
@@ -275,15 +265,7 @@ public class DessinMenu {
 				
 
 				ebo = glGenBuffers(); // ebo : Elements Buffer Object (plus adapté que les vbo (vertex buffer object pour le dessin de multiple objets)
-				eboBuffer = (IntBuffer)BufferUtils.createIntBuffer(this.elements.length).put(new int[] {
-						0, 1, 2,
-						   0, 2, 3,
-						   
-						   4, 5, 6,
-						   4, 6, 7
-						   
-				
-				}/*this.elements*/).flip();
+				eboBuffer = (IntBuffer)BufferUtils.createIntBuffer(this.elements.length).put(this.elements).flip();
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);  // Fait en sorte que le ebo soit l'objet actif
 				
 				
@@ -298,6 +280,7 @@ public class DessinMenu {
 				
 				// CHARGEMENT DES TEXTURES // 
 
+				// Les fonds
 				idTexMenuTheme4pipes = GL11.glGenTextures();
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuTheme4pipes);
 			        //Upload the buffer's content to the VRAM
@@ -308,8 +291,19 @@ public class DessinMenu {
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuTheme4pipes);
-				
 			    
+				idTexMenuTheme2pipes = GL11.glGenTextures();
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuTheme2pipes);
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 1080, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/menu_theme_4pipes.png"));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuTheme2pipes);
+			    
+			    // Les titres
 			    idTexTitlePolyFever = GL11.glGenTextures();
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitlePolyFever);
 			        //Upload the buffer's content to the VRAM
@@ -320,6 +314,32 @@ public class DessinMenu {
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitlePolyFever);
+			    
+			    idTexTitlePlay = GL11.glGenTextures();
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitlePlay);
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 198, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/title_PolyFever.png"));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitlePlay);
+			    /*
+			    idTexTitleLAN = GL11.glGenTextures();
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitleLAN);
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 198, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/title_PolyFever.png"));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitleLAN);*/
+			    
+			    // Les boutons
+			    
+			    
 				
 
 	}
@@ -367,12 +387,12 @@ public class DessinMenu {
 		
 		
 		
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuTheme4pipes); // On bind la premiere texture
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexFond); // On bind la premiere texture
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); 
 		
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0); // On met la texture à NULL
 		
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitlePolyFever); // On bind la deuxième texture
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitre); // On bind la deuxième texture
 		glDrawElements(GL_TRIANGLES, 12/*this.nbVertex*/, GL_UNSIGNED_INT,6*4);
 		
 		glDisableVertexAttribArray(posAttrib);
@@ -385,7 +405,66 @@ public class DessinMenu {
 	}
 	
 	public void updateMenu(Menu curMenu){
-		//if(curMenu.)
+
+		// Chargement du fond
+		idTexFond = GL11.glGenTextures();
+	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexFond);
+	        //Upload the buffer's content to the VRAM
+	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 1080, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex(curMenu.getImgFond()));
+	        //Apply filters
+	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexFond);
+	    
+	    // Chargement du titre
+		idTexTitre = GL11.glGenTextures();
+	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitre);
+	        //Upload the buffer's content to the VRAM
+	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 198, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex(curMenu.getImgTitre()));
+	        //Apply filters
+	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitre);
+	    
+	    // Chargement des boutons 
+	    /* A FAIRE */ 
+	    
+	    
+	    this.tabVertex = new float[] {
+	    		-1.0f,1.0f,1.0f,1.0f,1.0f,0.0f,0.0f,
+				1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,0.0f,
+				1.0f,-1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,
+				-1.0f,-1.0f,1.0f,1.0f,1.0f,0.0f,1.0f,
+				
+				-1.0f,1.0f,1.0f,1.0f,1.0f,0.0f,0.0f,
+				1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,0.0f,
+				1.0f,0.67f,1.0f,1.0f,1.0f,1.0f,1.0f,
+				-1.0f,0.67f,1.0f,1.0f,1.0f,0.0f,1.0f
+				
+				
+				};
+	    
+	    this.vboBuffer.put(this.tabVertex); // On met a jour le buffer VBO 
+		this.vboBuffer.clear();
+	    
+	    this.elements = new int[] {
+				   0, 1, 2,
+				   0, 2, 3,
+				   
+				   4, 5, 6,
+				   4, 6, 7
+		};
+	    
+		this.eboBuffer.put(this.elements);
+		
+		this.eboBuffer.clear();
+	    
+	    
+		
 	}
 
 }

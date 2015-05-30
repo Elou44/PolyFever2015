@@ -17,6 +17,8 @@ public class Menu {
 	protected Menu pere;
 	protected Set<Menu> fils;
 	protected Set<Bouton> boutons;
+	protected String imgTitre; // Chemin vers l'image du titre du menu
+	protected String imgFond; // Chemin vers l'image du fond du menu
 	
 	public static boolean isMenu = true;
 	
@@ -26,13 +28,15 @@ public class Menu {
 	 * @param titre : Titre du menu
 	 */
 	
-	public Menu(StructureMenu sm, PolyFever p, String titre) {
+	public Menu(StructureMenu sm, PolyFever p, String titre, String imgT, String imgF) {
 		this.structMenu = sm;
 		this.p = p;
 		this.titre = titre;
 		this.pere = null;
 		this.fils = new HashSet<Menu>();
 		this.boutons = new HashSet<Bouton>();
+		this.imgTitre = imgT;
+		this.imgFond = imgF;
 	}
 	
 	/**
@@ -115,6 +119,14 @@ public class Menu {
 	
 	public String getTitre(){
 		return titre;
+	}
+	
+	public String getImgTitre() {
+		return imgTitre;
+	}
+	
+	public String getImgFond() {
+		return imgFond;
 	}
 	
 	@Override

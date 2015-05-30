@@ -26,6 +26,7 @@ public class Prototyp1 extends PolyFever {
 		
 		System.out.println("Création de l'objet Affichage...");
 		this.affichage = new Affichage(); // Instanciation de l'affichage
+		
 		System.out.println("Affichage créé avec succès...");
 		
 		this.setAffichage(affichage);
@@ -40,6 +41,7 @@ public class Prototyp1 extends PolyFever {
 	public void init() {
 		
 		affichage.initMenu(this);
+		affichage.dMenu.updateMenu(structMenu.getCurMenu()); // On appelle la méthode de l'affichage qui va dessiner le nouveau menu
 						
 	}
 	
