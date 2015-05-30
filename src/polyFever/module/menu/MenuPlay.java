@@ -14,14 +14,16 @@ import polyFever.module.moteurDeJeu.*;
 public class MenuPlay extends Menu {
 	
 	private Partie partie;
+	private StructureMenu structMenu;
 	
 	/**
 	 * Constructeur du Menu lancant le jeu
 	 * @param t : Titre du menu qui sera affiché
 	 */
 	
-	public MenuPlay(PolyFever p, String t){
+	public MenuPlay(StructureMenu structMenu, PolyFever p, String t){
 		super(p, t);
+		this.structMenu = structMenu;
 	}
 	
 	/**
@@ -32,7 +34,7 @@ public class MenuPlay extends Menu {
 	public Menu changementMenu(){
 		
 		Menu.isMenu = false;
-		partie = new Partie(p);
+		partie = new Partie(p, structMenu);
 		Joueur j1 = new Joueur(partie, "Joueur 1", Keyboard.KEY_LEFT, Keyboard.KEY_RIGHT);
 		Joueur j2 = new Joueur(partie, "Joueur 2", Keyboard.KEY_V, Keyboard.KEY_B);
 		Joueur j3 = new Joueur(partie, "Joueur 3", Keyboard.KEY_A, Keyboard.KEY_Z);

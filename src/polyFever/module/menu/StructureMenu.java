@@ -34,7 +34,7 @@ public class StructureMenu {
 		m_home.addFils(m_quit);
 		m_quit.setPere(m_home);
 		
-		Menu m_local = new MenuPlay(p, "LocalMulti");
+		Menu m_local = new MenuPlay(this, p, "LocalMulti");
 		m_play.addFils(m_local);
 		m_local.setPere(m_play);
 		
@@ -50,7 +50,7 @@ public class StructureMenu {
 		m_lan.addFils(m_join);
 		m_join.setPere(m_lan);
 		
-		m_partie = new MenuPlay(p, "Game");
+		m_partie = new MenuPlay(this, p, "Game");
 		m_local.addFils(m_partie);
 		m_partie.setPere(m_local);
 		
