@@ -113,6 +113,10 @@ public class Menu {
 		return isMenu;
 	}
 	
+	public String getTitre(){
+		return titre;
+	}
+	
 	@Override
 	public String toString() {
 		return "Le menu courant est : "+this.titre;

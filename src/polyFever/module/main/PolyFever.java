@@ -34,6 +34,8 @@ public abstract class PolyFever {
 	private final int WIDTH;
 	private final int HEIGHT;
 	private float RATIO; // Largeur d'un pixel en float
+	private float PXtoFLOAT_X;
+	private float PXtoFLOAT_Y;
 	private boolean isAAAvailable = true; // l'Anti-Aliasing est t-il disponible ? Oui par défaut
 	
 	private Partie partie;
@@ -56,12 +58,14 @@ public abstract class PolyFever {
 		System.out.println("Création du context openGL...");
 		
 		this.glOrtho = new GlOrtho(-1.0f*((float)width/(float)height),1.0f*((float)width/(float)height),-1.0f,1.0f,-1.0f,1.0f);
-				
+		
 		this.partie = null;
 		this.affichage = null;
 		this.evenements = null;
 		this.WIDTH = width; 
 		this.HEIGHT = height;
+		this.PXtoFLOAT_Y = 2/HEIGHT;
+		this.PXtoFLOAT_X = (2*RATIO)/WIDTH;
 		
 		try {
 			Display.setFullscreen(true);
@@ -147,6 +151,8 @@ public abstract class PolyFever {
 		this.WIDTH = width; 
 		this.HEIGHT = height;
 		this.RATIO = (float) width/(float) height;
+		this.PXtoFLOAT_Y = 2/HEIGHT;
+		this.PXtoFLOAT_X = (2*RATIO)/WIDTH;
 		
 		this.glOrtho = new GlOrtho(-1.0f*RATIO,1.0f*RATIO,-1.0f,1.0f,-1.0f,1.0f);
 
@@ -168,6 +174,13 @@ public abstract class PolyFever {
 		return RATIO;
 	}
 	
+	public float getPXtoFLOAT_X() {
+		return PXtoFLOAT_X;
+	}
+	
+	public float getPXtoFLOAT_Y() {
+		return PXtoFLOAT_Y;
+	}
 	
 	public GlOrtho getGlOrtho() // Retourne l'objet glOrtho.
 	{
@@ -438,6 +451,8 @@ public abstract class PolyFever {
 		GL11.glViewport(0, 0, getWIDTH(), getHEIGHT());
 
 		this.RATIO = (float) getWIDTH() / (float) getHEIGHT();
+		this.PXtoFLOAT_Y = 2/(float) getHEIGHT();
+		this.PXtoFLOAT_X = (2*RATIO)/(float) getWIDTH();
 		glOrtho.setGlOrtho(-1.0f*RATIO,1.0f*RATIO,-1.0f,1.0f,-1.0f,1.0f);
 		
 		System.out.println("Resized RATIO: ".concat(String.valueOf(this.RATIO)));

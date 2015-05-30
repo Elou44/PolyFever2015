@@ -50,8 +50,9 @@ public class Evenements {
 	 */
 	private boolean isInsideHitbox(int x, int y, Bouton b) {
 		float coord1, coord2;
-		coord1 = ((float) x) * polyfever.getRATIO();
-		coord2 = ((float) y) * polyfever.getRATIO();
+		coord1 = ((float) x) * polyfever.getPXtoFLOAT_X()-((2*polyfever.getRATIO())/2);
+		coord2 = ((float) y) * polyfever.getPXtoFLOAT_Y()-1;
+		System.out.println("Coords de la souris (openGl) : X " + coord1 + "| Y " + coord2);
 		return (((coord1 >= b.getHitbox().getX()-(b.getHitbox().getLargeur()/2)) && (coord2 <= b.getHitbox().getX()+(b.getHitbox().getLargeur()/2)))
 				&& ((coord2 >= b.getHitbox().getY()-(b.getHitbox().getHauteur()/2)) && (coord2 <= b.getHitbox().getY()+(b.getHitbox().getHauteur()/2))));
 	}

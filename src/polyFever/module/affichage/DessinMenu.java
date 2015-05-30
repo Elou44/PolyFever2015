@@ -385,7 +385,7 @@ public class DessinMenu {
 	}
 	
 	public void updateMenu(Menu curMenu){
-		
+		//if(curMenu.)
 	}
 
 }
