@@ -17,8 +17,8 @@ public class Menu {
 	protected Menu pere;
 	protected Set<Menu> fils;
 	protected Set<Bouton> boutons;
-	protected String imgTitre; // Chemin vers l'image du titre du menu
-	protected String imgFond; // Chemin vers l'image du fond du menu
+	protected int imgTitre; // Indice de l'image du titre du menu
+	protected int imgFond; // Indice de l'image du fond du menu
 	
 	public static boolean isMenu = true;
 	
@@ -28,7 +28,7 @@ public class Menu {
 	 * @param titre : Titre du menu
 	 */
 	
-	public Menu(StructureMenu sm, PolyFever p, String titre, String imgT, String imgF) {
+	public Menu(StructureMenu sm, PolyFever p, String titre, int imgT, int imgF) {
 		this.structMenu = sm;
 		this.p = p;
 		this.titre = titre;
@@ -121,11 +121,11 @@ public class Menu {
 		return titre;
 	}
 	
-	public String getImgTitre() {
+	public int getImgTitre() {
 		return imgTitre;
 	}
 	
-	public String getImgFond() {
+	public int getImgFond() {
 		return imgFond;
 	}
 	

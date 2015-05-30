@@ -12,7 +12,7 @@ public abstract class Bouton {
 	
 	protected Hitbox hitbox;
 	protected boolean isSelected;
-	protected String imgBouton; // Chemin vers l'image du bouton
+	protected int imgBouton; // Indice de l'image du bouton
 	
 	/**
 	 * Constructeur de la classe bouton prennant les paramêtres de la hitbox
@@ -22,7 +22,7 @@ public abstract class Bouton {
 	 * @param h : Hauteur de la hitbox
 	 */
 	
-	public Bouton(float x, float y, float l, float h, String imgB){
+	public Bouton(float x, float y, float l, float h,int imgB){
 		this.hitbox = new Hitbox(x, y, l, h);
 		this.isSelected = false;
 		this.imgBouton = imgB;
@@ -37,6 +37,26 @@ public abstract class Bouton {
 	
 	public Hitbox getHitbox() {
 		return hitbox;
+	}
+	
+	public int getImgBouton() {
+		return imgBouton;
+	}
+	
+	public float getX() {
+		return hitbox.x;
+	}
+	
+	public float getY() {
+		return hitbox.y;
+	}
+	
+	public float getL() {
+		return hitbox.largeur;
+	}
+	
+	public float getH() {
+		return hitbox.hauteur;
 	}
 
 	/**

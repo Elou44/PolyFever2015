@@ -20,7 +20,7 @@ public class BoutonMenuPlay extends Bouton {
 	 * @param h : Largeur de la hitbox
 	 */
 	
-	public BoutonMenuPlay(Menu p, MenuPlay f, float x, float y, float l, float h, String imgB){
+	public BoutonMenuPlay(Menu p, MenuPlay f, float x, float y, float l, float h, int imgB){
 		super(x, y, l, h, imgB);
 		this.pere = p;
 		this.fils = f;

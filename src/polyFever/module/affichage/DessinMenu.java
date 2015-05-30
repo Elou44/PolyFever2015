@@ -49,11 +49,14 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.Iterator;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import polyFever.module.main.PolyFever;
+import polyFever.module.menu.Bouton;
 import polyFever.module.menu.Menu;
 import polyFever.module.moteurDeJeu.Joueur;
 import polyFever.module.moteurDeJeu.Partie;
@@ -106,9 +109,14 @@ public class DessinMenu {
 	//private float decalage; // PROVISOIRE ONLY FOR TEST PURPOSE
 	
 	private int program, ebo,vbo, posAttrib, colAttrib, texAttrib, uniColor, projectionUniform;
-	private int idTexMenuTheme4pipes, idTexTitlePolyFever, idTexMenuTheme2pipes, idTexTitlePlay;  // indentifiant des textures
+	
+	private int idTexMenuTheme4pipes, idTexMenuTheme2pipes, idTexTitlePolyFever, idTexTitlePlay, idTexTitleLAN,
+	idTexButtonCredits, idTexButtonHost, idTexButtonLAN, idTexButtonLocal, idTexButtonPlay, idTexButtonQuit, idTexButtonSettings, idTexButtonBack;  // indentifiant des textures
 	
 	private int idTexFond, idTexTitre;
+	private int tabIdBoutons[];
+	private int indiceBouton;
+	
 	
 	private float tabVertex[];
 	private int elements[];
@@ -281,7 +289,8 @@ public class DessinMenu {
 				// CHARGEMENT DES TEXTURES // 
 
 				// Les fonds
-				idTexMenuTheme4pipes = GL11.glGenTextures();
+				
+				idTexMenuTheme4pipes = GL11.glGenTextures(); // 1
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuTheme4pipes);
 			        //Upload the buffer's content to the VRAM
 			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 1080, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/menu_theme_4pipes.png"));
@@ -292,31 +301,22 @@ public class DessinMenu {
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuTheme4pipes);
 			    
-				idTexMenuTheme2pipes = GL11.glGenTextures();
+				idTexMenuTheme2pipes = GL11.glGenTextures(); // 2
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuTheme2pipes);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 1080, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/menu_theme_4pipes.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 1080, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/menu_theme_2pipes.png"));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuTheme2pipes);
+			    
 			    
 			    // Les titres
-			    idTexTitlePolyFever = GL11.glGenTextures();
-			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitlePolyFever);
-			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 198, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/title_PolyFever.png"));
-			        //Apply filters
-			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
-			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitlePolyFever);
 			    
-			    idTexTitlePlay = GL11.glGenTextures();
-			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitlePlay);
+			    idTexTitlePolyFever = GL11.glGenTextures(); // 3
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitlePolyFever);
 			        //Upload the buffer's content to the VRAM
 			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 198, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/title_PolyFever.png"));
 			        //Apply filters
@@ -324,23 +324,124 @@ public class DessinMenu {
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitlePolyFever);
+			   
+			    idTexTitlePlay = GL11.glGenTextures(); // 4
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitlePlay);
-			    /*
-			    idTexTitleLAN = GL11.glGenTextures();
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 198, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/title_Play.png"));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitlePlay);
+			    
+			    idTexTitleLAN = GL11.glGenTextures(); // 5
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitleLAN);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 198, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/title_PolyFever.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 198, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/title_LAN.png"));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitleLAN);*/
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitleLAN);
+			    
 			    
 			    // Les boutons
 			    
+			    idTexButtonCredits = GL11.glGenTextures(); // 6
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonCredits);
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 387, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_credits.png"));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonCredits);
 			    
-				
+			    idTexButtonHost = GL11.glGenTextures(); // 7
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonHost);
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 387, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_host.png"));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonHost);
+			    
+			    idTexButtonLAN = GL11.glGenTextures(); // 8
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonLAN);
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 387, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_lan_multi.png"));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonLAN);
+			    
+			    idTexButtonLocal = GL11.glGenTextures(); // 9
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonLocal);
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 387, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_local_multi.png"));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonLocal);
+			    
+			    idTexButtonPlay = GL11.glGenTextures(); // 10
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonPlay);
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 387, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_play.png"));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonPlay);
+			    
+			    idTexButtonQuit = GL11.glGenTextures(); // 11
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonQuit);
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 387, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_quit.png"));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonQuit);
+			    
+			    idTexButtonSettings = GL11.glGenTextures(); // 12
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonSettings);
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 387, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_settings.png"));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonSettings);
+			    
+			    idTexButtonBack = GL11.glGenTextures(); // 13
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonBack);
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 235, 83, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_retour.png"));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonBack);
+			    
+			    // FIN CHARGEMENT DES TEXTURES // 
+			    
+			    
 
 	}
 	
@@ -395,6 +496,14 @@ public class DessinMenu {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitre); // On bind la deuxième texture
 		glDrawElements(GL_TRIANGLES, 12/*this.nbVertex*/, GL_UNSIGNED_INT,6*4);
 		
+		for(int i=0; i<this.tabIdBoutons.length; i++)
+		{
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, tabIdBoutons[i]); // On bind la premiere texture
+			glDrawElements(GL_TRIANGLES, 18+(i*6), GL_UNSIGNED_INT, 12*4+(6*4*i)); 
+			
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0); // On met la texture à NULL
+		}
+		
 		glDisableVertexAttribArray(posAttrib);
 		glDisableVertexAttribArray(colAttrib);
 		glDisableVertexAttribArray(texAttrib);
@@ -406,65 +515,175 @@ public class DessinMenu {
 	
 	public void updateMenu(Menu curMenu){
 
-		// Chargement du fond
-		idTexFond = GL11.glGenTextures();
-	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexFond);
-	        //Upload the buffer's content to the VRAM
-	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 1080, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex(curMenu.getImgFond()));
-	        //Apply filters
-	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
-	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexFond);
+		this.indiceBouton = 0;
+		this.tabIdBoutons = new int[] {0,0,0,0,0} ;
+		this.lenTabV = 0;
+		this.lenTabE = 0;
+		this.indexTabE = 0;
+	    addMenuAndTitle(curMenu); 
 	    
-	    // Chargement du titre
-		idTexTitre = GL11.glGenTextures();
-	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitre);
-	        //Upload the buffer's content to the VRAM
-	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 198, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex(curMenu.getImgTitre()));
-	        //Apply filters
-	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
-	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitre);
+	    Bouton b;
+	    Iterator<Bouton> i =curMenu.getBoutons().iterator();
+	    while(i.hasNext()) //On parcours les Boutons
+	    { 
+			b = i.next();
+			addButton(b);
+		}
 	    
-	    // Chargement des boutons 
-	    /* A FAIRE */ 
-	    
-	    
-	    this.tabVertex = new float[] {
-	    		-1.0f,1.0f,1.0f,1.0f,1.0f,0.0f,0.0f,
+		
+	}
+	
+	public void addMenuAndTitle(Menu m)
+	{
+
+		switch(m.getImgFond()){
+		
+			case 1: idTexFond = idTexMenuTheme4pipes;
+					break;
+			
+			case 2: idTexFond = idTexMenuTheme2pipes;
+					break;
+			
+		}
+		
+		
+		switch(m.getImgTitre()){
+		
+			case 1: idTexTitre = idTexTitlePolyFever;
+					break;
+			
+			case 2: idTexTitre = idTexTitlePlay;
+					break;
+			
+			case 3: idTexTitre = idTexTitleLAN; 
+					break;
+		
+		}
+		
+		//System.out.println("getImgFond() et getImgTitre()" + m.getImgFond() + " " + m.getImgTitre());
+		//System.out.println("idTexFond et idTexTitre " + idTexFond + " " + idTexTitre);
+		//System.out.println("idTexMenuTheme4pipes et idTexTitlePolyFever " + idTexMenuTheme4pipes + " " + idTexTitlePolyFever);
+		
+		
+		float tabVertexMenu[] = new float[] {
+	    		-1.0f,1.0f,1.0f,1.0f,1.0f,0.0f,0.0f, // Fond menu
 				1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,0.0f,
 				1.0f,-1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,
 				-1.0f,-1.0f,1.0f,1.0f,1.0f,0.0f,1.0f,
 				
-				-1.0f,1.0f,1.0f,1.0f,1.0f,0.0f,0.0f,
+				-1.0f,1.0f,1.0f,1.0f,1.0f,0.0f,0.0f, // Titre menu
 				1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,0.0f,
 				1.0f,0.67f,1.0f,1.0f,1.0f,1.0f,1.0f,
 				-1.0f,0.67f,1.0f,1.0f,1.0f,0.0f,1.0f
-				
-				
-				};
-	    
+		};
+		
+		addTabToTabVertex(tabVertexMenu);
+		
+		this.lenTabV += 56;
+		
 	    this.vboBuffer.put(this.tabVertex); // On met a jour le buffer VBO 
 		this.vboBuffer.clear();
 	    
-	    this.elements = new int[] {
-				   0, 1, 2,
-				   0, 2, 3,
-				   
-				   4, 5, 6,
-				   4, 6, 7
-		};
+		this.elements[this.lenTabE] = this.indexTabE;
+		this.elements[this.lenTabE+1] = this.indexTabE+1;
+		this.elements[this.lenTabE+2] = this.indexTabE+2;
+		
+		this.elements[this.lenTabE+3] = this.indexTabE;
+		this.elements[this.lenTabE+4] = this.indexTabE+2;
+		this.elements[this.lenTabE+5] = this.indexTabE+3;
+		
+		this.elements[this.lenTabE+6] = this.indexTabE+4;
+		this.elements[this.lenTabE+7] = this.indexTabE+5;
+		this.elements[this.lenTabE+8] = this.indexTabE+6;
+		
+		this.elements[this.lenTabE+9] = this.indexTabE+4;
+		this.elements[this.lenTabE+10] = this.indexTabE+6;
+		this.elements[this.lenTabE+11] = this.indexTabE+7;
 	    
 		this.eboBuffer.put(this.elements);
-		
+		this.lenTabE += 12;
 		this.eboBuffer.clear();
-	    
-	    
 		
+		this.indexTabE += 8;
+	}
+	
+	public void addButton(Bouton b)
+	{
+
+		switch(b.getImgBouton()){
+		
+			case 1: tabIdBoutons[this.indiceBouton] = idTexButtonPlay;
+					break;
+			
+			case 2: tabIdBoutons[this.indiceBouton] = idTexButtonSettings;
+					break;
+			
+			case 3: tabIdBoutons[this.indiceBouton] = idTexButtonCredits; 
+					break;
+					
+			case 4: tabIdBoutons[this.indiceBouton] = idTexButtonQuit; 
+					break;
+			
+			case 5: tabIdBoutons[this.indiceBouton] = idTexButtonLAN; 
+					break;
+			
+			case 6: tabIdBoutons[this.indiceBouton] = idTexButtonLocal; 
+					break;
+					
+			case 7: tabIdBoutons[this.indiceBouton] = idTexButtonHost; 
+					break;
+			
+			case 8: tabIdBoutons[this.indiceBouton] = idTexButtonBack; 
+					break;
+	
+		}
+		
+		float x = b.getX();
+		float y = b.getY();
+		float w = b.getL();
+		float h = b.getH();
+		
+		
+		float tabVertexButton[] = new float [] {
+	    		x-(w/2),y+(h/2),1.0f,1.0f,1.0f,0.0f,0.0f, // Fond menu
+	    		x+(w/2),y+(h/2),1.0f,1.0f,1.0f,1.0f,0.0f,
+	    		x+(w/2),y-(h/2),1.0f,1.0f,1.0f,1.0f,1.0f,
+	    		x-(w/2),y-(h/2),1.0f,1.0f,1.0f,0.0f,1.0f
+		};
+		
+		addTabToTabVertex(tabVertexButton);
+		
+		this.lenTabV += 28;
+	    this.vboBuffer.put(this.tabVertex); // On met a jour le buffer VBO 
+		this.vboBuffer.clear();
+		
+		this.elements[this.lenTabE] = this.indexTabE;
+		this.elements[this.lenTabE+1] = this.indexTabE+1;
+		this.elements[this.lenTabE+2] = this.indexTabE+2;
+		
+		this.elements[this.lenTabE+3] = this.indexTabE;
+		this.elements[this.lenTabE+4] = this.indexTabE+2;
+		this.elements[this.lenTabE+5] = this.indexTabE+3;
+		
+		
+		this.eboBuffer.put(this.elements);
+		this.lenTabE += 6;
+		this.eboBuffer.clear();
+		
+		this.indexTabE += 4;
+		
+		this.indiceBouton++;
+	}
+	
+	public void addTabToTabVertex(float tab[])
+	{
+		for(int i = this.lenTabV ; i<tab.length+this.lenTabV; i++)
+		{
+			
+			this.tabVertex[i] = tab[i-this.lenTabV];
+			System.out.println("i : " +  i);
+			
+		}
 	}
 
 }

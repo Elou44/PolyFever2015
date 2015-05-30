@@ -21,7 +21,7 @@ public class BoutonMenu extends Bouton {
 	 * @param h : Hauteur de la hitbox
 	 */
 	
-	public BoutonMenu(Menu p, Menu f, float x, float y, float l, float h, String imgB){
+	public BoutonMenu(Menu p, Menu f, float x, float y, float l, float h, int imgB){
 		super(x, y, l, h, imgB);
 		this.pere = p;
 		this.fils = f;

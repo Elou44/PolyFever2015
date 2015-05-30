@@ -15,51 +15,70 @@ public class StructureMenu {
 	
 	public StructureMenu(PolyFever p) {
 		
-		m_home = new Menu(this, p, "Home", "images/title_PolyFever.png", "images/menu_theme_4pipes.png");
+		/*
+		 * Indice des images : 
+		 * 1 : images/menu_theme_4pipes.png
+		 * 2 : images/menu_theme_3pipes.png
+		 * 
+		 * 1 : images/title_PolyFever.png
+		 * 2 : images/title_Play.png
+		 * 3 : images/title_LAN.png
+		 * 
+		 * 1 : images/bouton_play.png
+		 * 2 : images/bouton_settings.png
+		 * 3 : images/bouton_credits.png
+		 * 4 : images/bouton_quit.png
+		 * 5 : images/bouton_lan_multi.png
+		 * 6 : images/bouton_local_multi.png
+		 * 7 : images/bouton_host.png
+		 * 8 : images/bouton_retour.png
+		 */
+		
+		m_home = new Menu(this, p, "Home", 1, 1);
 		m_home.setPere(m_home);
 		
-		Menu m_play = new Menu(this, p, "Play", "images/title_Play.png", "images/menu_theme_2pipes.png");
+		Menu m_play = new Menu(this, p, "Play", 2, 2);
 		m_home.addFils(m_play);
 		m_play.setPere(m_home);
 		
-		Menu m_settings = new Menu(this, p, "Settings", "images/title_Play.png", "images/menu_theme_2pipes.png");
+		Menu m_settings = new Menu(this, p, "Settings", 2, 2);
 		m_home.addFils(m_settings);
 		m_settings.setPere(m_home);
 		
-		MenuFeuille m_credit = new MenuFeuille(this, p, "Credit","LLORCA Frederic\n LAINE Elouarn\n GITARD Valentin\n PERSON Ambre" , "images/title_Play.png", "images/menu_theme_2pipes.png");
+		MenuFeuille m_credit = new MenuFeuille(this, p, "Credit","LLORCA Frederic\n LAINE Elouarn\n GITARD Valentin\n PERSON Ambre" , 4, 2);
 		m_home.addFils(m_credit);
 		m_credit.setPere(m_home);
 		
-		Menu m_quit = new Menu(this, p, "Quit", "images/title_Play.png", "images/menu_theme_2pipes.png");
+		Menu m_quit = new Menu(this, p, "Quit", 2, 2);
 		m_home.addFils(m_quit);
 		m_quit.setPere(m_home);
 		
-		Menu m_local = new MenuPlay(this, p, "LocalMulti" , "images/title_Play.png", "images/menu_theme_2pipes.png");
+		Menu m_local = new MenuPlay(this, p, "LocalMulti" , 2, 2);
 		m_play.addFils(m_local);
 		m_local.setPere(m_play);
 		
-		Menu m_lan = new Menu(this, p, "LANMulti", "images/title_LAN.png", "images/menu_theme_2pipes.png");
+		Menu m_lan = new Menu(this, p, "LANMulti", 3, 2);
 		m_play.addFils(m_lan);
 		m_lan.setPere(m_play);		
 		
-		Menu m_host = new Menu(this, p, "Host", "images/title_LAN.png", "images/menu_theme_2pipes.png");
+		Menu m_host = new Menu(this, p, "Host", 3, 2);
 		m_lan.addFils(m_host);
 		m_host.setPere(m_lan);
 		
-		Menu m_join = new Menu(this, p, "Join", "images/title_LAN.png", "images/menu_theme_2pipes.png");
+		Menu m_join = new Menu(this, p, "Join", 3, 2);
 		m_lan.addFils(m_join);
 		m_join.setPere(m_lan);
 		
-		m_partie = new MenuPlay(this, p, "Game", "images/title_Play.png", "images/menu_theme_2pipes.png");
+		m_partie = new MenuPlay(this, p, "Game", 2, 2);
 		m_local.addFils(m_partie);
 		m_partie.setPere(m_local);
 		
 		
-		BoutonMenu bPlay = new BoutonMenu(m_home,m_play,0f,0.4f,0.5f,0.1f, "images/bouton_play.png");
-		BoutonMenu bSettings = new BoutonMenu(m_home,m_settings,0f,0f,0.5f,0.1f, "images/bouton_settings.png");
-		BoutonMenu bCredits = new BoutonMenu(m_home,m_credit,0f,-0.4f,0.5f,0.1f, "images/bouton_credits.png");
-		BoutonMenu bQuit = new BoutonMenu(m_home,m_quit,0f,-0.8f,0.5f,0.1f, "images/bouton_quit.png");
-		BoutonRetour bRetHome = new BoutonRetour(m_home,-0.8f,-0.8f,0.1f,0.1f, "images/bouton_play.png"); // A Enlever
+		BoutonMenu bPlay = new BoutonMenu(m_home,m_play,0f,0.4f,0.5f,0.1f, 1);
+		BoutonMenu bSettings = new BoutonMenu(m_home,m_settings,0f,0f,0.5f,0.1f, 2);
+		BoutonMenu bCredits = new BoutonMenu(m_home,m_credit,0f,-0.4f,0.5f,0.1f, 3);
+		BoutonMenu bQuit = new BoutonMenu(m_home,m_quit,0f,-0.8f,0.5f,0.1f, 4);
+		BoutonRetour bRetHome = new BoutonRetour(m_home,-0.8f,-0.8f,0.1f,0.1f, 8); // A Enlever
 
 		m_home.addBouton(bPlay);
 		m_home.addBouton(bSettings);
@@ -67,16 +86,16 @@ public class StructureMenu {
 		m_home.addBouton(bQuit);
 		m_home.addBouton(bRetHome);
 
-		BoutonMenu bLocal = new BoutonMenu(m_play,m_local,0f,0.4f,0.5f,0.1f, "images/bouton_play.png"); // Tu as oublié des menu (consulter le document Archive sur le drive)
-		BoutonMenu bMulti = new BoutonMenu(m_play,m_lan,0f,0f,0.5f,0.1f, "images/bouton_lan.png");
-		BoutonRetour bRetPlay = new BoutonRetour(m_play,-0.8f,-0.8f,0.1f,0.1f, "images/bouton_play.png"); 
+		BoutonMenu bLocal = new BoutonMenu(m_play,m_local,0f,0.4f,0.5f,0.1f, 1); // Tu as oublié des menu (consulter le document Archive sur le drive)
+		BoutonMenu bMulti = new BoutonMenu(m_play,m_lan,0f,0f,0.5f,0.1f, 5);
+		BoutonRetour bRetPlay = new BoutonRetour(m_play,-0.8f,-0.8f,0.1f,0.1f, 8); 
 		
 		m_play.addBouton(bLocal);
 		m_play.addBouton(bMulti);
 		m_play.addBouton(bRetPlay);
 
-		BoutonMenuPlay bJouer = new BoutonMenuPlay(m_local,m_partie,0f,0.4f,0.5f,0.1f, "images/bouton_play.png");
-		BoutonRetour bRetJouer = new BoutonRetour(m_partie,-0.8f,-0.8f,0.1f,0.1f, "images/bouton_play.png");
+		BoutonMenuPlay bJouer = new BoutonMenuPlay(m_local,m_partie,0f,0.4f,0.5f,0.1f, 1);
+		BoutonRetour bRetJouer = new BoutonRetour(m_partie,-0.8f,-0.8f,0.1f,0.1f, 8);
 
 		m_local.addBouton(bJouer);
 		m_local.addBouton(bRetJouer);
