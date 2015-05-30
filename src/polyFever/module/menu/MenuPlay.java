@@ -21,9 +21,9 @@ public class MenuPlay extends Menu {
 	 * @param t : Titre du menu qui sera affiché
 	 */
 	
-	public MenuPlay(StructureMenu structMenu, PolyFever p, String t){
-		super(p, t);
-		this.structMenu = structMenu;
+	public MenuPlay(StructureMenu sm, PolyFever p, String t){
+		super(sm, p, t);
+		this.structMenu = sm;
 	}
 	
 	/**

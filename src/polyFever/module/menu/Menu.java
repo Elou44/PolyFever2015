@@ -12,6 +12,7 @@ import java.util.*;
 
 public class Menu {
 	protected PolyFever p;
+	protected StructureMenu structMenu;
 	protected String titre;
 	protected Menu pere;
 	protected Set<Menu> fils;
@@ -25,7 +26,8 @@ public class Menu {
 	 * @param titre : Titre du menu
 	 */
 	
-	public Menu(PolyFever p, String titre) {
+	public Menu(StructureMenu sm, PolyFever p, String titre) {
+		this.structMenu = sm;
 		this.p = p;
 		this.titre = titre;
 		this.pere = null;
@@ -81,6 +83,8 @@ public class Menu {
 	public Menu changementMenu(Menu nouv){
 			if (this.fils.contains(nouv)){
 				System.out.println("Le nouveau menu est "+nouv.titre);
+				structMenu.setCurMenu(nouv); // On met à jour le menu courant (curMenu)
+				p.getAffichage().dMenu.updateMenu(structMenu.getCurMenu()); // On appelle la méthode de l'affichage qui va dessiner le nouveau menu
 				return nouv;
 			} else {
 				System.out.println("Le menu n'a pas pu être changé. Le menu est "+this.titre);

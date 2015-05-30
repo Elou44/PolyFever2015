@@ -14,8 +14,8 @@ public class MenuParametres extends Menu {
 	 * @param titre : String représentant le nom du menu
 	 */
 	
-	public MenuParametres(PolyFever p, String titre) {
-		super(p, titre);
+	public MenuParametres(StructureMenu sm, PolyFever p, String titre) {
+		super(sm, p, titre);
 		
 	}
 

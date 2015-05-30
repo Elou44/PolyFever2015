@@ -15,22 +15,22 @@ public class StructureMenu {
 	
 	public StructureMenu(PolyFever p) {
 		
-		m_home = new Menu(p, "Home");
+		m_home = new Menu(this, p, "Home");
 		m_home.setPere(m_home);
 		
-		Menu m_play = new Menu(p, "Play");
+		Menu m_play = new Menu(this, p, "Play");
 		m_home.addFils(m_play);
 		m_play.setPere(m_home);
 		
-		Menu m_settings = new Menu(p, "Settings");
+		Menu m_settings = new Menu(this, p, "Settings");
 		m_home.addFils(m_settings);
 		m_settings.setPere(m_home);
 		
-		MenuFeuille m_credit = new MenuFeuille(p, "Credit","LLORCA Frederic\n LAINE Elouarn\n GITARD Valentin\n PERSON Ambre");
+		MenuFeuille m_credit = new MenuFeuille(this, p, "Credit","LLORCA Frederic\n LAINE Elouarn\n GITARD Valentin\n PERSON Ambre");
 		m_home.addFils(m_credit);
 		m_credit.setPere(m_home);
 		
-		Menu m_quit = new Menu(p, "Quit");
+		Menu m_quit = new Menu(this, p, "Quit");
 		m_home.addFils(m_quit);
 		m_quit.setPere(m_home);
 		
@@ -38,15 +38,15 @@ public class StructureMenu {
 		m_play.addFils(m_local);
 		m_local.setPere(m_play);
 		
-		Menu m_lan = new Menu(p, "LANMulti");
+		Menu m_lan = new Menu(this, p, "LANMulti");
 		m_play.addFils(m_lan);
 		m_lan.setPere(m_play);		
 		
-		Menu m_host = new Menu(p, "Host");
+		Menu m_host = new Menu(this, p, "Host");
 		m_lan.addFils(m_host);
 		m_host.setPere(m_lan);
 		
-		Menu m_join = new Menu(p, "Join");
+		Menu m_join = new Menu(this, p, "Join");
 		m_lan.addFils(m_join);
 		m_join.setPere(m_lan);
 		

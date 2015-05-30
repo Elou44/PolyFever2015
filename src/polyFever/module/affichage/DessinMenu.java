@@ -54,6 +54,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
 import polyFever.module.main.PolyFever;
+import polyFever.module.menu.Menu;
 import polyFever.module.moteurDeJeu.Joueur;
 import polyFever.module.moteurDeJeu.Partie;
 import polyFever.module.util.PNGDecoder;
@@ -104,7 +105,8 @@ public class DessinMenu {
 	
 	//private float decalage; // PROVISOIRE ONLY FOR TEST PURPOSE
 	
-	private int program, ebo,vbo, posAttrib, colAttrib, texAttrib, uniColor, projectionUniform, idTex1, idTex2;
+	private int program, ebo,vbo, posAttrib, colAttrib, texAttrib, uniColor, projectionUniform;
+	private int idTexMenuTheme4pipes, idTexTitlePolyFever;  // indentifiant des textures
 	
 	private float tabVertex[];
 	private int elements[];
@@ -250,6 +252,8 @@ public class DessinMenu {
 				
 				
 				
+				
+				
 				vbo = glGenBuffers(); // ebo : Elements Buffer Object (plus adapté que les vbo (vertex buffer object pour le dessin de multiple objets)
 				vboBuffer = (FloatBuffer)BufferUtils.createFloatBuffer(this.tabVertex.length).put(
 						new float[] {-1.0f,1.0f,1.0f,1.0f,1.0f,0.0f,0.0f,
@@ -294,28 +298,28 @@ public class DessinMenu {
 				
 				// CHARGEMENT DES TEXTURES // 
 
-				idTex1 = GL11.glGenTextures();
-			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTex1);
+				idTexMenuTheme4pipes = GL11.glGenTextures();
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuTheme4pipes);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 900, 900, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/cat.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 1080, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/menu_theme_4pipes.png"));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTex1);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuTheme4pipes);
 				
 			    
-			    idTex2 = GL11.glGenTextures();
-			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTex2);
+			    idTexTitlePolyFever = GL11.glGenTextures();
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitlePolyFever);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 353, 282, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/puppy.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 198, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/title_PolyFever.png"));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTex2);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitlePolyFever);
 				
 
 	}
@@ -325,13 +329,13 @@ public class DessinMenu {
 	{
 		//System.out.println("	dessiner dMenu");
 		
-		/*glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, vboBuffer);
 		
 		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, eboBuffer);*/
-		
+		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, eboBuffer);
+	
 		
 		glClear(GL_COLOR_BUFFER_BIT);
 		
@@ -363,12 +367,12 @@ public class DessinMenu {
 		
 		
 		
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTex1); // On bind la premiere texture
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuTheme4pipes); // On bind la premiere texture
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); 
 		
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0); // On met la texture à NULL
 		
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTex2); // On bind la deuxième texture
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitlePolyFever); // On bind la deuxième texture
 		glDrawElements(GL_TRIANGLES, 12/*this.nbVertex*/, GL_UNSIGNED_INT,6*4);
 		
 		glDisableVertexAttribArray(posAttrib);
@@ -378,6 +382,10 @@ public class DessinMenu {
 		
 		glUseProgram(0);
 
+	}
+	
+	public void updateMenu(Menu curMenu){
+		
 	}
 
 }
