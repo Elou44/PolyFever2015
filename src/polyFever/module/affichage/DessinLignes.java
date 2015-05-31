@@ -21,7 +21,7 @@ import org.lwjgl.BufferUtils;
 
 
 
-public class DessinLigne  { // peut être instancier un tableau de DessinLigne dans DessinPlateau (1 par joueur)
+public class DessinLignes  { // peut être instancier un tableau de DessinLigne dans DessinPlateau (1 par joueur)
 	
 	private int nbVertex;
 
@@ -49,7 +49,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 	
 	private long t_start;
 	
-	public DessinLigne(Affichage a, PolyFever p, Partie partie)
+	public DessinLignes(Affichage a, PolyFever p, Partie partie)
 	{
 
 		this.colDelta = 0.01f;

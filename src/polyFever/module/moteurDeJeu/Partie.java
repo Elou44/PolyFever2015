@@ -246,7 +246,7 @@ public class Partie {
 				e.setEtat(Etat.VIVANT);
 			}
 			
-			p.affichage.dJeu.dPlateau.dLigne.updatePosJoueurs(true);
+			p.affichage.dJeu.dPlateau.dLignes.updatePosJoueurs(true);
 			
 			// Remise à zéro des sous grilles
 			for(int i = 0; i < this.trace.size(); i++)
@@ -255,7 +255,7 @@ public class Partie {
 			}
 			
 			// Remise à zéro du tableau de vertex du module Affichage
-			p.affichage.dJeu.dPlateau.dLigne.clearTabVertex();
+			p.affichage.dJeu.dPlateau.dLignes.clearTabVertex();
 			
 			// Changement de l'état du jeu à "pause" pour attendre le départ donnée par un joueur
 			this.pause();
