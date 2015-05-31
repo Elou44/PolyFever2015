@@ -63,10 +63,12 @@ public class MenuPlay extends Menu {
 	 */
 	@Override
 	public Menu retour(){
-		if (Menu.isMenu == false){
+		if (Menu.isMenu == false){  // Inutile ?
 			Menu.isMenu = true;
 			return this;
 		} else {
+			this.structMenu.setCurMenu(this.pere); // On met à jour le menu courant 
+			p.getAffichage().dMenu.updateMenu(structMenu.getCurMenu()); // On appelle la méthode de l'affichage qui va dessiner le nouveau menu
 			return this.pere;
 		}
 		

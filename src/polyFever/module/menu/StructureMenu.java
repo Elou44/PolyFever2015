@@ -74,10 +74,10 @@ public class StructureMenu {
 		m_partie.setPere(m_play);
 		
 		
-		BoutonMenu bPlay = new BoutonMenu(m_home,m_play,0f,0.4f,0.5f,0.1f, 1);
-		BoutonMenu bSettings = new BoutonMenu(m_home,m_settings,0f,0f,0.5f,0.1f, 2);
-		BoutonMenu bCredits = new BoutonMenu(m_home,m_credits,0f,-0.4f,0.5f,0.1f, 3);
-		BoutonQuitter bQuit = new BoutonQuitter(m_home,0f,-0.8f,0.5f,0.1f, 4);
+		BoutonMenu bPlay = new BoutonMenu(m_home,m_play,0f,0.4f,0.7166f,0.2277f, 1);
+		BoutonMenu bSettings = new BoutonMenu(m_home,m_settings,0f,0f,0.7166f,0.2277f, 2);
+		BoutonMenu bCredits = new BoutonMenu(m_home,m_credits,0f,-0.4f,0.7166f,0.2277f, 3);
+		BoutonQuitter bQuit = new BoutonQuitter(m_home,0f,-0.8f,0.7166f,0.2277f, 4);
 		
 
 		m_home.addBouton(bPlay);
@@ -88,9 +88,12 @@ public class StructureMenu {
 		
 		BoutonRetour bRetCredits = new BoutonRetour(m_credits,-0.8f,-0.8f,0.1f,0.1f, 8);
 		m_credits.addBouton(bRetCredits);
+		
+		BoutonRetour bRetSettings = new BoutonRetour(m_credits,-0.8f,-0.8f,0.1f,0.1f, 8);
+		m_settings.addBouton(bRetSettings);
 
-		BoutonMenu bLocal = new BoutonMenu(m_play,m_partie,0f,0.4f,0.5f,0.1f, 6); // Tu as oublié des menu (consulter le document Archive sur le drive)
-		BoutonMenu bLAN = new BoutonMenu(m_play,m_lan,0f,0f,0.5f,0.1f, 5);
+		BoutonMenu bLocal = new BoutonMenu(m_play,m_partie,0f,0.4f,0.7166f,0.2277f, 6); // Tu as oublié des menu (consulter le document Archive sur le drive)
+		BoutonMenu bLAN = new BoutonMenu(m_play,m_lan,0f,0f,0.7166f,0.2277f, 5);
 		BoutonRetour bRetPlay = new BoutonRetour(m_play,-0.8f,-0.8f,0.1f,0.1f, 8); 
 		
 		m_play.addBouton(bLocal);
@@ -106,9 +109,10 @@ public class StructureMenu {
 		BoutonRetour bRetLAN = new BoutonRetour(m_lan,-0.8f,-0.8f,0.1f,0.1f, 8); 
 		m_lan.addBouton(bRetLAN);
 		
-		BoutonMenuPlay bLancerPartie = new BoutonMenuPlay(m_partie,m_partie,0f,0.4f,0.5f,0.1f, 1);
-		
+		BoutonMenuPlay bLancerPartie = new BoutonMenuPlay(m_play,m_partie,0f,0.4f,0.7166f,0.2277f, 1);
+		BoutonRetour bRetLancerPartie = new BoutonRetour(m_partie,-0.8f,-0.8f,0.1f,0.1f, 8); 
 		m_partie.addBouton(bLancerPartie);
+		m_partie.addBouton(bRetLancerPartie);
 
 		
 

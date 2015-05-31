@@ -579,8 +579,8 @@ public class DessinMenu {
 				
 				-1.0f,1.0f,1.0f,1.0f,1.0f,0.0f,0.0f, // Titre menu
 				1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,0.0f,
-				1.0f,0.67f,1.0f,1.0f,1.0f,1.0f,1.0f,
-				-1.0f,0.67f,1.0f,1.0f,1.0f,0.0f,1.0f
+				1.0f,0.6333f,1.0f,1.0f,1.0f,1.0f,1.0f,
+				-1.0f,0.6333f,1.0f,1.0f,1.0f,0.0f,1.0f
 		};
 		
 		addTabToTabVertex(tabVertexMenu);
