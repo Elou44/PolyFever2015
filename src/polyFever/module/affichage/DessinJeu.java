@@ -14,22 +14,12 @@ import polyFever.module.moteurDeJeu.*;
  */
 public class DessinJeu {
 	
-	
-	/**
-	 * <p>
-	 * La classe DessinJeu contient deux attributs :
-	 * - un objet de type DessinPlateau {@link DessinPlateau} gérant l'affichage du plateau de jeu (Zone dans laquelle se déplacent les joueurs).
-	 * - un objet de type DessinScores {@link DessinScores} gérant l'affichage des Scores.
-	 * </p>
-	 * 
-	 * @author Elouarn Lainé
-	 */
 	public DessinPlateau dPlateau;
 	public DessinScores dScores;
 	
 	/**
 	 * Constructeur de la classe DessinJeu
-	 * Instanciation des objets DessinPlateau et DessinScores
+	 * Instanciation des objets {@link DessinPlateau} et {@link DessinScores}
 	 * @param a
 	 * 		référence vers l'objet Affichage.
 	 * @param p

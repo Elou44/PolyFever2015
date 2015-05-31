@@ -43,6 +43,7 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -66,7 +67,7 @@ import polyFever.module.util.math.Vector2;
 
 /**
  * <p>
- * La classe DessinMenu affiche le menu du jeu. 
+ * La classe DessinMenu affiche les différents menus du jeu. 
  * </p>
  *  
  * @author Elouarn Lainé 
@@ -75,41 +76,31 @@ import polyFever.module.util.math.Vector2;
 public class DessinMenu {
 	
 	/**
-	 * Description des attributs :
-	 * - nbVertex : 
-	 * - affichage :
-	 * - polyFever :
-	 * - j :
-	 * - program : 
-	 * - ebo : 
-	 * - vbo :
-	 * - posAttrib : 
-	 * - colAttrib :
-	 * - texAttrib :
-	 * - projectionUniform : 
-	 * - id : 
-	 * - tabVertex :
-	 * - elements :
-	 * - lenTabV : 
-	 * - lenTabE :
-	 * - indexTabE : 
-	 * - vboBuffer :
-	 * - eboBuffer : 
-	 * - NBCOTES :
-	 * - ProjectionMatrix :
-	 * 
-	 * @author Elouarn Lainé
+	 * Nombre de vertex contenu dans le tableau de tableau de vertices.
 	 */
 	private int nbVertex;
 
 	private Affichage affichage;
 	private PolyFever polyFever;
-	private Joueur j;
 	
-	//private float decalage; // PROVISOIRE ONLY FOR TEST PURPOSE
+	/**
+	 * program regroupe le vertex shader et le fragment shader (les shaders sont des programmes exécutés sur le GPU)
+	 */
+	private int program;
 	
-	private int program, ebo,vbo, posAttrib, colAttrib, texAttrib, uniColor, projectionUniform;
+	/**
+	 * ebo : element buffer object. vbo : vertex buffer object 
+	 */
+	private int ebo,vbo;
 	
+	/**
+	 * Variables pour faire le lien avec les attributs du vertex shaders
+	 */
+	private int posAttrib, colAttrib, texAttrib, uniColor, projectionUniform;
+	
+	/**
+	 * Identifiants des différentes textures du menus
+	 */
 	private int idTexMenuTheme4pipes, idTexMenuTheme2pipes, idTexTitlePolyFever, idTexTitlePlay, idTexTitleLAN,
 	idTexButtonCredits, idTexButtonHost, idTexButtonLAN, idTexButtonLocal, idTexButtonPlay, idTexButtonQuit, idTexButtonSettings, idTexButtonBack;  // indentifiant des textures
 	
@@ -117,32 +108,57 @@ public class DessinMenu {
 	private int tabIdBoutons[];
 	private int indiceBouton;
 	
-	
+	/**
+	 * Tableau de floats contenant toutes les informations des vertices, soit ici 7 floats par vertex (2 floats pour la position du vertex, 3 floats pour sa couleur (RGB), et 2 floats pour la position de la texture)
+	 */
 	private float tabVertex[];
+	
+	/**
+	 * Tableau d'entier contenant l'ordre de traçage des vertices, ceci afin de limiter le nombre de vertex à utiliser ( 4 vertices au lieu de 6 nécessaires sans cette technique pour dessiner un rectangle)
+	 */
 	private int elements[];
+	
+	/**
+	 * Longueur réelle du tableau de vertex.
+	 */
 	private int lenTabV;
+	
+	/**
+	 * Longueur réelle du tableau d'elements.
+	 */
 	private int lenTabE;
 	private int indexTabE;
+	/**
+	 * FloatBuffer contenant les vertices.
+	 */
 	FloatBuffer vboBuffer;
+	
+	/**
+	 * IntBuffer contenant les elements
+	 */
 	IntBuffer eboBuffer;
 	
-	private final int NBCOTES = 15; // Nombre de côtés du point du joueur
-	//private float colDelta;
-	
+	/**
+	 * FloatBuffer contenant la matrice de projection. La position des vertices est multipliée par cette martrice afin d'annuler l'effet de distortion qui apparait lorsque la fenêtre devient rectangulaire.
+	 */
 	private FloatBuffer projectionMatrix;
 	
+	
+	/**
+	 * Constructeur de la classe DessinMenu
+	 * Initialisation des attributs. instanciation de 2 tableaux d'un million d'éléments chacun qui contiendront respectivement les vertex et les elements.
+	 * @param a
+	 * 		référence vers l'objet Affichage.
+	 * @param p
+	 * 		référence vers l'objet polyFever.
+	 * 
+	 * @author Elouarn Lainé
+	 */
 	public DessinMenu(Affichage a, PolyFever p)
 	{
 
-		//this.colDelta = 0.01f;
-		
-		
 		this.affichage = a;
 		this.polyFever = p;
-		//this.partie = partie;
-		
-		
-		
 		this.nbVertex = 0;
 		this.lenTabV = 0;
 		this.lenTabE = 0;
@@ -152,6 +168,15 @@ public class DessinMenu {
 		
 		this.projectionMatrix = this.polyFever.getGlOrtho().getProjectionBuf();
 	};	
+	
+	/**
+	 * Méthode réalisant le chargement d'une image au format PNG dans un ByteBuffer.
+	 * 
+	 * @param path
+	 * 			Chemin vers l'image.
+	 * @return ByteBuffer
+	 * 			Buffer contenant l'image.
+	 */
 	
 	public ByteBuffer PNGtoTex(String path)
 	{
@@ -224,7 +249,6 @@ public class DessinMenu {
 				
 				projectionUniform = glGetUniformLocation(program, "Projection");
 				System.out.println(projectionUniform);
-				//glUniformMatrix4(projectionUniform, false, this.projectionMatrix);
 
 				uniColor = glGetUniformLocation(program, "Color");
 				
@@ -240,35 +264,19 @@ public class DessinMenu {
 				glDetachShader(program, vs);
 				glDetachShader(program, fs);
 				
-				glBindAttribLocation(program, posAttrib, "position"); // on bind l'attribut position à 0 // PB CERTAINEMENT ICI !!!!!!!!!!!!!!!!!!!!
-				glBindAttribLocation(program, colAttrib, "color"); // on bind l'attribut position à // PB CERTAINEMENT ICI !!!!!!!!!!!!!!!!!!!!
-				glBindAttribLocation(program, texAttrib, "texcoord");
+				glBindAttribLocation(program, posAttrib, "position"); // on bind l'attribut position à l'entier posAttrib. 
+				glBindAttribLocation(program, colAttrib, "color"); // on bind l'attribut color à l'entier colAttrib.
+				glBindAttribLocation(program, texAttrib, "texcoord"); // on bind l'attribut texcoord à l'entier texAttrib.
 				
-				//PNGtoTex();
-				
-				
+		
 				glDeleteShader(vs);
 				glDeleteShader(fs);
-				
-				/*new float[] {-0.5f,0.5f,1.0f,1.0f,1.0f,
-				 * 
-							0.5f,0.5f,1.0f,1.0f,1.0f,
-							0.5f,-0.5f,1.0f,1.0f,1.0f,
-							-0.5f,-0.5f,1.0f,1.0f,1.0f};
-				
-				new int[] {0, 1, 2
-						   0, 2, 3};*/
-				
-				
-				
-				
 				
 				
 				vbo = glGenBuffers(); // ebo : Elements Buffer Object (plus adapté que les vbo (vertex buffer object pour le dessin de multiple objets)
 				vboBuffer = (FloatBuffer)BufferUtils.createFloatBuffer(this.tabVertex.length).put(this.tabVertex).flip();  // IMPORTANT : TRACER LES JOUEURS AU DEBUT DU BUFFER DE VERTEX
 				glBindBuffer(GL_ARRAY_BUFFER, vbo);  // Fait en sorte que le ebo soit l'objet actif
-
-				this.nbVertex += 12 ; 
+ 
 				glBufferData(GL_ARRAY_BUFFER, vboBuffer, GL_STREAM_DRAW); // Est appliqué sur le vbo actif
 				
 
@@ -448,8 +456,7 @@ public class DessinMenu {
 	
 	public void dessiner()
 	{
-		//System.out.println("	dessiner dMenu");
-		
+	
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, vboBuffer);
 		
@@ -463,21 +470,14 @@ public class DessinMenu {
 		glUseProgram(program);
 		
 		
-		
 		glUniformMatrix4(projectionUniform, false, (FloatBuffer)projectionMatrix);
 		
 		
-		glBindBuffer(GL_ARRAY_BUFFER, vbo); //TEST
+		glBindBuffer(GL_ARRAY_BUFFER, vbo); 
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo); //TEST
-		
-		//double newColor = Math.sin(time/100 + 4.0f);
-		//System.out.println(time);
-		//glUniform3f(uniColor, 1.0f, 0.0f, 0.0f); // change la couleur du triangle en rouge
-		
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo); 
 		
 		glEnableVertexAttribArray(posAttrib);
-		//glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0); // 0 : position a la location 0 par défaut.  A l'appelle de cette fonction les infos vont être stockées dans le VAO courant. 
 		glVertexAttribPointer(posAttrib, 2, GL_FLOAT, false,7*4, 0);
 		
 		glEnableVertexAttribArray(colAttrib);
@@ -494,7 +494,7 @@ public class DessinMenu {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0); // On met la texture à NULL
 		
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitre); // On bind la deuxième texture
-		glDrawElements(GL_TRIANGLES, 6/*this.nbVertex*/, GL_UNSIGNED_INT,6*4); // Deuxième argument, nombre de vertices à tracer 6 apres 6*4bytes d'offset
+		glDrawElements(GL_TRIANGLES, 6/*this.nbVertex*/, GL_UNSIGNED_INT,6*4); // Deuxième argument, nombre de vertices à tracer : 6 apres 6*4bytes d'offset
 		
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0); // On met la texture à NULL
 		
