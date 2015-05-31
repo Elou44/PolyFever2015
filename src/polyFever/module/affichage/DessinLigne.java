@@ -83,6 +83,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		
 		glClearColor(0, 0, 0, 0);
 		
+		
 		int vs = glCreateShader(GL_VERTEX_SHADER);
 		glShaderSource(vs, polyFever.readFromFile("vert_shader.vert")); // Chargement du vertex shader (vs)
 		
@@ -205,7 +206,7 @@ public class DessinLigne  { // peut être instancier un tableau de DessinLigne da
 		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, eboBuffer);
 		
 		
-		//glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT);
 		
 		glUseProgram(program);
 		

@@ -283,7 +283,7 @@ public class DessinMenu {
 				glBindVertexArray(glGenVertexArrays()); // Création d'un VAO : Vertex Array Object avec glGenVertexArrays() . le VAO stock les liens entre les attributs et les VBO
 				// le VAO contient une référence vers le VBO
 				
-				//glBindBuffer(GL_ARRAY_BUFFER, 0);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
 				
 				
 				// CHARGEMENT DES TEXTURES // 
@@ -494,15 +494,19 @@ public class DessinMenu {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0); // On met la texture à NULL
 		
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitre); // On bind la deuxième texture
-		glDrawElements(GL_TRIANGLES, 12/*this.nbVertex*/, GL_UNSIGNED_INT,6*4);
+		glDrawElements(GL_TRIANGLES, 6/*this.nbVertex*/, GL_UNSIGNED_INT,6*4); // Deuxième argument, nombre de vertices à tracer 6 apres 6*4bytes d'offset
 		
-		for(int i=0; i<this.tabIdBoutons.length; i++)
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0); // On met la texture à NULL
+		
+		for(int i=0; i<this.indiceBouton; i++)
 		{
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, tabIdBoutons[i]); // On bind la premiere texture
-			glDrawElements(GL_TRIANGLES, 18+(i*6), GL_UNSIGNED_INT, 12*4+(6*4*i)); 
+			//System.out.println("IdBouton :" + tabIdBoutons[i]);
 			
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, tabIdBoutons[i]); // On bind la premiere texture
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 12*4+(6*4*i)); 
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0); // On met la texture à NULL
 		}
+		
 		
 		glDisableVertexAttribArray(posAttrib);
 		glDisableVertexAttribArray(colAttrib);
@@ -530,7 +534,9 @@ public class DessinMenu {
 			addButton(b);
 		}
 	    
-		
+
+	    
+	    //this.printTabVertex();
 	}
 	
 	public void addMenuAndTitle(Menu m)
@@ -612,28 +618,28 @@ public class DessinMenu {
 
 		switch(b.getImgBouton()){
 		
-			case 1: tabIdBoutons[this.indiceBouton] = idTexButtonPlay;
+			case 1: tabIdBoutons[this.indiceBouton] = idTexButtonPlay; //System.out.println("case : "+ tabIdBoutons[this.indiceBouton]);
 					break;
 			
-			case 2: tabIdBoutons[this.indiceBouton] = idTexButtonSettings;
+			case 2: tabIdBoutons[this.indiceBouton] = idTexButtonSettings; //System.out.println("case : "+ tabIdBoutons[this.indiceBouton]);
 					break;
 			
-			case 3: tabIdBoutons[this.indiceBouton] = idTexButtonCredits; 
+			case 3: tabIdBoutons[this.indiceBouton] = idTexButtonCredits;  //System.out.println("case : "+ tabIdBoutons[this.indiceBouton]);
 					break;
 					
-			case 4: tabIdBoutons[this.indiceBouton] = idTexButtonQuit; 
+			case 4: tabIdBoutons[this.indiceBouton] = idTexButtonQuit;  //System.out.println("case : "+ tabIdBoutons[this.indiceBouton]);
 					break;
 			
-			case 5: tabIdBoutons[this.indiceBouton] = idTexButtonLAN; 
+			case 5: tabIdBoutons[this.indiceBouton] = idTexButtonLAN; // System.out.println("case : "+ tabIdBoutons[this.indiceBouton]);
 					break;
 			
-			case 6: tabIdBoutons[this.indiceBouton] = idTexButtonLocal; 
+			case 6: tabIdBoutons[this.indiceBouton] = idTexButtonLocal; // System.out.println("case : "+ tabIdBoutons[this.indiceBouton]);
 					break;
 					
-			case 7: tabIdBoutons[this.indiceBouton] = idTexButtonHost; 
+			case 7: tabIdBoutons[this.indiceBouton] = idTexButtonHost; // System.out.println("case : "+ tabIdBoutons[this.indiceBouton]);
 					break;
 			
-			case 8: tabIdBoutons[this.indiceBouton] = idTexButtonBack; 
+			case 8: tabIdBoutons[this.indiceBouton] = idTexButtonBack;  //System.out.println("case : "+ tabIdBoutons[this.indiceBouton]);
 					break;
 	
 		}
@@ -681,9 +687,20 @@ public class DessinMenu {
 		{
 			
 			this.tabVertex[i] = tab[i-this.lenTabV];
-			System.out.println("i : " +  i);
+			//System.out.println("i : " +  i);
 			
 		}
+	}
+	
+	public void printTabVertex()
+	{
+		for(int i = 0; i<400; i++)
+		{
+			if(i%7==0) System.out.println();
+			if(i%28==0) System.out.println("_______________ new element _______________");
+			System.out.print(this.tabVertex[i]+", ");
+		}
+		System.out.println("_______________________________________________");
 	}
 
 }

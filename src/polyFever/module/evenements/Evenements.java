@@ -52,9 +52,9 @@ public class Evenements {
 		float coord1, coord2;
 		coord1 = ((float) x) * polyfever.getPXtoFLOAT_X()-((2*polyfever.getRATIO())/2);
 		coord2 = ((float) y) * polyfever.getPXtoFLOAT_Y()-1;
-		System.out.println("Coords de la souris (openGl) : X " + coord1 + "| Y " + coord2);
-		return (((coord1 >= b.getHitbox().getX()-(b.getHitbox().getLargeur()/2)) && (coord2 <= b.getHitbox().getX()+(b.getHitbox().getLargeur()/2)))
-				&& ((coord2 >= b.getHitbox().getY()-(b.getHitbox().getHauteur()/2)) && (coord2 <= b.getHitbox().getY()+(b.getHitbox().getHauteur()/2))));
+		//System.out.println("Coords de la souris (openGl) : X " + coord1 + "| Y " + coord2);
+		return (((coord1 >= b.getX()-(b.getL()/2)) && (coord1 <= b.getX()+(b.getL()/2)))
+				&& ((coord2 >= b.getY()-(b.getH()/2)) && (coord2 <= b.getY()+(b.getH()/2))));
 	}
 	
 	/**
@@ -70,14 +70,16 @@ public class Evenements {
 		while(Mouse.next()) {
 			
 			if(Mouse.getEventButton() == 0 && Mouse.getEventButtonState()) { //Clic gauche avec la souris
-				
+				System.out.println("Clique souris détecté !");
 				Iterator<Bouton> i = boutons.iterator();
 				while(i.hasNext()) { //On parcours les Bouton de l'ensemble passe en parametre
 					b = i.next();
 					
 					if(isInsideHitbox(Mouse.getEventX(), Mouse.getEventY(), b)) //Le clic est dans la hitbox
+					{	
 						System.out.println("..........Cliquer sur bouton...............");
 						b.action();
+					}
 					
 				}
 			}

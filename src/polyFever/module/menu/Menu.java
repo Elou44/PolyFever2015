@@ -105,6 +105,8 @@ public class Menu {
 	public Menu retour(){
 		Menu prev = this.pere;
 		System.out.println("Retour au menu précédent : "+prev.titre);
+		this.structMenu.setCurMenu(prev); // On met à jour le menu courant 
+		p.getAffichage().dMenu.updateMenu(structMenu.getCurMenu()); // On appelle la méthode de l'affichage qui va dessiner le nouveau menu
 		return prev;
 	}
 	
