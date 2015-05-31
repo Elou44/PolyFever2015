@@ -42,7 +42,7 @@ import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
-
+import static org.lwjgl.opengl.GL11.glTexParameteri;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -354,7 +354,7 @@ public class DessinMenu {
 			    idTexButtonCredits = GL11.glGenTextures(); // 6
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonCredits);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 387, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_credits.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_credits.png"));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -365,7 +365,7 @@ public class DessinMenu {
 			    idTexButtonHost = GL11.glGenTextures(); // 7
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonHost);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 387, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_host.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_host.png"));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -376,7 +376,7 @@ public class DessinMenu {
 			    idTexButtonLAN = GL11.glGenTextures(); // 8
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonLAN);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 387, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_lan_multi.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_lan_multi.png"));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -387,7 +387,7 @@ public class DessinMenu {
 			    idTexButtonLocal = GL11.glGenTextures(); // 9
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonLocal);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 387, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_local_multi.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_local_multi.png"));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -398,7 +398,7 @@ public class DessinMenu {
 			    idTexButtonPlay = GL11.glGenTextures(); // 10
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonPlay);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 387, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_play.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_play.png"));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -409,7 +409,7 @@ public class DessinMenu {
 			    idTexButtonQuit = GL11.glGenTextures(); // 11
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonQuit);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 387, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_quit.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_quit.png"));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -420,7 +420,7 @@ public class DessinMenu {
 			    idTexButtonSettings = GL11.glGenTextures(); // 12
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonSettings);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 387, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_settings.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_settings.png"));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -431,7 +431,7 @@ public class DessinMenu {
 			    idTexButtonBack = GL11.glGenTextures(); // 13
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonBack);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 235, 83, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_retour.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 236, 83, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_retour.png"));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
