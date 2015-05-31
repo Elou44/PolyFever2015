@@ -29,7 +29,7 @@ public class BoutonRetour extends Bouton {
 	 */
 	
 	@Override
-	public Menu action(){
-		return menu.retour();
+	public void action(){
+		menu.retour();
 	}
 }

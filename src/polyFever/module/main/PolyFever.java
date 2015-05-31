@@ -45,6 +45,7 @@ public abstract class PolyFever {
 	
 	private final int MSAA = 8; // AntiAliasing x8 
 	private String name;
+	private boolean isOpen;
 	
 	/**
 	 * Initializes the application in fullscreen mode.
@@ -66,6 +67,7 @@ public abstract class PolyFever {
 		this.HEIGHT = height;
 		this.PXtoFLOAT_Y = 2/HEIGHT;
 		this.PXtoFLOAT_X = (2*RATIO)/WIDTH;
+		this.isOpen = true;
 		
 		try {
 			Display.setFullscreen(true);
@@ -153,6 +155,7 @@ public abstract class PolyFever {
 		this.RATIO = (float) width/(float) height;
 		this.PXtoFLOAT_Y = 2/HEIGHT;
 		this.PXtoFLOAT_X = (2*RATIO)/WIDTH;
+		this.isOpen = true;
 		
 		this.glOrtho = new GlOrtho(-1.0f*RATIO,1.0f*RATIO,-1.0f,1.0f,-1.0f,1.0f);
 
@@ -388,7 +391,7 @@ public abstract class PolyFever {
 			lastTime = lastFPS = System.nanoTime();
 			int frames = 0;
 			
-			while(!shouldStop()) {
+			while(!shouldStop() && isOpen) {
 				long deltaTime = System.nanoTime() - lastTime;
 				lastTime += deltaTime;
 				
@@ -467,6 +470,10 @@ public abstract class PolyFever {
 	 */
 	public boolean shouldStop() {
 		return Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE);
+	}
+	
+	public void closeGame() { // Ferme le jeu
+		this.isOpen = false;
 	}
 		
 	/**

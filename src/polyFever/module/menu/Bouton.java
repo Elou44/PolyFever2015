@@ -73,5 +73,5 @@ public abstract class Bouton {
 	 * @return Nouveau menu courant
 	 */
 	
-	public abstract Menu action();
+	public abstract void action();
 }

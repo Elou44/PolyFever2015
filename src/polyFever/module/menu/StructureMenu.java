@@ -77,14 +77,14 @@ public class StructureMenu {
 		BoutonMenu bPlay = new BoutonMenu(m_home,m_play,0f,0.4f,0.5f,0.1f, 1);
 		BoutonMenu bSettings = new BoutonMenu(m_home,m_settings,0f,0f,0.5f,0.1f, 2);
 		BoutonMenu bCredits = new BoutonMenu(m_home,m_credits,0f,-0.4f,0.5f,0.1f, 3);
-		BoutonMenu bQuit = new BoutonMenu(m_home,m_quit,0f,-0.8f,0.5f,0.1f, 4);
-		BoutonRetour bRetHome = new BoutonRetour(m_home,-0.8f,-0.8f,0.1f,0.1f, 8); // A Enlever
+		BoutonQuitter bQuit = new BoutonQuitter(m_home,0f,-0.8f,0.5f,0.1f, 4);
+		
 
 		m_home.addBouton(bPlay);
 		m_home.addBouton(bSettings);
 		m_home.addBouton(bCredits);
 		m_home.addBouton(bQuit);
-		m_home.addBouton(bRetHome);
+		
 		
 		BoutonRetour bRetCredits = new BoutonRetour(m_credits,-0.8f,-0.8f,0.1f,0.1f, 8);
 		m_credits.addBouton(bRetCredits);
@@ -102,6 +102,9 @@ public class StructureMenu {
 
 		m_local.addBouton(bJouer);
 		m_local.addBouton(bRetJouer);*/
+		
+		BoutonRetour bRetLAN = new BoutonRetour(m_lan,-0.8f,-0.8f,0.1f,0.1f, 8); 
+		m_lan.addBouton(bRetLAN);
 		
 		BoutonMenuPlay bLancerPartie = new BoutonMenuPlay(m_partie,m_partie,0f,0.4f,0.5f,0.1f, 1);
 		

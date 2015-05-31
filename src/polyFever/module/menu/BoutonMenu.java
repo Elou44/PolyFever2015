@@ -35,7 +35,7 @@ public class BoutonMenu extends Bouton {
 	 * @return : Nouveau menu courant
 	 */
 	@Override
-	public Menu action(){ //on click sur la hitbox, on appelle cette fonction
-		return pere.changementMenu(fils);
+	public void action(){ //on click sur la hitbox, on appelle cette fonction
+		pere.changementMenu(fils);
 	}
 }

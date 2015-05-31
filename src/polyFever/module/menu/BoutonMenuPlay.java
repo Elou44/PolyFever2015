@@ -33,7 +33,7 @@ public class BoutonMenuPlay extends Bouton {
 	
 	
 	@Override
-	public Menu action() {
-		return fils.changementMenu();
+	public void action() {
+		fils.changementMenu();
 	}
 }
