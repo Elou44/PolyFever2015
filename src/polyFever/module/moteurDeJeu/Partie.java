@@ -345,7 +345,19 @@ public class Partie {
 			
 			// Si le joueur étudié est en vie
 			if(e.getEtat() == Etat.VIVANT)
-			{				
+			{
+				// Vérification de collision avec les bords du plateau
+				if( (e.getPosition().x() <= -1 || e.getPosition().x() >= 1 || e.getPosition().y() <= -1 || e.getPosition().y() >= 1) && e.getPosition().z() == 1 && collision == false)
+				{
+					collision = true;
+					
+					// Alors on modifie l'état du joueur en "mort"
+					e.setEtat(Etat.MORT);	// Alors on modifie son état en MORT
+					
+					// On met à jour le score des autres joueurs
+					this.modifierScore();
+				}
+				
 				// Parmis tous les points présents dans le sous tableau de la grille correspondante à la position du joueur
 				for(Vector4 pointGrille : this.getTrace().get(e.getGrille()))
 				{
@@ -745,6 +757,7 @@ public class Partie {
 		
 		// Changement du menu courant
 		this.structMenu.setCurMenu(this.structMenu.getM_home());
+		p.getAffichage().dMenu.updateMenu(structMenu.getCurMenu()); // On appelle la méthode de l'affichage qui va dessiner le nouveau menu
 	}
 	
 	// Méhode comptant le nombre de joueurs encore en vie dans la partie
