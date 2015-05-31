@@ -5,13 +5,11 @@ import polyFever.module.moteurDeJeu.*;
 public class DessinPlateau {
 	
 	public DessinBonus dBonus;
-	public DessinJoueur dJoueur;
 	public DessinLigne dLigne;
 	
 	public DessinPlateau(Affichage a, PolyFever p, Partie partie)
 	{
 		dBonus = new DessinBonus();
-		dJoueur = new DessinJoueur();
 		dLigne = new DessinLigne(a, p, partie);
 		
 	}
@@ -20,7 +18,6 @@ public class DessinPlateau {
 	{
 		//System.out.println("		dessiner dPlateau");
 		dBonus.dessiner();
-		dJoueur.dessiner();
 		dLigne.dessiner();
 
 		
@@ -29,7 +26,6 @@ public class DessinPlateau {
 	public void init()
 	{
 		dBonus.init();
-		dJoueur.init();
 		dLigne.init();
 	}
 
