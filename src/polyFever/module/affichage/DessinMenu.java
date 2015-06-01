@@ -89,7 +89,7 @@ public class DessinMenu {
 	private int program;
 	
 	/**
-	 * ebo : element buffer object. vbo : vertex buffer object 
+	 * Identifiant de ebo (element buffer object) et du vbo (vertex buffer object) 
 	 */
 	private int ebo,vbo;
 	
@@ -109,12 +109,14 @@ public class DessinMenu {
 	private int indiceBouton;
 	
 	/**
-	 * Tableau de floats contenant toutes les informations des vertices, soit ici 7 floats par vertex (2 floats pour la position du vertex, 3 floats pour sa couleur (RGB), et 2 floats pour la position de la texture)
+	 * Tableau de floats contenant toutes les informations des vertices, soit ici 7 floats par vertex
+	 *  (2 floats pour la position du vertex, 3 floats pour sa couleur (RGB), et 2 floats pour la position de la texture)
 	 */
 	private float tabVertex[];
 	
 	/**
-	 * Tableau d'entier contenant l'ordre de traçage des vertices, ceci afin de limiter le nombre de vertex à utiliser ( 4 vertices au lieu de 6 nécessaires sans cette technique pour dessiner un rectangle)
+	 * Tableau d'entier contenant l'ordre de traçage des vertices, ceci afin de limiter le nombre de vertex à utiliser
+	 *  ( 4 vertices au lieu de 6 nécessaires sans cette technique pour dessiner un rectangle)
 	 */
 	private int elements[];
 	
@@ -139,18 +141,20 @@ public class DessinMenu {
 	IntBuffer eboBuffer;
 	
 	/**
-	 * FloatBuffer contenant la matrice de projection. La position des vertices est multipliée par cette martrice afin d'annuler l'effet de distortion qui apparait lorsque la fenêtre devient rectangulaire.
+	 * FloatBuffer contenant la matrice de projection. La position des vertices est multipliée 
+	 * par cette martrice afin d'annuler l'effet de distortion qui apparait lorsque la fenêtre devient rectangulaire.
 	 */
 	private FloatBuffer projectionMatrix;
 	
 	
 	/**
 	 * Constructeur de la classe DessinMenu
-	 * Initialisation des attributs. instanciation de 2 tableaux d'un million d'éléments chacun qui contiendront respectivement les vertex et les elements.
+	 * Initialisation des attributs. instanciation de 2 tableaux d'un million d'éléments chacun 
+	 * qui contiendront respectivement les vertex et les elements.
 	 * @param a
 	 * 		référence vers l'objet Affichage.
 	 * @param p
-	 * 		référence vers l'objet polyFever.
+	 * 		référence vers l'objet PolyFever.
 	 * 
 	 * @author Elouarn Lainé
 	 */
@@ -169,6 +173,7 @@ public class DessinMenu {
 		this.projectionMatrix = this.polyFever.getGlOrtho().getProjectionBuf();
 	};	
 	
+	
 	/**
 	 * Méthode réalisant le chargement d'une image au format PNG dans un ByteBuffer.
 	 * 
@@ -177,7 +182,6 @@ public class DessinMenu {
 	 * @return ByteBuffer
 	 * 			Buffer contenant l'image.
 	 */
-	
 	public ByteBuffer PNGtoTex(String path)
 	{
 		ByteBuffer pixelData = BufferUtils.createByteBuffer(0); // On initialise le ByteBuffer avec une texture vide
@@ -188,21 +192,20 @@ public class DessinMenu {
 		    pixelData = BufferUtils.createByteBuffer(4*width*height);
 		    decoder.decode(pixelData, 4*width, Format.RGBA);
 		    pixelData.flip();
-		    //Generate and bind the texture
-		    
+		    //Generate and bind the texture   
 		    
 		}catch(IOException e){
 		    e.printStackTrace();
 		}
 		return pixelData;
 		
-
 	}
 	
-	/**
-	 * 
-	 */
 	
+	/**
+	 * Initialisation des objets nécessaires à l'affichage 
+	 * (création du program shader, création de l'eboBuffer et du vboBuffer, chargemement des textures).
+	 */
 	public void init()
 	{
 		
@@ -453,7 +456,25 @@ public class DessinMenu {
 
 	}
 	
-	
+	/**
+	 * <p> 
+	 * L'affichage du buffer de vertex se déroule en plusieurs étapes : 
+	 * <ul>
+	 * 	<li>On recharge l'eboBuffer et le vboBuffer dans la VRAM.</li>
+	 *  <li>On efface l'écran.</li>
+	 *  <li>On active le program shader.</li>
+	 *  <li>On met à jour la matrice de projection du vertex shader.</li>
+	 *  <li>On bind l'ebo et le vbo au contexte openGL pour indiquer à ce dernier qu'il devra les utiliser pour l'affichage.</li>
+	 *  <li>On indique à openGL comment il doit interpréter le buffer de vertex ( 2 premiers floats pour la position, les 3 suivants pour la couleurs et les deux derniers pour la position de la texture.</li>
+	 *  <li>On bind la texture voulue pour indiquer à openGL qui doit utiliser cette texture lors de l'affichage.</li>
+	 *  <li>On trace un certain nombre de vertex avec cette texture (par exemple les vertex d'un bouton)</li>
+	 *  <li>Avant de changer de texture, on l'unbind.</li>
+	 *  <li>On bind une nouvelle texture et on trace d'autres vertices, et ainsi de suite pour tous les éléments du menu.</li>
+	 *  <li>On détache les buffers (ebo et vbo) du contexte openGL.</li>
+	 *  <li>On détache le program shader du contexte openGL.</li>
+	 * </ul>
+	 * </p>
+	 */
 	public void dessiner()
 	{
 	
@@ -511,12 +532,21 @@ public class DessinMenu {
 		glDisableVertexAttribArray(posAttrib);
 		glDisableVertexAttribArray(colAttrib);
 		glDisableVertexAttribArray(texAttrib);
+		
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
 		
 		glUseProgram(0);
 
 	}
 	
+	/**
+	 * Méthode permettant de mettre à jour les attributs de la classe nécessaires à l'affichage d'un nouveau menu.
+	 * Ceci consiste principalement à remettre de nouveaux vertex dans le tableau de vertex afin d'afficher les nouvelles 
+	 * images du menu.
+	 * @param curMenu
+	 * 			Objet de type {@link Menu} représentant le menu courant.
+	 */
 	public void updateMenu(Menu curMenu){
 
 		this.indiceBouton = 0;
@@ -533,12 +563,17 @@ public class DessinMenu {
 			b = i.next();
 			addButton(b);
 		}
-	    
-
-	    
+	    	    
 	    //this.printTabVertex();
 	}
 	
+	
+	/**
+	 * Cette méthode ajoute les vertices (dans l'vboBuffer) et les elements (dans l'eboBuffer) 
+	 * nécessaires à l'affichage de l'image de titre et de l'image de fond du menu.
+	 * @param m
+	 * 			Objet de type {@link Menu} représentant le menu à afficher.
+	 */
 	public void addMenuAndTitle(Menu m)
 	{
 
@@ -613,6 +648,12 @@ public class DessinMenu {
 		this.indexTabE += 8;
 	}
 	
+	/**
+	 * Cette méthode ajoute les vertices (dans l'vboBuffer) et les elements (dans l'eboBuffer) 
+	 * nécessaires à l'affichage de l'image du bouton donné en paramètre.
+	 * @param b
+	 * 			Objet de type {@link Bouton} représentant le bouton à afficher.
+	 */
 	public void addButton(Bouton b)
 	{
 
@@ -681,6 +722,12 @@ public class DessinMenu {
 		this.indiceBouton++;
 	}
 	
+	/**
+	 * Cette méthode permet d'ajouter un tableau de float donné en paramètre 
+	 * à la fin du tableau de Vertex. 
+	 * @param tab
+	 * 			Tableau de l'on veut ajouter au tableau de vertex.
+	 */
 	public void addTabToTabVertex(float tab[])
 	{
 		for(int i = this.lenTabV ; i<tab.length+this.lenTabV; i++)
@@ -692,6 +739,9 @@ public class DessinMenu {
 		}
 	}
 	
+	/**
+	 * Méthode affichant le tableau de vertex (seulement pour le debuguage).
+	 */
 	public void printTabVertex()
 	{
 		for(int i = 0; i<400; i++)

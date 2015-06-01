@@ -17,12 +17,26 @@ import java.nio.IntBuffer;
 
 
 
+
 import org.lwjgl.BufferUtils;
 
+import com.sun.glass.ui.CommonDialogs.Type;
 
 
+/**
+ * <p>
+ * La classe DessinLignes affiche les différentes lignes et les différents curseurs des joueurs. 
+ * </p>
+ *  
+ * @author Elouarn Lainé 
+ *
+ */
 public class DessinLignes  { // peut être instancier un tableau de DessinLigne dans DessinPlateau (1 par joueur)
 	
+	/**
+	 * Pour des explications sur les attributs de cette classe, 
+	 * voir la classe {@link DessinMenu} qui a des attributs similaires.
+	 */
 	private int nbVertex;
 
 	private Affichage affichage;
@@ -40,27 +54,32 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 	FloatBuffer vboBuffer;
 	IntBuffer eboBuffer;
 	
+	/**
+	 * Nombre de côtés d'un curseur d'un joueur.
+	 */
 	private final int NBCOTES = 15; // Nombre de côtés du point du joueur
-	private float colDelta;
-	
 	private FloatBuffer projectionMatrix;
-
-	
-	
 	private long t_start;
 	
+	/**
+	 * Constructeur de la classe DessinLignes
+	 * Initialisation des attributs. instanciation de 2 tableaux d'un million d'éléments chacun 
+	 * qui contiendront respectivement les vertex et les elements.
+	 * @param a
+	 * 		référence vers l'objet Affichage.
+	 * @param p
+	 * 		référence vers l'objet PolyFever.
+	 * @param partie
+	 * 		référence vers l'objet Partie.
+	 * 
+	 * @author Elouarn Lainé
+	 */
 	public DessinLignes(Affichage a, PolyFever p, Partie partie)
 	{
 
-		this.colDelta = 0.01f;
-		
-		
 		this.affichage = a;
 		this.polyFever = p;
 		this.partie = partie;
-		
-		
-		
 		this.nbVertex = 0;
 		this.lenTabV = 0;
 		this.lenTabE = 0;
@@ -72,11 +91,12 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 	};
 		
 	
+	/**
+	 * Initialisation des objets nécessaires à l'affichage 
+	 * (création du program shader, création de l'eboBuffer et du vboBuffer, chargemement des textures).
+	 */
 	public void init()
 	{
-		
-		
-		//partie.envoyerTabVertex(tabVertex, lenTabV); // Envoie de la référence du tableau à l'objet partie
 		
 		System.out.println("Initialisation pour traçage des Lignes...");
 		t_start = System.currentTimeMillis();
@@ -121,7 +141,6 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		
 		projectionUniform = glGetUniformLocation(program, "Projection");
 		System.out.println(projectionUniform);
-		//glUniformMatrix4(projectionUniform, false, this.projectionMatrix);
 
 		uniColor = glGetUniformLocation(program, "Color");
 		posAttrib = glGetAttribLocation(program, "position");
@@ -133,8 +152,8 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		glDetachShader(program, vs);
 		glDetachShader(program, fs);
 		
-		glBindAttribLocation(program, posAttrib, "position"); // on bind l'attribut position à 0 // PB CERTAINEMENT ICI !!!!!!!!!!!!!!!!!!!!
-		glBindAttribLocation(program, colAttrib, "color"); // on bind l'attribut position à // PB CERTAINEMENT ICI !!!!!!!!!!!!!!!!!!!!
+		glBindAttribLocation(program, posAttrib, "position"); // on bind l'attribut position à l'entier posAttrib. 
+		glBindAttribLocation(program, colAttrib, "color"); // on bind l'attribut color à l'entier colAttrib.
 		
 		glDeleteShader(vs);
 		glDeleteShader(fs);
@@ -166,20 +185,32 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		// Dessin des bords du plateau
 		dessinerBordsPlateau(new Vector2(0.0f,0.0f));
 		
-
-		
 		glBindVertexArray(glGenVertexArrays()); // Création d'un VAO : Vertex Array Object avec glGenVertexArrays() . le VAO stock les liens entre les attributs et les VBO
 		// le VAO contient une référence vers le VBO
-		
-		//glBindBuffer(GL_ARRAY_BUFFER, 0);
-		
-		
+	
 	}
 	
 	
+	/**
+	 * <p> 
+	 * L'affichage du buffer de vertex se déroule en plusieurs étapes : 
+	 * <ul>
+	 *  <li>On ajoute un rectangle dans le buffer de vertex pour chaque joueur qui vérifie la condition de traçage</li>
+	 * 	<li>On recharge l'eboBuffer et le vboBuffer dans la VRAM.</li>
+	 *  <li>On efface l'écran.</li>
+	 *  <li>On active le program shader.</li>
+	 *  <li>On met à jour la matrice de projection du vertex shader.</li>
+	 *  <li>On bind l'ebo et le vbo au contexte openGL pour indiquer à ce dernier qu'il devra les utiliser pour l'affichage.</li>
+	 *  <li>On indique à openGL comment il doit interpréter le buffer de vertex ( 2 premiers floats pour la position, les 3 suivants pour la couleurs et les deux derniers pour la position de la texture.</li>
+	 *  <li>On trace tous les vertices contenues dans le buffer de vertex.</li>
+	 *  <li>On détache les buffers (ebo et vbo) du contexte openGL.</li>
+	 *  <li>On détache le program shader du contexte openGL.</li>
+	 * </ul>
+	 * </p>
+	 */
 	public void dessiner()
 	{
-		//System.out.println("			dessiner dLigne");
+
 		long t_now = System.currentTimeMillis();
 		float time = t_now - t_start;
 		
@@ -225,7 +256,6 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		
 		
 		glEnableVertexAttribArray(posAttrib);
-		//glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0); // 0 : position a la location 0 par défaut.  A l'appelle de cette fonction les infos vont être stockées dans le VAO courant. 
 		glVertexAttribPointer(posAttrib, 2, GL_FLOAT, false,5*4, 0);
 		
 		glEnableVertexAttribArray(colAttrib);
@@ -233,23 +263,34 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		
 		
 		glDrawElements(GL_TRIANGLES, this.nbVertex, GL_UNSIGNED_INT, 0); // essayer avec glDrawElements (https://open.gl/drawing)
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
 		
 		glDisableVertexAttribArray(posAttrib);
 		glDisableVertexAttribArray(colAttrib);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		
 		glUseProgram(0);
 	}
 	
+	
+	/**
+	 * Cette méthode permet de calculer la position des vertices d'un rectangle 
+	 * (le rectangle étant l'élément qui compose les lignes des joueurs).
+	 * @param v
+	 * 		objet de type {@link Vector3} : origine du rectangle.
+	 * @param angle
+	 * 		float représentant l'orientation du rectangle.
+	 * @param w
+	 * 		float représentant la largeur du rectangle.
+	 * @param h
+	 * 		float représentant la hauteur du rectangle.
+	 * @param c
+	 * 		objet de type {@link Vector3} représentant la couleur du rectangle.
+	 */
 	private void addRectangle(Vector3 v, float angle, float w, float h, Vector3 c) // v : point d'encrage (milieu du bord supérieur)
 	{
 		
-		this.colDelta += 0.001f;
-		if(colDelta > 1.0f) colDelta = 0.0f;
-		//System.out.println("colDelta: ".concat(String.valueOf(colDelta)));
-
-		h = h+0.01f; // conversion pixel vers float
+		h = h+0.01f; // On allonge un peu le rectangle pour avoir une trace pleine, même lors de courbes sérées.
 
 		
 		Vector2 p1 = new Vector2();
@@ -291,31 +332,45 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		
 	}
 	
+	/**
+	 * Cette méthode permet d'ajouter dans le vertex buffer les vertices nécessaires à l'affichage d'un rectangle 
+	 * (le rectangle étant l'élément qui compose les lignes des joueurs). 
+	 * @param p1
+	 * 		objet de type {@link Vector2} : premier point du rectangle.
+	 * @param p2
+	 * 		objet de type {@link Vector2} : deuxieme point du rectangle.
+	 * @param p3
+	 * 		objet de type {@link Vector2} : troisieme point du rectangle.
+	 * @param p4
+	 * 		objet de type {@link Vector2} : quatrieme point du rectangle.
+	 * @param c
+	 * 		objet de type {@link Vector3} representant la couleur du rectangle.
+	 */
 	private void ajouterVector2Rect(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector3 c)
 	{
 	
 		this.tabVertex[this.lenTabV] = p4.x(); // Top Left
 		this.tabVertex[this.lenTabV+1] = p4.y(); 	
 		this.tabVertex[this.lenTabV+2] = c.x(); 
-		this.tabVertex[this.lenTabV+3] = c.y()+colDelta; 
+		this.tabVertex[this.lenTabV+3] = c.y(); 
 		this.tabVertex[this.lenTabV+4] = c.z(); 
 		
 		this.tabVertex[this.lenTabV+5] = p1.x(); // Top Right
 		this.tabVertex[this.lenTabV+6] = p1.y();
 		this.tabVertex[this.lenTabV+7] = c.x(); 
-		this.tabVertex[this.lenTabV+8] = c.y()+colDelta; 
+		this.tabVertex[this.lenTabV+8] = c.y(); 
 		this.tabVertex[this.lenTabV+9] = c.z(); 
 
 		this.tabVertex[this.lenTabV+10] = p2.x(); // Bottom Right
 		this.tabVertex[this.lenTabV+11] = p2.y();
 		this.tabVertex[this.lenTabV+12] = c.x(); 
-		this.tabVertex[this.lenTabV+13] = c.y()+colDelta; 
+		this.tabVertex[this.lenTabV+13] = c.y(); 
 		this.tabVertex[this.lenTabV+14] = c.z(); 
 
 		this.tabVertex[this.lenTabV+15] = p3.x(); // Bottom Left
 		this.tabVertex[this.lenTabV+16] = p3.y();
 		this.tabVertex[this.lenTabV+17] = c.x(); 
-		this.tabVertex[this.lenTabV+18] = c.y()+colDelta; 
+		this.tabVertex[this.lenTabV+18] = c.y(); 
 		this.tabVertex[this.lenTabV+19] = c.z(); 
 		
 		
@@ -348,6 +403,10 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 	
 	}
 	
+	
+	/**
+	 * Méthode permettant d'initialiser le dessin des joueurs (dessin des curseurs des joueurs).
+	 */
 	public void initDessinJoueurs()
 	{
 		
@@ -361,6 +420,15 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		
 	}
 	
+	
+	/**
+	 * Méthode charger de calculer la position des vertices constituant les curseurs des joueurs.
+	 * Cette méthode ajoute ensuite les vertices dans le buffer de vertex.
+	 * @param p
+	 * 		objet de type {@link Vector3} : centre du curseur.
+	 * @param r
+	 * 		float représentant le rayon du curseur.
+	 */
 	public void initPoint(Vector3 p, float r) // Ajoute dans le buffer les vertex nécessaires à l'affichage du point d'un joueur.
 	{
 		double alpha = 2*Math.PI / this.NBCOTES;
@@ -430,6 +498,13 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		this.nbVertex += (this.NBCOTES)*3; // On doit utiliser l'équivalent de 3*NBCOTES pour tracer le point
 	}
 	
+	
+	/**
+	 * Méthode mettant à jour la position des curseurs des joueurs par simple translation des positions.
+	 * @param isUpdateNeeded
+	 * 		boolean indiquant si l'on doit recalculer les positions des vertices des curseurs 
+	 * 		(si les curseurs changent de taille par exemple).
+	 */
 	public void updatePosJoueurs(boolean isUpdateNeeded)
 	{
 		if(!this.partie.isRoundEnPause())
@@ -443,7 +518,7 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 				j = e.next();
 				if(j.getEtat() == Etat.VIVANT)
 				{
-					moveVertexJoueur(j.getAnciennePosition(), j.getPosition(),j.getLigne().getEpaisseur()/2,j.isRedimension(), isUpdateNeeded,  i);
+					moveVertexJoueur(j.getAnciennePosition(), j.getPosition(),j.getLigne().getEpaisseur()/2, isUpdateNeeded,  i);
 					
 				}
 				i++;
@@ -451,13 +526,25 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		}	
 	}
 	
-	public void moveVertexJoueur(Vector3 lastp, Vector3 p, float r, boolean isRedimension, boolean isUpdateNeeded, int i) // i : indice du joueur
+	/**
+	 * Méthode calculant la nouvelle position des vertices des curseurs des joueurs.
+	 * @param lastp
+	 * 		objet de type {@link Vector3} représentant la dernière position du joueur. 
+	 * @param p
+	 * 		objet de type {@link Vector3} représentant la position actuelle du joueur. 
+	 * @param r
+	 * 		float représentant le rayon du curseur.
+	 * @param isUpdateNeeded
+	 *  	boolean indiquant si l'on doit recalculer les positions des vertices des curseurs 
+	 * 		(si les curseurs changent de taille par exemple).
+	 * @param i
+	 * 		entier représentant l'indice du joueur.
+	 */
+	public void moveVertexJoueur(Vector3 lastp, Vector3 p, float r, boolean isUpdateNeeded, int i) // i : indice du joueur
 	{
 		Vector2 vecDiff = new Vector2(p.x()-lastp.x(),p.y()-lastp.y());
-		//System.out.println(" Gap_-__-___-___-___-___-___-_____________:"+ vecDiff.x() + "," + vecDiff.y());
 
-
-		if(isUpdateNeeded) // Si l'épaisseur a changé // A CHANGER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   NOUVEAU ROUND A DETECTER | A REMTTRE A FALSE QUAND ON ENLEVE LA PAUSE
+		if(isUpdateNeeded) 
 		{
 			double alpha = 2*Math.PI / this.NBCOTES;
 			//System.out.println("player point's vertices have been updated");
@@ -469,7 +556,6 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 				this.tabVertex[(5*j)+1] = (float)Math.sin(alpha*(k))*r+p.y();
 			}
 			
-			//clearTabVertex(); // On vide le talbeau de vertex
 		}
 		else if(!isUpdateNeeded) // Si l'épaisseur n'a pas changé
 		{
@@ -492,6 +578,10 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 
 	}
 	
+	/**
+	 * Méthode permettant de nettoyer le tableau de vertex.
+	 * Cette méthode est appelée lorsqu'un bonus clean est pris ou encore lorsqu'un nouveau round commence.
+	 */
 	public void clearTabVertex() {
 		
 		this.nbVertex = (this.NBCOTES*3)*partie.getNbJoueurs()+4*6; // 4 vertex par bord * 4 bords + 3 vertex par coté * nb joueur
@@ -506,7 +596,11 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		//System.out.println("indexTabE: " + indexTabE);
 	}
 	
-	
+	/**
+	 * Cette méthode permet l'affichage des bords du plateau de jeu.
+	 * @param p
+	 * 		objet de type {@link Vector2} : centre du plateau de jeu.
+	 */
 	public void dessinerBordsPlateau(Vector2 p)
 	{
 		this.addRectangle(new Vector3(-1.0f-p.x(),1.0f-p.y(),1.0f),(float) Math.PI/2, 0.01f, 2.0f, new Vector3(1.0f,1.0f,0.0f)); // LEFT 
@@ -521,6 +615,9 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 	}
 	
 	
+	/**
+	 * Méthode affichant le tableau de vertex (seulement pour le debuguage).
+	 */
 	public void printTabVertex()
 	{
 		for(int i = 0; i<80; i++)
