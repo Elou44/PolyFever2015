@@ -20,8 +20,6 @@ import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
 
-//import com.sun.glass.ui.CommonDialogs.Type;
-
 
 /**
  * <p>
@@ -216,14 +214,16 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		
 			
 		Iterator<Joueur> e = this.partie.getJoueurs().iterator();
+		int i = 0;
 		while(e.hasNext()) // A déplacer dans Init();
 		{
 			j = e.next();
 			if(j.getPosition().z() == 1.0f && j.getEtat() == Etat.VIVANT && !partie.isRoundEnPause())
 			{
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse(), new Vector3(1.0f,0.0f,0.0f));
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse(), i);
 				
 			}
+			i++;
 		}
 		
 		updatePosJoueurs(false); // On bouge le point du joueur
@@ -287,7 +287,7 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 	 * @param c
 	 * 		objet de type {@link Vector3} représentant la couleur du rectangle.
 	 */
-	private void addRectangle(Vector3 v, float angle, float w, float h, Vector3 c) // v : point d'encrage (milieu du bord supérieur)
+	private void addRectangle(Vector3 v, float angle, float w, float h, int c) // v : point d'encrage (milieu du bord supérieur)
 	{
 		
 		h = h+0.01f; // On allonge un peu le rectangle pour avoir une trace pleine, même lors de courbes sérées.
@@ -346,32 +346,32 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 	 * @param c
 	 * 		objet de type {@link Vector3} representant la couleur du rectangle.
 	 */
-	private void ajouterVector2Rect(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, Vector3 c)
+	private void ajouterVector2Rect(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, int c)
 	{
 	
 		this.tabVertex[this.lenTabV] = p4.x(); // Top Left
 		this.tabVertex[this.lenTabV+1] = p4.y(); 	
-		this.tabVertex[this.lenTabV+2] = c.x(); 
-		this.tabVertex[this.lenTabV+3] = c.y(); 
-		this.tabVertex[this.lenTabV+4] = c.z(); 
+		this.tabVertex[this.lenTabV+2] = CouleursLigne.tabCouleurs[c].x(); 
+		this.tabVertex[this.lenTabV+3] = CouleursLigne.tabCouleurs[c].y(); 
+		this.tabVertex[this.lenTabV+4] = CouleursLigne.tabCouleurs[c].z(); 
 		
 		this.tabVertex[this.lenTabV+5] = p1.x(); // Top Right
 		this.tabVertex[this.lenTabV+6] = p1.y();
-		this.tabVertex[this.lenTabV+7] = c.x(); 
-		this.tabVertex[this.lenTabV+8] = c.y(); 
-		this.tabVertex[this.lenTabV+9] = c.z(); 
+		this.tabVertex[this.lenTabV+7] = CouleursLigne.tabCouleurs[c].x(); 
+		this.tabVertex[this.lenTabV+8] = CouleursLigne.tabCouleurs[c].y(); 
+		this.tabVertex[this.lenTabV+9] = CouleursLigne.tabCouleurs[c].z(); 
 
 		this.tabVertex[this.lenTabV+10] = p2.x(); // Bottom Right
 		this.tabVertex[this.lenTabV+11] = p2.y();
-		this.tabVertex[this.lenTabV+12] = c.x(); 
-		this.tabVertex[this.lenTabV+13] = c.y(); 
-		this.tabVertex[this.lenTabV+14] = c.z(); 
+		this.tabVertex[this.lenTabV+12] = CouleursLigne.tabCouleurs[c].x(); 
+		this.tabVertex[this.lenTabV+13] = CouleursLigne.tabCouleurs[c].y(); 
+		this.tabVertex[this.lenTabV+14] = CouleursLigne.tabCouleurs[c].z(); 
 
 		this.tabVertex[this.lenTabV+15] = p3.x(); // Bottom Left
 		this.tabVertex[this.lenTabV+16] = p3.y();
-		this.tabVertex[this.lenTabV+17] = c.x(); 
-		this.tabVertex[this.lenTabV+18] = c.y(); 
-		this.tabVertex[this.lenTabV+19] = c.z(); 
+		this.tabVertex[this.lenTabV+17] = CouleursLigne.tabCouleurs[c].x(); 
+		this.tabVertex[this.lenTabV+18] = CouleursLigne.tabCouleurs[c].y(); 
+		this.tabVertex[this.lenTabV+19] = CouleursLigne.tabCouleurs[c].z(); 
 		
 		
 		
@@ -603,10 +603,10 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 	 */
 	public void dessinerBordsPlateau(Vector2 p)
 	{
-		this.addRectangle(new Vector3(-1.0f-p.x(),1.0f-p.y(),1.0f),(float) Math.PI/2, 0.01f, 2.0f, new Vector3(1.0f,1.0f,0.0f)); // LEFT 
-		this.addRectangle(new Vector3(1.0f-p.x(),1.0f-p.y(),1.0f),(float) Math.PI/2, 0.01f, 2.0f, new Vector3(1.0f,1.0f,0.0f)); // RIGHT
-		this.addRectangle(new Vector3(1.0f-p.x(),-1.0f-p.y(),1.0f), 0.0f, 0.02f, 1.99f, new Vector3(1.0f,1.0f,0.0f)); // BOTTOM
-		this.addRectangle(new Vector3(1.0f-p.x(),1.0f-p.y(),1.0f), 0.0f, 0.01f, 1.99f, new Vector3(1.0f,1.0f,0.0f)); // RIGHT
+		this.addRectangle(new Vector3(-1.0f-p.x(),1.0f-p.y(),1.0f),(float) Math.PI/2, 0.01f, 2.0f, 3); // LEFT 
+		this.addRectangle(new Vector3(1.0f-p.x(),1.0f-p.y(),1.0f),(float) Math.PI/2, 0.01f, 2.0f, 3); // RIGHT
+		this.addRectangle(new Vector3(1.0f-p.x(),-1.0f-p.y(),1.0f), 0.0f, 0.02f, 1.99f, 3); // BOTTOM
+		this.addRectangle(new Vector3(1.0f-p.x(),1.0f-p.y(),1.0f), 0.0f, 0.01f, 1.99f, 3); // RIGHT
 		
 		System.out.println("nbVertex: " + nbVertex);
 		System.out.println("lenTabE: " + lenTabE);
