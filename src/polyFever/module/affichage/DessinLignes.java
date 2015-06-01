@@ -20,7 +20,7 @@ import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
 
-import com.sun.glass.ui.CommonDialogs.Type;
+//import com.sun.glass.ui.CommonDialogs.Type;
 
 
 /**
