@@ -36,13 +36,11 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 	 * voir la classe {@link DessinMenu} qui a des attributs similaires.
 	 */
 	private int nbVertex;
-
-	private Affichage affichage;
 	private PolyFever polyFever;
 	private Partie partie;
 	private Joueur j;
 		
-	private int program, ebo,vbo, posAttrib, colAttrib, uniColor, projectionUniform;
+	private int program, ebo,vbo, posAttrib, colAttrib, projectionUniform;
 	
 	private float tabVertex[];
 	private int elements[];
@@ -57,7 +55,7 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 	 */
 	private final int NBCOTES = 15; // Nombre de côtés du point du joueur
 	private FloatBuffer projectionMatrix;
-	private long t_start;
+	//private long t_start;
 	
 	/**
 	 * Constructeur de la classe DessinLignes
@@ -75,7 +73,6 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 	public DessinLignes(Affichage a, PolyFever p, Partie partie)
 	{
 
-		this.affichage = a;
 		this.polyFever = p;
 		this.partie = partie;
 		this.nbVertex = 0;
@@ -97,7 +94,7 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 	{
 		
 		System.out.println("Initialisation pour traçage des Lignes...");
-		t_start = System.currentTimeMillis();
+		//t_start = System.currentTimeMillis();
 		
 		glClearColor(0, 0, 0, 0);
 		
@@ -140,7 +137,7 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		projectionUniform = glGetUniformLocation(program, "Projection");
 		System.out.println(projectionUniform);
 
-		uniColor = glGetUniformLocation(program, "Color");
+		//uniColor = glGetUniformLocation(program, "Color");
 		posAttrib = glGetAttribLocation(program, "position");
 		colAttrib = glGetAttribLocation(program, "color");
 		System.out.println("posAttrib: ".concat(String.valueOf(posAttrib)));
@@ -209,8 +206,8 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 	public void dessiner()
 	{
 
-		long t_now = System.currentTimeMillis();
-		float time = t_now - t_start;
+		//long t_now = System.currentTimeMillis();
+		//float time = t_now - t_start;
 		
 			
 		Iterator<Joueur> e = this.partie.getJoueurs().iterator();

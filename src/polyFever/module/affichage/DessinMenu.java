@@ -73,9 +73,9 @@ public class DessinMenu {
 	/**
 	 * Nombre de vertex contenu dans le tableau de tableau de vertices.
 	 */
-	private int nbVertex;
+	//private int nbVertex;
 
-	private Affichage affichage;
+
 	private PolyFever polyFever;
 	
 	/**
@@ -91,7 +91,7 @@ public class DessinMenu {
 	/**
 	 * Variables pour faire le lien avec les attributs du vertex shaders
 	 */
-	private int posAttrib, colAttrib, texAttrib, uniColor, projectionUniform;
+	private int posAttrib, colAttrib, texAttrib, projectionUniform;
 	
 	/**
 	 * Identifiants des différentes textures du menus
@@ -155,10 +155,8 @@ public class DessinMenu {
 	 */
 	public DessinMenu(Affichage a, PolyFever p)
 	{
-
-		this.affichage = a;
+		
 		this.polyFever = p;
-		this.nbVertex = 0;
 		this.lenTabV = 0;
 		this.lenTabE = 0;
 		this.indexTabE = 0;
@@ -248,7 +246,7 @@ public class DessinMenu {
 				projectionUniform = glGetUniformLocation(program, "Projection");
 				System.out.println(projectionUniform);
 
-				uniColor = glGetUniformLocation(program, "Color");
+				//uniColor = glGetUniformLocation(program, "Color");
 				
 				posAttrib = glGetAttribLocation(program, "position");
 				colAttrib = glGetAttribLocation(program, "color");
