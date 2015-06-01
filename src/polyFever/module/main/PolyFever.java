@@ -1,20 +1,13 @@
 package polyFever.module.main;
 
-import static org.lwjgl.opengl.GL11.*;
-
-import java.util.*;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
-
 import polyFever.module.menu.Menu;
-import polyFever.module.moteurDeJeu.Partie;
 import polyFever.module.util.*;
-import polyFever.module.moteurDeJeu.*;
 import polyFever.module.affichage.*;
 import polyFever.module.evenements.Evenements;
 
@@ -24,28 +17,31 @@ import polyFever.module.evenements.Evenements;
  * Entry point classes extend GLProgram and must implement the <code>init()</code> and <code>render()</code> methods.
  * The <code>update(long deltaTime)</code> can be overridden for variable time-steps.
  * 
- * @author Roi Atalla
+ * Cette classe permet de créer le contexte openGL (méthode gameLoop()). 
+ * Le gameLoop fait en sorte qu'il y ait autant de rendu par seconde que ce que spécifie l'attribut fps.
+ * Cela permet d'avoir un frame rate constant.  
+ * 
+ * @author Roi Atalla, Elouarn Lainé
  */
 public abstract class PolyFever {
 	
 	
-	private int fps;
-	private int realFps;
-	private final int WIDTH;
-	private final int HEIGHT;
-	private float RATIO; // Largeur d'un pixel en float
-	private float PXtoFLOAT_X;
-	private float PXtoFLOAT_Y;
+	private int fps; // Frame rate à atteindre
+	private int realFps; // Frame rate réel
+	private final int WIDTH; // largeur de la fenêtre en pixel
+	private final int HEIGHT; // hauteur de la fenêtre en pixel
+	private float RATIO; // ratio de la fenêtre (WIDTH/HEIGTH)
+	private float PXtoFLOAT_X; // Largeur d'un pixel dans le repère d'openGL
+	private float PXtoFLOAT_Y; // Hauteur d'un pixel dans le repère d'openGL
 	private boolean isAAAvailable = true; // l'Anti-Aliasing est t-il disponible ? Oui par défaut
 	
-	private Partie partie;
 	public Affichage affichage;
 	private GlOrtho glOrtho;
-	private Evenements evenements;
+	private Evenements evenements; // Classe de gestion des évènements
 	
 	private final int MSAA = 8; // AntiAliasing x8 
-	private String name;
-	private boolean isOpen;
+	private String name; // nom de la fenêtre
+	private boolean isOpen; // Boolean permettant de fermer la fenêtre
 	
 	/**
 	 * Initializes the application in fullscreen mode.
@@ -60,7 +56,6 @@ public abstract class PolyFever {
 		
 		this.glOrtho = new GlOrtho(-1.0f*((float)width/(float)height),1.0f*((float)width/(float)height),-1.0f,1.0f,-1.0f,1.0f);
 		
-		this.partie = null;
 		this.affichage = null;
 		this.evenements = null;
 		this.WIDTH = width; 
@@ -102,10 +97,6 @@ public abstract class PolyFever {
 		}
 	}
 	
-	public void setPartie(Partie p)
-	{
-		this.partie = p;
-	}
 	
 	public void setAffichage(Affichage a)
 	{
@@ -146,7 +137,6 @@ public abstract class PolyFever {
 		
 		
 		this.name = name;
-		this.partie = null;
 		this.affichage = null;
 		this.evenements = null;
 		Display.setTitle(this.name);
@@ -187,7 +177,6 @@ public abstract class PolyFever {
 	
 	public GlOrtho getGlOrtho() // Retourne l'objet glOrtho.
 	{
-		System.out.println("le pb est ici");
 		return(this.glOrtho);
 	}
 
@@ -322,23 +311,18 @@ public abstract class PolyFever {
 	 * 
 	 * This method does not return until the game loop ends.
 	 * 
+	 * Cette méthode qui initialise le contexte openGL vérifie dans un premier temps
+	 * si la carte graphique de l'ordinateur gère l'anti-crénelage. Si l'ordinateur ne
+	 * gère pas l'anti-crénelage la méthode créer un autre contexte sans anti-crénelage.
+	 * Si l'ordinateur ne peut pas créer le contexte sans anti-crénelage, le programme se ferme.
+	 * 
 	 * @param format The PixelFormat specifying the buffers.
 	 * @param attribs The context attributes.
+	 * 
+	 * @author Roi Attala, Elouarn Lainé
 	 */
 	public final void run(PixelFormat format, ContextAttribs attribs) {
 		
-		/*try {
-
-			
-			Display.create(format, attribs);
-			
-		} catch(Exception exc) {
-			
-			exc.printStackTrace();
-			System.exit(1);	
-
-			
-		}*/
 		boolean tryAgain = true;
 		while(tryAgain)
 		{
@@ -346,14 +330,14 @@ public abstract class PolyFever {
 				if(this.isAAAvailable) // Si oui, on créé un écran avec l'antiAliasing activé
 				{
 					Display.create(format.withSamples(this.MSAA), attribs);
-					System.out.println("AA disponible");
+					System.out.println("can handle AA");
 					break;
 				}
 				else // Si non, on désactive l'AA
 				{
 					tryAgain = false;
 					Display.create(format, attribs);
-					System.out.println("AA non disponible");
+					System.out.println("can't handle AA");
 					break;
 				}
 				
@@ -363,7 +347,7 @@ public abstract class PolyFever {
 				this.isAAAvailable = false;
 				if(!tryAgain) // Si aucune des deux solutions n'est disponible , on ferme la fenetre
 				{
-					System.out.println("ton pc c'est de la merde");
+					System.out.println("your computer is unable to run PolyFever, try to update your drivers or buy a new computer !");
 					System.exit(1);	
 				}
 				
@@ -376,16 +360,21 @@ public abstract class PolyFever {
 	
 	
 
-	
+	/**
+	 * Cette méthode gère la boucle principale du programme. 
+	 * C'est aussi dans cette boucle que sont appelées les méthodes gérant les évènements.
+	 * Cette boucle tourne à un frame rate constant défini par l'attribut "fps".
+	 * L'affichage est réalisée par l'intermédiaire de la méthode render, qui est redéfinie dans la classe Prototyp1.
+	 */
 	private void gameLoop() {
 		try {
 			init();
 			
-			//Utils.checkGLError("init");
+			Utils.checkGLError("init");
 			
 			resized();
 			
-			//Utils.checkGLError("resized");
+			Utils.checkGLError("resized");
 			
 			long lastTime, lastFPS;
 			lastTime = lastFPS = System.nanoTime();
@@ -411,11 +400,11 @@ public abstract class PolyFever {
 				
 				update(deltaTime);
 				
-				//Utils.checkGLError("update");
+				Utils.checkGLError("update");
 				
 				render();
 				
-				//Utils.checkGLError("render");
+				Utils.checkGLError("render");
 				
 				Display.update();
 				
@@ -449,6 +438,10 @@ public abstract class PolyFever {
 	 * Called when the window is resized. This method updates the <code>glViewport</code> but may be overridden
 	 * with custom code. Make sure to call <code>super.resized()</code> if overriding, or remember to manually update
 	 * the <code>glViewport</code>!
+	 * 
+	 * Cette méthode est appelée à chaque redimensionnement de fenêtre. 
+	 * Elle met à jour : le viewPort, la valeur du RATIO, la largeur et la hauteur d'un pixel dans le repère d'openGL et
+	 * appelle la méthode qui va recalculer la matrice de projection. 
 	 */
 	public void resized() {
 		GL11.glViewport(0, 0, getWIDTH(), getHEIGHT());
@@ -472,6 +465,9 @@ public abstract class PolyFever {
 		return Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE);
 	}
 	
+	/**
+	 * Cette méthode change le boolean isOpen à false, ce qui a pour conséquence de fermer le programme.
+	 */
 	public void closeGame() { // Ferme le jeu
 		this.isOpen = false;
 	}

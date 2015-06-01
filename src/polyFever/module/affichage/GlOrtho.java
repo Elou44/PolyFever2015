@@ -5,11 +5,31 @@ import org.lwjgl.BufferUtils;
 
 
 // Matrice de projection pour compenser la distortion lorsque la fenetre est rectangulaire.
+/**
+ * Cette classe contient une matrice de projection qui compense la distortion des vertices
+ * lorsque la fenêtre à un ratio différent de 1 (fenêtre non carrée).
+ * 
+ * @author Elouarn Lainé
+ *
+ */
 public class GlOrtho {
 	
 	private float projection[];
 	private FloatBuffer projBuffer;
 	
+	/**
+	 * Constructeur de la classe GlOrtho
+	 * @param left
+	 * 		float : abscisse du bord gauche de la fenêtre.
+	 * @param right
+	 * 		float : abscisse du bord droit de la fenêtre.
+	 * @param bottom
+	 * 		float : ordonnée du bord inférieur de la fenêtre.
+	 * @param top
+	 * 		float : ordonnée du bord supérieur de la fenêtre.
+	 * @param near
+	 * @param far
+	 */
 	public GlOrtho(float left, float right, float bottom, float top, float near, float far)
 	{
 		this.projection = new float[16];
@@ -18,6 +38,17 @@ public class GlOrtho {
 		
 	}
 	
+	/**
+	 * Cette méthode calcule la nouvelle matrice de projection en fonction
+	 * des valeurs rentrées en paramètre. Cette méthode est appelée à chaque fois
+	 * que la fenêtre est redimensionnée.
+	 * @param left
+	 * @param right
+	 * @param bottom
+	 * @param top
+	 * @param near
+	 * @param far
+	 */
 	public void setGlOrtho(float left, float right, float bottom, float top, float near, float far)
 	{
 		float a = 2.0f / (right - left);
@@ -55,6 +86,10 @@ public class GlOrtho {
        
 	}
 	
+	/**
+	 * Cette méthode renvoie la matrice de projection sous forme d'un buffer de floats.
+	 * @return FloatBuffer
+	 */
 	public FloatBuffer getProjectionBuf()
 	{
 		System.out.println("le buffer de projection est envoyé");

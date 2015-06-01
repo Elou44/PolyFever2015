@@ -1,28 +1,38 @@
 package polyFever.module.main;
 import polyFever.module.menu.*;
 
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
-import org.lwjgl.input.Keyboard;
 import polyFever.module.affichage.Affichage;
-import polyFever.module.moteurDeJeu.*;
+
 import polyFever.module.evenements.Evenements;
 
-public class Prototyp1 extends PolyFever {
+/**
+ * Classe qui hérite de {@link PolyFever} et qui contient le point d'entré du programme.
+ * @author Elouarn Lainé
+ *
+ */
+public class PolyFeverGame extends PolyFever {
 	
+	/**
+	 * Point d'entré du programme. Instanciation d'un objet 
+	 * de type {@link PolyFeverGame} qui hérite de {@link PolyFever} et appelle de la méthode
+	 * run pour créer le contexte openGL et lancer la gameLoop().
+	 * @param args
+	 */
 	public static void main(String[] args) {
-		new Prototyp1().run(3, 2, true);
+		new PolyFeverGame().run(3, 2, true);
 	}
 	
 	private Affichage affichage; // Classe Affichage
-	private StructureMenu structMenu;
+	private StructureMenu structMenu; // Classe qui instancie les éléments du menu
 
 	
-
-	public Prototyp1() {
-		super("Prototyp1", 900, 600, true); // on interdit le redimensionnement de la fenetre
+	/**
+	 * Contructeur de la classe PolyFeverGame.
+	 * Création d'une fenêtre de 900x600 pixels. Instanciation de l'objet {@link Affichage}
+	 * , de l'objet {@link StructureMenu} ainsi que de l'objet {@link Evenements}.
+	 */
+	public PolyFeverGame() {
+		super("PolyFever", 900, 600, true); // on autorise le redimensionnement de la fenêtre
 		
 		System.out.println("Création de l'objet Affichage...");
 		this.affichage = new Affichage(); // Instanciation de l'affichage
@@ -37,6 +47,9 @@ public class Prototyp1 extends PolyFever {
 		this.setEvenements(ev);
 	}
 	
+	/**
+	 * Appel des méthodes d'initialisation de l'affichage du menu.
+	 */
 	@Override
 	public void init() {
 		
@@ -45,6 +58,9 @@ public class Prototyp1 extends PolyFever {
 						
 	}
 	
+	/**
+	 * Appel des méthodes qui dessinent le menu ou le jeu selon que l'on soit dans le menu ou en partie.
+	 */
 	@Override
 	public void render() {		
 
@@ -57,13 +73,7 @@ public class Prototyp1 extends PolyFever {
 		{
 			affichage.dessinerMenu();
 		}
-		
-		
-		
-		
-		
-		
-				
+					
 	}
 
 }

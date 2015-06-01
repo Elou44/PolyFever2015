@@ -42,7 +42,7 @@ import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
-import static org.lwjgl.opengl.GL11.glTexParameteri;
+
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -51,19 +51,14 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Iterator;
-
 import org.lwjgl.BufferUtils;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-
 import polyFever.module.main.PolyFever;
 import polyFever.module.menu.Bouton;
 import polyFever.module.menu.Menu;
-import polyFever.module.moteurDeJeu.Joueur;
-import polyFever.module.moteurDeJeu.Partie;
 import polyFever.module.util.PNGDecoder;
 import polyFever.module.util.PNGDecoder.Format;
-import polyFever.module.util.math.Vector2;
+
 
 /**
  * <p>
