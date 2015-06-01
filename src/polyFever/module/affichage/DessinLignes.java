@@ -214,16 +214,16 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		
 			
 		Iterator<Joueur> e = this.partie.getJoueurs().iterator();
-		int i = 0;
+		
 		while(e.hasNext()) // A déplacer dans Init();
 		{
 			j = e.next();
 			if(j.getPosition().z() == 1.0f && j.getEtat() == Etat.VIVANT && !partie.isRoundEnPause())
 			{
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse(), i);
+				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse(), j.getLigne().getCouleur());
 				
 			}
-			i++;
+			
 		}
 		
 		updatePosJoueurs(false); // On bouge le point du joueur
