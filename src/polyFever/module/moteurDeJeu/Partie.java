@@ -466,6 +466,8 @@ public class Partie {
 			}
 		}
 		
+		p.affichage.dJeu.dScores.updateScores();
+		
 	}
 	
 	// Méthode faisant apparaitre les bonus

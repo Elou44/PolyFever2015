@@ -159,7 +159,6 @@ public abstract class PolyFever {
 		
 		fps = 30;
 		
-		/*	*/
 		
 	}
 	

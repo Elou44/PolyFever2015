@@ -32,7 +32,7 @@ public class PolyFeverGame extends PolyFever {
 	 * , de l'objet {@link StructureMenu} ainsi que de l'objet {@link Evenements}.
 	 */
 	public PolyFeverGame() {
-		super("PolyFever", 900, 600, true); // on autorise le redimensionnement de la fenêtre
+		super("PolyFever", 1062, 600, true); // on autorise le redimensionnement de la fenêtre
 		
 		System.out.println("Création de l'objet Affichage...");
 		this.affichage = new Affichage(); // Instanciation de l'affichage

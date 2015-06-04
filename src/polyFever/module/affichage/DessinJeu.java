@@ -32,7 +32,7 @@ public class DessinJeu {
 	public DessinJeu(Affichage a, PolyFever p, Partie partie)
 	{
 		dPlateau = new DessinPlateau(a, p, partie);
-		dScores = new DessinScores();
+		dScores = new DessinScores(a, p, partie);
 	}
 	
 	/**
