@@ -223,7 +223,14 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 			
 		}
 		
+
+		
 		updatePosJoueurs(false); // On bouge le point du joueur
+		
+		this.vboBuffer.put(this.tabVertex); // On met a jour le buffer VBO 
+		this.vboBuffer.clear();
+		this.eboBuffer.put(this.elements); // On met a jour le buffer EBO
+		this.eboBuffer.clear();
 		
 		
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -377,8 +384,8 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		
 		this.lenTabV += 20;
 
-		this.vboBuffer.put(this.tabVertex); // On met a jour le buffer VBO 
-		this.vboBuffer.clear();
+		//this.vboBuffer.put(this.tabVertex); // On met a jour le buffer VBO 
+		//this.vboBuffer.clear();
 
 
 		
@@ -393,10 +400,10 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		
 		this.lenTabE += 6;
 
-		this.eboBuffer.put(this.elements);
+		//this.eboBuffer.put(this.elements);
 		this.indexTabE += 4;
 		
-		this.eboBuffer.clear();
+		//this.eboBuffer.clear();
 	
 	}
 	
@@ -412,7 +419,7 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		{
 			j = e.next();
 
-			this.initPoint(j.getPosition(),j.getLigne().getEpaisseur()/2);
+			this.initPoint(j.getPosition(),j.getLigne().getEpaisseur()/2, j.getLigne().getCouleur());
 		}
 		
 	}
@@ -425,8 +432,10 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 	 * 		objet de type {@link Vector3} : centre du curseur.
 	 * @param r
 	 * 		float représentant le rayon du curseur.
+	 * @param c
+	 * 		indice de la couleur du joueur
 	 */
-	public void initPoint(Vector3 p, float r) // Ajoute dans le buffer les vertex nécessaires à l'affichage du point d'un joueur.
+	public void initPoint(Vector3 p, float r, int c) // Ajoute dans le buffer les vertex nécessaires à l'affichage du point d'un joueur.
 	{
 		double alpha = 2*Math.PI / this.NBCOTES;
 		Vector2 tabVertexPoint[] = new Vector2[this.NBCOTES+1]; // +1 pour le vertex central
@@ -444,9 +453,9 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 	
 		this.tabVertex[this.lenTabV] = tabVertexPoint[0].x(); // Centre x
 		this.tabVertex[this.lenTabV+1] = tabVertexPoint[0].y(); // Centre x
-		this.tabVertex[this.lenTabV+2] = 1.0f; 
-		this.tabVertex[this.lenTabV+3] = 0.0f; 
-		this.tabVertex[this.lenTabV+4] = 0.0f; 
+		this.tabVertex[this.lenTabV+2] = CouleursLigne.tabCouleurs[c].x(); 
+		this.tabVertex[this.lenTabV+3] = CouleursLigne.tabCouleurs[c].y(); 
+		this.tabVertex[this.lenTabV+4] = CouleursLigne.tabCouleurs[c].z(); 
 		
 		this.lenTabV += 5;
 		
@@ -565,11 +574,11 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		}
 		
 		
-		this.vboBuffer.put(this.tabVertex); // On met a jour le buffer VBO 
-		this.vboBuffer.clear();
+		//this.vboBuffer.put(this.tabVertex); // On met a jour le buffer VBO 
+		//this.vboBuffer.clear();
 		
-		this.eboBuffer.put(this.elements);
-		this.eboBuffer.clear();
+		//this.eboBuffer.put(this.elements);
+		//this.eboBuffer.clear();
 		
 		//printTabVertex();
 
