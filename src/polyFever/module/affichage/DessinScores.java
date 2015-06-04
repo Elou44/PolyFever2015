@@ -47,6 +47,7 @@ import java.awt.Rectangle;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -189,12 +190,12 @@ public class DessinScores {
 	 * @return ByteBuffer
 	 * 			Buffer contenant l'image.
 	 */
-	public ByteBuffer PNGtoTex(String path)
+	public ByteBuffer PNGtoTex(InputStream path)
 	{
 		ByteBuffer pixelData = BufferUtils.createByteBuffer(0); // On initialise le ByteBuffer avec une texture vide
-		try(BufferedInputStream is = new BufferedInputStream(new FileInputStream(path))){
+		try(InputStream is = this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/menu_theme_4pipes.png")){
 		    //Create the PNGDecoder object and decode the texture to a buffer
-		    PNGDecoder decoder = new PNGDecoder(is);
+		    PNGDecoder decoder = new PNGDecoder(path);
 		    int width = decoder.getWidth(), height = decoder.getHeight();
 		    pixelData = BufferUtils.createByteBuffer(4*width*height);
 		    decoder.decode(pixelData, 4*width, Format.RGBA);
@@ -311,7 +312,7 @@ public class DessinScores {
 		idTexFig0 = GL11.glGenTextures(); // 0
 	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexFig0);
 	        //Upload the buffer's content to the VRAM
-	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/num0.png"));
+	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/num0.png")));
 	        //Apply filters
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -322,7 +323,7 @@ public class DessinScores {
 	    idTexFig1 = GL11.glGenTextures(); // 1
 	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexFig1);
 	        //Upload the buffer's content to the VRAM
-	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/num1.png"));
+	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/num1.png")));
 	        //Apply filters
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -333,7 +334,7 @@ public class DessinScores {
 	    idTexFig2 = GL11.glGenTextures(); // 2
 	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexFig2);
 	        //Upload the buffer's content to the VRAM
-	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/num2.png"));
+	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/num2.png")));
 	        //Apply filters
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -344,7 +345,7 @@ public class DessinScores {
 	    idTexFig3 = GL11.glGenTextures(); // 3
 	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexFig3);
 	        //Upload the buffer's content to the VRAM
-	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/num3.png"));
+	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/num3.png")));
 	        //Apply filters
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -355,7 +356,7 @@ public class DessinScores {
 	    idTexFig4 = GL11.glGenTextures(); // 4
 	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexFig4);
 	        //Upload the buffer's content to the VRAM
-	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/num4.png"));
+	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/num4.png")));
 	        //Apply filters
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -366,7 +367,7 @@ public class DessinScores {
 	    idTexFig5 = GL11.glGenTextures(); // 5
 	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexFig5);
 	        //Upload the buffer's content to the VRAM
-	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/num5.png"));
+	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/num5.png")));
 	        //Apply filters
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -377,7 +378,7 @@ public class DessinScores {
 	    idTexFig6 = GL11.glGenTextures(); // 6
 	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexFig6);
 	        //Upload the buffer's content to the VRAM
-	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/num6.png"));
+	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/num6.png")));
 	        //Apply filters
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -388,7 +389,7 @@ public class DessinScores {
 	    idTexFig7 = GL11.glGenTextures(); // 7
 	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexFig7);
 	        //Upload the buffer's content to the VRAM
-	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/num7.png"));
+	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/num7.png")));
 	        //Apply filters
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -399,7 +400,7 @@ public class DessinScores {
 	    idTexFig8 = GL11.glGenTextures(); // 8
 	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexFig8);
 	        //Upload the buffer's content to the VRAM
-	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/num8.png"));
+	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/num8.png")));
 	        //Apply filters
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -410,7 +411,7 @@ public class DessinScores {
 	    idTexFig9 = GL11.glGenTextures(); // 9
 	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexFig9);
 	        //Upload the buffer's content to the VRAM
-	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/num9.png"));
+	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/num9.png")));
 	        //Apply filters
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -421,7 +422,7 @@ public class DessinScores {
 	    idTexTitle = GL11.glGenTextures(); // Title
 	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitle);
 	        //Upload the buffer's content to the VRAM
-	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 300, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/scoresTitle.png"));
+	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 300, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/scoresTitle.png")));
 	        //Apply filters
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -432,7 +433,7 @@ public class DessinScores {
 	    idTexPlayerLogo = GL11.glGenTextures(); // Player Logo
 	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexPlayerLogo);
 	        //Upload the buffer's content to the VRAM
-	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/playerLogo.png"));
+	        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/playerLogo.png")));
 	        //Apply filters
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 	        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);

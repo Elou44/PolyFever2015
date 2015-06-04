@@ -42,25 +42,28 @@ import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
-
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
-
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Iterator;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+
 import polyFever.module.main.PolyFever;
 import polyFever.module.menu.Bouton;
 import polyFever.module.menu.Menu;
+import polyFever.module.images.*;
 import polyFever.module.util.PNGDecoder;
 import polyFever.module.util.PNGDecoder.Format;
 
@@ -181,12 +184,13 @@ public class DessinMenu {
 	 * @return ByteBuffer
 	 * 			Buffer contenant l'image.
 	 */
-	public ByteBuffer PNGtoTex(String path)
+	public ByteBuffer PNGtoTex(InputStream path)
 	{
 		ByteBuffer pixelData = BufferUtils.createByteBuffer(0); // On initialise le ByteBuffer avec une texture vide
-		try(BufferedInputStream is = new BufferedInputStream(new FileInputStream(path))){
+		try(InputStream is = this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/menu_theme_4pipes.png")){
 		    //Create the PNGDecoder object and decode the texture to a buffer
-		    PNGDecoder decoder = new PNGDecoder(is);
+			System.out.println("Image : "+is+" et "+path);
+		    PNGDecoder decoder = new PNGDecoder(path);
 		    int width = decoder.getWidth(), height = decoder.getHeight();
 		    pixelData = BufferUtils.createByteBuffer(4*width*height);
 		    decoder.decode(pixelData, 4*width, Format.RGBA);
@@ -303,7 +307,7 @@ public class DessinMenu {
 				idTexMenuTheme4pipes = GL11.glGenTextures(); // 1
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuTheme4pipes);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 1080, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/menu_theme_4pipes.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 1080, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/menu_theme_4pipes.png")));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -314,7 +318,7 @@ public class DessinMenu {
 				idTexMenuTheme2pipes = GL11.glGenTextures(); // 2
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuTheme2pipes);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 1080, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/menu_theme_2pipes.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 1080, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/menu_theme_2pipes.png")));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -328,7 +332,7 @@ public class DessinMenu {
 			    idTexTitlePolyFever = GL11.glGenTextures(); // 3
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitlePolyFever);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 198, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/title_PolyFever.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 198, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/title_PolyFever.png")));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -339,7 +343,7 @@ public class DessinMenu {
 			    idTexTitlePlay = GL11.glGenTextures(); // 4
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitlePlay);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 198, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/title_Play.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 198, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/title_Play.png")));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -350,7 +354,7 @@ public class DessinMenu {
 			    idTexTitleLAN = GL11.glGenTextures(); // 5
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitleLAN);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 198, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/title_LAN.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 198, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/title_LAN.png")));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -364,7 +368,7 @@ public class DessinMenu {
 			    idTexButtonCredits = GL11.glGenTextures(); // 6
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonCredits);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_credits.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/bouton_credits.png")));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -375,7 +379,7 @@ public class DessinMenu {
 			    idTexButtonHost = GL11.glGenTextures(); // 7
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonHost);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_host.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/bouton_host.png")));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -386,7 +390,7 @@ public class DessinMenu {
 			    idTexButtonLAN = GL11.glGenTextures(); // 8
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonLAN);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_lan_multi.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/bouton_lan_multi.png")));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -397,7 +401,7 @@ public class DessinMenu {
 			    idTexButtonLocal = GL11.glGenTextures(); // 9
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonLocal);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_local_multi.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/bouton_local_multi.png")));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -408,7 +412,7 @@ public class DessinMenu {
 			    idTexButtonPlay = GL11.glGenTextures(); // 10
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonPlay);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_play.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/bouton_play.png")));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -419,7 +423,7 @@ public class DessinMenu {
 			    idTexButtonQuit = GL11.glGenTextures(); // 11
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonQuit);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_quit.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/bouton_quit.png")));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -430,7 +434,7 @@ public class DessinMenu {
 			    idTexButtonSettings = GL11.glGenTextures(); // 12
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonSettings);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_settings.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 388, 123, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/bouton_settings.png")));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
@@ -441,7 +445,7 @@ public class DessinMenu {
 			    idTexButtonBack = GL11.glGenTextures(); // 13
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonBack);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 236, 83, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex("images/bouton_retour.png"));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 236, 83, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/bouton_retour.png")));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
