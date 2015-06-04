@@ -43,6 +43,11 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.*;
+
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -91,7 +96,7 @@ public class DessinMenu {
 	/**
 	 * Variables pour faire le lien avec les attributs du vertex shaders
 	 */
-	private int posAttrib, colAttrib, texAttrib, projectionUniform;
+	private int posAttrib, colAttrib, texAttrib, projectionUniform, uniColor;
 	
 	/**
 	 * Identifiants des différentes textures du menus
@@ -141,6 +146,7 @@ public class DessinMenu {
 	 */
 	private FloatBuffer projectionMatrix;
 	
+	private long t_start;
 	
 	/**
 	 * Constructeur de la classe DessinMenu
@@ -155,7 +161,7 @@ public class DessinMenu {
 	 */
 	public DessinMenu(Affichage a, PolyFever p)
 	{
-		
+		this.t_start = System.currentTimeMillis();
 		this.polyFever = p;
 		this.lenTabV = 0;
 		this.lenTabE = 0;
@@ -246,7 +252,7 @@ public class DessinMenu {
 				projectionUniform = glGetUniformLocation(program, "Projection");
 				System.out.println(projectionUniform);
 
-				//uniColor = glGetUniformLocation(program, "Color");
+				uniColor = glGetUniformLocation(program, "Color");
 				
 				posAttrib = glGetAttribLocation(program, "position");
 				colAttrib = glGetAttribLocation(program, "color");
@@ -470,6 +476,9 @@ public class DessinMenu {
 	 */
 	public void dessiner()
 	{
+		
+		//long t_now = System.currentTimeMillis();
+		//float time = t_now - t_start;
 	
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, vboBuffer);
@@ -478,6 +487,8 @@ public class DessinMenu {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, eboBuffer);
 	
+		
+
 		
 		glClear(GL_COLOR_BUFFER_BIT);
 		
@@ -490,6 +501,10 @@ public class DessinMenu {
 		glBindBuffer(GL_ARRAY_BUFFER, vbo); 
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo); 
+		
+		//double newColor = Math.sin(time/100 + 4.0f);
+		//System.out.println(t_now);
+		//glUniform3f(uniColor, 1.0f*(float)newColor, 1.0f*(float)newColor, 1.0f*(float)newColor); // change la couleur du triangle en rouge
 		
 		glEnableVertexAttribArray(posAttrib);
 		glVertexAttribPointer(posAttrib, 2, GL_FLOAT, false,7*4, 0);
@@ -520,6 +535,7 @@ public class DessinMenu {
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 12*4+(6*4*i)); 
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0); // On met la texture à NULL
 		}
+		
 		
 		
 		glDisableVertexAttribArray(posAttrib);

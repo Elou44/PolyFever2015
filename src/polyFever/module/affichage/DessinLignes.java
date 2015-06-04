@@ -8,16 +8,8 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 import polyFever.module.main.*;
 import polyFever.module.moteurDeJeu.*;
-
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-
-
-
-
-
-
-
 import org.lwjgl.BufferUtils;
 
 
@@ -40,15 +32,16 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 	private Partie partie;
 	private Joueur j;
 		
-	private int program, ebo,vbo, posAttrib, colAttrib, projectionUniform;
+	private int program, ebo,vbo, posAttrib, colAttrib, projectionUniform, uniColor;
 	
 	private float tabVertex[];
 	private int elements[];
 	private int lenTabV;
 	private int lenTabE;
 	private int indexTabE;
-	FloatBuffer vboBuffer;
-	IntBuffer eboBuffer;
+	private FloatBuffer vboBuffer;
+	private IntBuffer eboBuffer;
+	private long t_start;
 	
 	/**
 	 * Nombre de côtés d'un curseur d'un joueur.
@@ -94,7 +87,7 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 	{
 		
 		System.out.println("Initialisation pour traçage des Lignes...");
-		//t_start = System.currentTimeMillis();
+		t_start = System.currentTimeMillis();
 		
 		glClearColor(0, 0, 0, 0);
 		
@@ -137,7 +130,7 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		projectionUniform = glGetUniformLocation(program, "Projection");
 		System.out.println(projectionUniform);
 
-		//uniColor = glGetUniformLocation(program, "Color");
+		uniColor = glGetUniformLocation(program, "Color");
 		posAttrib = glGetAttribLocation(program, "position");
 		colAttrib = glGetAttribLocation(program, "color");
 		System.out.println("posAttrib: ".concat(String.valueOf(posAttrib)));
@@ -209,71 +202,74 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		//long t_now = System.currentTimeMillis();
 		//float time = t_now - t_start;
 		
-			
-		Iterator<Joueur> e = this.partie.getJoueurs().iterator();
-		
-		while(e.hasNext()) // A déplacer dans Init();
+		if(this.partie.isJeu()) // Si on est en jeu
 		{
-			j = e.next();
-			if(j.getPosition().z() == 1.0f && j.getEtat() == Etat.VIVANT && !partie.isRoundEnPause())
+	
+			Iterator<Joueur> e = this.partie.getJoueurs().iterator();
+			
+			while(e.hasNext()) // A déplacer dans Init();
 			{
-				this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse(), j.getLigne().getCouleur());
+				j = e.next();
+				if(j.getPosition().z() == 1.0f && j.getEtat() == Etat.VIVANT && !partie.isRoundEnPause())
+				{
+					this.addRectangle(j.getPosition(), j.getAngleRectangle(), j.getLigne().getEpaisseur(), j.getLigne().getVitesse(), j.getLigne().getCouleur());
+					
+				}
 				
 			}
 			
+	
+			
+			updatePosJoueurs(false); // On bouge le point du joueur
+			
+			this.vboBuffer.put(this.tabVertex); // On met a jour le buffer VBO 
+			this.vboBuffer.clear();
+			this.eboBuffer.put(this.elements); // On met a jour le buffer EBO
+			this.eboBuffer.clear();
+			
+			
+			glBindBuffer(GL_ARRAY_BUFFER, vbo);
+			glBufferSubData(GL_ARRAY_BUFFER, 0, vboBuffer);
+			
+			
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+			glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, eboBuffer);
+			
+			
+			glClear(GL_COLOR_BUFFER_BIT);
+			
+			glUseProgram(program);
+			
+			
+			
+			glUniformMatrix4(projectionUniform, false, (FloatBuffer)projectionMatrix);
+			
+			
+			glBindBuffer(GL_ARRAY_BUFFER, vbo); 
+	
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+			
+			//double newColor = Math.sin(time/100 + 4.0f);
+			//System.out.println(time);
+			//glUniform3f(uniColor, 1.0f, 0.0f, 0.0f); // change la couleur du triangle en rouge
+			
+			
+			glEnableVertexAttribArray(posAttrib);
+			glVertexAttribPointer(posAttrib, 2, GL_FLOAT, false,5*4, 0);
+			
+			glEnableVertexAttribArray(colAttrib);
+			glVertexAttribPointer(colAttrib, 3, GL_FLOAT, false,5*4, 2*4);
+			
+			
+			glDrawElements(GL_TRIANGLES, this.nbVertex, GL_UNSIGNED_INT, 0); // essayer avec glDrawElements (https://open.gl/drawing)
+			
+			glDisableVertexAttribArray(posAttrib);
+			glDisableVertexAttribArray(colAttrib);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			
+			glUseProgram(0);
 		}
-		
-
-		
-		updatePosJoueurs(false); // On bouge le point du joueur
-		
-		this.vboBuffer.put(this.tabVertex); // On met a jour le buffer VBO 
-		this.vboBuffer.clear();
-		this.eboBuffer.put(this.elements); // On met a jour le buffer EBO
-		this.eboBuffer.clear();
-		
-		
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, vboBuffer);
-		
-		
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, eboBuffer);
-		
-		
-		glClear(GL_COLOR_BUFFER_BIT);
-		
-		glUseProgram(program);
-		
-		
-		
-		glUniformMatrix4(projectionUniform, false, (FloatBuffer)projectionMatrix);
-		
-		
-		glBindBuffer(GL_ARRAY_BUFFER, vbo); //TEST
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo); //TEST
-		
-		//double newColor = Math.sin(time/100 + 4.0f);
-		//System.out.println(time);
-		//glUniform3f(uniColor, 1.0f, 0.0f, 0.0f); // change la couleur du triangle en rouge
-		
-		
-		glEnableVertexAttribArray(posAttrib);
-		glVertexAttribPointer(posAttrib, 2, GL_FLOAT, false,5*4, 0);
-		
-		glEnableVertexAttribArray(colAttrib);
-		glVertexAttribPointer(colAttrib, 3, GL_FLOAT, false,5*4, 2*4);
-		
-		
-		glDrawElements(GL_TRIANGLES, this.nbVertex, GL_UNSIGNED_INT, 0); // essayer avec glDrawElements (https://open.gl/drawing)
-		
-		glDisableVertexAttribArray(posAttrib);
-		glDisableVertexAttribArray(colAttrib);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-		
-		glUseProgram(0);
 	}
 	
 	
@@ -384,8 +380,6 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		
 		this.lenTabV += 20;
 
-		//this.vboBuffer.put(this.tabVertex); // On met a jour le buffer VBO 
-		//this.vboBuffer.clear();
 
 
 		
@@ -399,12 +393,8 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		
 		
 		this.lenTabE += 6;
-
-		//this.eboBuffer.put(this.elements);
 		this.indexTabE += 4;
-		
-		//this.eboBuffer.clear();
-	
+
 	}
 	
 	
@@ -572,15 +562,6 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 			}
 
 		}
-		
-		
-		//this.vboBuffer.put(this.tabVertex); // On met a jour le buffer VBO 
-		//this.vboBuffer.clear();
-		
-		//this.eboBuffer.put(this.elements);
-		//this.eboBuffer.clear();
-		
-		//printTabVertex();
 
 	}
 	

@@ -157,7 +157,7 @@ public abstract class PolyFever {
 		
 		Display.setResizable(resizable);
 		
-		fps = 200;
+		fps = 30;
 		
 		
 	}

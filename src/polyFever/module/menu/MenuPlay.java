@@ -37,12 +37,12 @@ public class MenuPlay extends Menu {
 		partie = new Partie(p, structMenu);
 		Joueur j1 = new Joueur(partie, "Joueur 1", Keyboard.KEY_LEFT, Keyboard.KEY_RIGHT);
 		Joueur j2 = new Joueur(partie, "Joueur 2", Keyboard.KEY_V, Keyboard.KEY_B);
-		/*Joueur j3 = new Joueur(partie, "Joueur 3", Keyboard.KEY_A, Keyboard.KEY_Z);
-		Joueur j4 = new Joueur(partie, "Joueur 4", Keyboard.KEY_K, Keyboard.KEY_L);*/
+		Joueur j3 = new Joueur(partie, "Joueur 3", Keyboard.KEY_A, Keyboard.KEY_Z);
+		Joueur j4 = new Joueur(partie, "Joueur 4", Keyboard.KEY_K, Keyboard.KEY_L);
 		partie.ajouterJoueur(j1, p);
 		partie.ajouterJoueur(j2, p);
-		/*partie.ajouterJoueur(j3, p);
-		partie.ajouterJoueur(j4, p);*/
+		partie.ajouterJoueur(j3, p);
+		partie.ajouterJoueur(j4, p);
 		partie.initialiserPartie();
 		
 		p.getAffichage().initJeu(p, partie);

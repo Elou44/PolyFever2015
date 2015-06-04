@@ -148,6 +148,7 @@ public class DessinScores {
 	
 	private float yOffSet;
 	private Joueur j;
+	private Joueur[] playerListSortedByScore;
 	
 	
 	/**
@@ -174,6 +175,7 @@ public class DessinScores {
 		
 		titleBox = new float[] {1.1f,0.9f,0.6f,0.15f};
 		this.yOffSet = 0.0f;
+		this.playerListSortedByScore = new Joueur[this.partie.getNbJoueurs()];
 		
 		this.projectionMatrix = this.polyFever.getGlOrtho().getProjectionBuf();
 	};	
@@ -443,6 +445,7 @@ public class DessinScores {
 	    
 	    // FIN CHARGEMENT DES TEXTURES // 
 	    
+	    initListPlayer(); // On remplie le tableau playerListSortedByScore;
 	    updateScores();
 
 	}
@@ -488,25 +491,19 @@ public class DessinScores {
 		
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0); // On met la texture à NULL
 
-		int i = 0;
-		Iterator<Joueur> e = this.partie.getJoueurs().iterator();
-		
-		while(e.hasNext()) // A déplacer dans Init();
+		for(int i=0; i<this.playerListSortedByScore.length ; i++)
 		{
-			j = e.next();
-
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexPlayerLogo); // On bind la premiere texture
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 6*4+(18*4*i));  // On trace le carré
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0); // On met la texture à NULL
 			
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, scoreToIdTex(j)[0]); // On bind la premiere texture
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, scoreToIdTex(this.playerListSortedByScore[i])[0]); // On bind la premiere texture
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 12*4+(18*4*i)); 
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0); // On met la texture à NULL
 			
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, scoreToIdTex(j)[1]); // On bind la premiere texture
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, scoreToIdTex(this.playerListSortedByScore[i])[1]); // On bind la premiere texture
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 18*4+(18*4*i)); 
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0); // On met la texture à NULL
-			i++;
 
 		}
 			//System.out.println("IdBouton :" + tabIdBoutons[i]);
@@ -559,16 +556,15 @@ public class DessinScores {
 		this.lenTabE += 6;
 		this.indexTabE += 4;
 		
+		sortPlayerList(); // On trie la liste des joueurs
 		
-		Iterator<Joueur> e = this.partie.getJoueurs().iterator();
-		
-		while(e.hasNext()) // A déplacer dans Init();
+		for(int i=0; i<this.playerListSortedByScore.length ; i++)
 		{
-			j = e.next();
-
-			this.addScore(j);
-
+			this.addScore(this.playerListSortedByScore[i]);
 		}
+
+			
+
 		
 		// On met à jour les vertex et elements buffer
 		this.vboBuffer.put(this.tabVertex); // On met a jour le buffer VBO 
@@ -702,6 +698,44 @@ public class DessinScores {
 		
 		return tab;
 		
+	}
+	
+	public void initListPlayer() {
+		
+		Iterator<Joueur> e = this.partie.getJoueurs().iterator();
+		int i = 0;
+		while(e.hasNext()) // A déplacer dans Init();
+		{
+			j = e.next();
+			this.playerListSortedByScore[i] = j;
+			i++;
+		}
+		
+	}
+	
+	public void sortPlayerList() {
+		
+		boolean isSorted = false;
+		
+		while(!isSorted) // Tant que le tableau de joueur n'est pas trié
+		{
+			isSorted = true;
+			for(int i = 0; i<this.playerListSortedByScore.length-1; i++) {
+				if(this.playerListSortedByScore[i].getScore() < this.playerListSortedByScore[i+1].getScore())
+				{
+					isSorted = false;
+					j = this.playerListSortedByScore[i+1]; // On échange les deux joueurs (trie à bulle)
+					this.playerListSortedByScore[i+1] = this.playerListSortedByScore[i];
+					this.playerListSortedByScore[i] = j;
+				}
+			}
+		}
+		
+		for(int i = 0; i<this.playerListSortedByScore.length; i++) {
+			System.out.println("Score" +i+ " : " + this.playerListSortedByScore[i].getScore());
+		}
+		
+		System.out.println("______________________________");
 	}
 	
 	
