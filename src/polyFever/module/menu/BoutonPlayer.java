@@ -35,7 +35,6 @@ public class BoutonPlayer extends Bouton {
 	@Override
 	public void action() {
 		super.select();
-		System.out.println("IdColorClickedButton : " + super.getIdColor());
 		pere.p.getAffichage().dMenu.updateMenu(pere.structMenu.getCurMenu()); // On appelle la méthode de l'affichage qui va dessiner le nouveau menu
 	}
 }

@@ -266,12 +266,7 @@ public class DessinScores {
 		posAttrib = glGetAttribLocation(program, "position");
 		colAttrib = glGetAttribLocation(program, "color");
 		texAttrib = glGetAttribLocation(program, "texcoord");
-		
-		System.out.println("posAttrib: ".concat(String.valueOf(posAttrib)));
-		System.out.println("colAttrib: ".concat(String.valueOf(colAttrib)));
-		System.out.println("texAttrib: ".concat(String.valueOf(texAttrib)));
-		//System.out.println("uniColor: ".concat(String.valueOf(uniColor)));
-		
+
 		glDetachShader(program, vs);
 		glDetachShader(program, fs);
 		
@@ -762,11 +757,6 @@ public class DessinScores {
 			}
 		}
 		
-		for(int i = 0; i<this.playerListSortedByScore.length; i++) {
-			System.out.println("Score" +i+ " : " + this.playerListSortedByScore[i].getScore());
-		}
-		
-		System.out.println("______________________________");
 	}
 	
 	

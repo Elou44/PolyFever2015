@@ -128,13 +128,11 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		}
 		
 		projectionUniform = glGetUniformLocation(program, "Projection");
-		System.out.println(projectionUniform);
 
 		uniColor = glGetUniformLocation(program, "Color");
 		posAttrib = glGetAttribLocation(program, "position");
 		colAttrib = glGetAttribLocation(program, "color");
-		System.out.println("posAttrib: ".concat(String.valueOf(posAttrib)));
-		System.out.println("colAttrib: ".concat(String.valueOf(colAttrib)));
+
 		
 		
 		glDetachShader(program, vs);
@@ -457,7 +455,7 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 			this.tabVertex[this.lenTabV+3] = 1.0f; 
 			this.tabVertex[this.lenTabV+4] = 1.0f; 
 			
-			System.out.println("Vertex "+ i + ": " + tabVertexPoint[i].x() + ", " + tabVertexPoint[i].y() );
+			//System.out.println("Vertex "+ i + ": " + tabVertexPoint[i].x() + ", " + tabVertexPoint[i].y() );
 			
 			this.lenTabV += 5;
 		}
@@ -475,7 +473,7 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 				this.elements[this.lenTabE+1] = this.indexTabE+1;
 				this.elements[this.lenTabE+2] = this.indexTabE+1+j;
 				
-				System.out.println(String.valueOf(indexInitial) + "-" + String.valueOf(this.indexTabE+1) + "-" + String.valueOf(this.indexTabE+1+j));
+				//System.out.println(String.valueOf(indexInitial) + "-" + String.valueOf(this.indexTabE+1) + "-" + String.valueOf(this.indexTabE+1+j));
 			}
 			else
 			{
@@ -483,7 +481,7 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 				this.elements[this.lenTabE+1] = this.indexTabE+2+j;
 				this.elements[this.lenTabE+2] = this.indexTabE+1+j;
 				
-				System.out.println(String.valueOf(indexInitial) + "-" + String.valueOf(this.indexTabE+2+j) + "-" + String.valueOf(this.indexTabE+1+j));
+				//System.out.println(String.valueOf(indexInitial) + "-" + String.valueOf(this.indexTabE+2+j) + "-" + String.valueOf(this.indexTabE+1+j));
 			}
 			
 			this.lenTabE += 3;
@@ -576,11 +574,7 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		this.lenTabE = (this.NBCOTES*3)*partie.getNbJoueurs()+6*4;  // 6 floats par board + 3 vertex par coté * nb joueur
 		this.indexTabE = ((this.NBCOTES+1)*partie.getNbJoueurs()+4*4); // NBCOTES+1 vertex par point de joueur * nb le nombre de joueurs + 4 vertex par board
 		System.out.println("TabVertex has been cleared !");
-		
-		//System.out.println("nbVertex: " + nbVertex);
-		//System.out.println("lenTabE: " + lenTabE);
-		//System.out.println("lenTabV: " + lenTabV);
-		//System.out.println("indexTabE: " + indexTabE);
+
 	}
 	
 	/**
@@ -594,11 +588,6 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		this.addRectangle(new Vector3(1.0f-p.x(),1.0f-p.y(),1.0f),(float) Math.PI/2, 0.01f, 2.0f, 3); // RIGHT
 		this.addRectangle(new Vector3(1.0f-p.x(),-1.0f-p.y(),1.0f), 0.0f, 0.02f, 1.99f, 3); // BOTTOM
 		this.addRectangle(new Vector3(1.0f-p.x(),1.0f-p.y(),1.0f), 0.0f, 0.01f, 1.99f, 3); // RIGHT
-		
-		System.out.println("nbVertex: " + nbVertex);
-		System.out.println("lenTabE: " + lenTabE);
-		System.out.println("lenTabV: " + lenTabV);
-		System.out.println("indexTabE: " + indexTabE);
 	}
 	
 	

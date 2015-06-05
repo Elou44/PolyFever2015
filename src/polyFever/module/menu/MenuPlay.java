@@ -45,7 +45,7 @@ public class MenuPlay extends Menu {
 	    while(ib.hasNext()) //On parcours les Boutons
 	    { 
 			b = ib.next();
-			System.out.println("Bouton (idColor:"+b.getIdColor()+") isSelected:"+b.isSelected);
+			//System.out.println("Bouton (idColor:"+b.getIdColor()+") isSelected:"+b.isSelected);
 			if(b.isSelected) {
 				
 				

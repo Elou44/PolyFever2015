@@ -70,13 +70,11 @@ public class Evenements {
 		while(Mouse.next()) {
 			
 			if(Mouse.getEventButton() == 0 && Mouse.getEventButtonState()) {	//Clic gauche avec la souris
-				System.out.println("Clique souris détecté !");
 				Iterator<Bouton> i = boutons.iterator();
 				while(i.hasNext()) { //On parcours les Bouton de l'ensemble passe en parametre
 					b = i.next();
 					
 					if(isInsideHitbox(Mouse.getEventX(), Mouse.getEventY(), b)) {	//Le clic est dans la hitbox	
-						System.out.println("..........Cliquer sur bouton...............");
 						b.action();
 					}
 					
