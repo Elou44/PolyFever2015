@@ -570,7 +570,7 @@ public class Partie {
 	 * @param joueur
 	 * @param p
 	 */
-	public void ajouterJoueur(Joueur joueur, PolyFever p)
+	public void ajouterJoueur(Joueur joueur, PolyFever p, int col)
 	{
 		// Incrémentation du nombre de joueurs
 		nbJoueurs = nbJoueurs + 1;
@@ -579,7 +579,7 @@ public class Partie {
 		joueurs.add(joueur);
 		
 		// Instanciation d'une ligne pour le joueur
-		joueur.setLigne(new Ligne(p));
+		joueur.setLigne(new Ligne(p, col));
 		
 		System.out.println("\t\tANCIEN : "+joueur.getLigne().toString()+"\n\t\tNB JOUEURS : "+joueurs.size());
 		

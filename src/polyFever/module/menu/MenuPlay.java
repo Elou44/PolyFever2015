@@ -45,46 +45,43 @@ public class MenuPlay extends Menu {
 	    while(ib.hasNext()) //On parcours les Boutons
 	    { 
 			b = ib.next();
-			
+			System.out.println("Bouton (idColor:"+b.getIdColor()+") isSelected:"+b.isSelected);
 			if(b.isSelected) {
-				System.out.println("HERRRRRRRE" + i);
-				switch(i) {
-					case 0 : Joueur j1 = new Joueur(partie, "Joueur 1", Keyboard.KEY_LEFT, Keyboard.KEY_RIGHT);
-							partie.ajouterJoueur(j1, p);
-							System.out.println("j1");
-						
-						break;
-					case 1 : Joueur j2 = new Joueur(partie, "Joueur 2", Keyboard.KEY_V, Keyboard.KEY_B); partie.ajouterJoueur(j2, p);System.out.println("j2");
-						break;
-					case 2 : Joueur j3 = new Joueur(partie, "Joueur 3", Keyboard.KEY_A, Keyboard.KEY_Z); partie.ajouterJoueur(j3, p);System.out.println("j3");
-						break;
-					case 3 : Joueur j4 = new Joueur(partie, "Joueur 4", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j4, p);System.out.println("j4");
-						break;
-					case 4 : Joueur j5 = new Joueur(partie, "Joueur 5", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j5, p);System.out.println("j4");
-						break;
-					case 5 : Joueur j6 = new Joueur(partie, "Joueur 6", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j6, p);System.out.println("j4");
-						break;
-					case 6 : Joueur j7 = new Joueur(partie, "Joueur 7", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j7, p);System.out.println("j4");
-						break;
-					case 7 : Joueur j8 = new Joueur(partie, "Joueur 8", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j8, p);System.out.println("j4");
-						break;
-					case 8 : Joueur j9 = new Joueur(partie, "Joueur 9", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j9, p);System.out.println("j4");
-						break;
-					case 9 : Joueur j10 = new Joueur(partie, "Joueur 10", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j10, p);System.out.println("j4");
-						break;
-					case 10 : Joueur j11 = new Joueur(partie, "Joueur 11", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j11, p);System.out.println("j4");
-						break;
-					case 11 : Joueur j12 = new Joueur(partie, "Joueur 12", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j12, p);System.out.println("j4");
-						break;
-					case 12 : Joueur j13 = new Joueur(partie, "Joueur 13", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j13, p);System.out.println("j4");
-						break;
-					case 13 : Joueur j14 = new Joueur(partie, "Joueur 14", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j14, p);System.out.println("j4");
-						break;
-					case 14 : Joueur j15 = new Joueur(partie, "Joueur 15", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j15, p);System.out.println("j4");
-						break;
-					case 15 : Joueur j16 = new Joueur(partie, "Joueur 16", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j16, p);System.out.println("j4");
-						break;
-				}
+				
+				
+					if(b.getIdColor()==0) { Joueur j1 = new Joueur(partie, "Joueur 1", Keyboard.KEY_LEFT, Keyboard.KEY_RIGHT);partie.ajouterJoueur(j1, p, 0); }
+
+					else if(b.getIdColor()==1) { Joueur j2 = new Joueur(partie, "Joueur 2", Keyboard.KEY_V, Keyboard.KEY_B); partie.ajouterJoueur(j2, p, 1); }
+
+					else if(b.getIdColor()==2) { Joueur j3 = new Joueur(partie, "Joueur 3", Keyboard.KEY_A, Keyboard.KEY_Z); partie.ajouterJoueur(j3, p, 2); }
+
+					else if(b.getIdColor()==3) { Joueur j4 = new Joueur(partie, "Joueur 4", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j4, p, 3);  }
+
+					else if(b.getIdColor()==4) { Joueur j5 = new Joueur(partie, "Joueur 5", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j5, p, 4); }
+
+					else if(b.getIdColor()==5) { Joueur j6 = new Joueur(partie, "Joueur 6", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j6, p, 5); }
+
+					else if(b.getIdColor()==6) { Joueur j7 = new Joueur(partie, "Joueur 7", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j7, p, 6); }
+
+					else if(b.getIdColor()==7) { Joueur j8 = new Joueur(partie, "Joueur 8", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j8, p, 7); }
+
+					else if(b.getIdColor()==8) { Joueur j9 = new Joueur(partie, "Joueur 9", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j9, p, 8); }
+
+					else if(b.getIdColor()==9) { Joueur j10 = new Joueur(partie, "Joueur 10", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j10, p, 9); }
+
+					else if(b.getIdColor()==10) { Joueur j11 = new Joueur(partie, "Joueur 11", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j11, p, 10); }
+
+					else if(b.getIdColor()==11) { Joueur j12 = new Joueur(partie, "Joueur 12", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j12, p, 11); }
+
+					else if(b.getIdColor()==12) { Joueur j13 = new Joueur(partie, "Joueur 13", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j13, p, 12); }
+
+					else if(b.getIdColor()==13) { Joueur j14 = new Joueur(partie, "Joueur 14", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j14, p, 13); }
+
+					else if(b.getIdColor()==14) { Joueur j15 = new Joueur(partie, "Joueur 15", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j15, p, 14); }
+
+					else if(b.getIdColor()==15) { Joueur j16 = new Joueur(partie, "Joueur 16", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j16, p, 15); }
+
+				
 			}
 			
 			if(b.getIdColor() != -1)

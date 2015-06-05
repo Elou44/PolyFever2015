@@ -130,7 +130,7 @@ public class StructureMenu {
 		BoutonPlayer bp16 = new BoutonPlayer(m_partie,0.3f,-0.4f-yOffSet,0.1f,0.1f, 9,15);
 		BoutonRetour bRetLancerPartie = new BoutonRetour(m_partie,0.8f,-0.8f,0.4370f,0.1555f, 8); 
 		
-		m_partie.addBouton(bLancerPartie);
+		
 		m_partie.addBouton(bp1);
 		m_partie.addBouton(bp2);
 		m_partie.addBouton(bp3);
@@ -147,7 +147,7 @@ public class StructureMenu {
 		m_partie.addBouton(bp14);
 		m_partie.addBouton(bp15);
 		m_partie.addBouton(bp16);
-		
+		m_partie.addBouton(bLancerPartie);
 		m_partie.addBouton(bRetLancerPartie);
 		
 

@@ -40,7 +40,7 @@ import polyFever.module.main.*;
 public class Ligne {
 
 	// COULEUR AFFECTEE LORS DE L'INSTANCIATION D'UN JOUEUR
-	private static int couleur = 0;		// Couleur de la ligne
+	//private static int couleur = 0;		// Couleur de la ligne
 	private int color;
 	private Joueur joueur;				// Joueur controlant la ligne
 	private float vitesse;  			// Vitesse de la ligne en float
@@ -60,11 +60,11 @@ public class Ligne {
 	 * 
 	 * @param polyFever
 	 */
-	public Ligne(PolyFever p)	// Par défaut
+	public Ligne(PolyFever p, int col)	// Par défaut
 	{
 		//System.out.println("Instanciation d'un objet Ligne (sp)...");
-		this.color = Ligne.couleur;
-		Ligne.couleur = Ligne.couleur + 1;
+		this.color = col;
+		//Ligne.couleur = Ligne.couleur + 1;
 		this.joueur = null;
 		this.vitesse = 0.009f;
 		this.vitesseInit = 0.009f;
@@ -76,17 +76,17 @@ public class Ligne {
 	}
 	
 	/**
-	 * Constructeur d'un objet Ligne avec la couleur en paramètres
+	 * Constructeur d'un objet Ligne avec la couleur en paramètres A ENLEVER?
 	 * 
 	 * @param couleur
 	 * @param polyFever
 	 */
-	public Ligne(int couleur, PolyFever p)	// Avec paramètres
+	/*public Ligne(int couleur, PolyFever p)	// Avec paramètres
 	{
 		this(p);
 		//System.out.println("Instanciation d'un objet Ligne (ap)...");
 		this.color = couleur;
-	}
+	}*/
 	
 	// Méthodes
 
@@ -542,7 +542,7 @@ public class Ligne {
 	 */
 	@Override
 	public String toString() {
-		return "Ligne [couleur=" + couleur +", vitesse=" + vitesse + ", epaisseur=" + epaisseur
+		return "Ligne [couleur=" + color +", vitesse=" + vitesse + ", epaisseur=" + epaisseur
 				+ ", courbe=" + courbe + ", tpsEnVie=" + tpsEnVie +"]";
 	}
 	
