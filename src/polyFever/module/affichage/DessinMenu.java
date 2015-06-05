@@ -191,7 +191,7 @@ public class DessinMenu {
 		ByteBuffer pixelData = BufferUtils.createByteBuffer(0); // On initialise le ByteBuffer avec une texture vide
 		try(InputStream is = this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/menu_theme_4pipes.png")){
 		    //Create the PNGDecoder object and decode the texture to a buffer
-			System.out.println("Image : "+is+" et "+path);
+			//System.out.println("Image : "+is+" et "+path);
 		    PNGDecoder decoder = new PNGDecoder(path);
 		    int width = decoder.getWidth(), height = decoder.getHeight();
 		    pixelData = BufferUtils.createByteBuffer(4*width*height);
@@ -348,7 +348,7 @@ public class DessinMenu {
 				idTexMenuCredits = GL11.glGenTextures(); // 2.3
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuCredits);
 			        //Upload the buffer's content to the VRAM
-			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 1080, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/menu_vierge.png")));
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 1080, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/menu_Credits.png")));
 			        //Apply filters
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
