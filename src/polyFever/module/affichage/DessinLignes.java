@@ -32,7 +32,7 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 	private Partie partie;
 	private Joueur j;
 		
-	private int program, ebo,vbo, posAttrib, colAttrib, projectionUniform, uniColor;
+	private int program, ebo,vbo, posAttrib, colAttrib, projectionUniform;
 	
 	private float tabVertex[];
 	private int elements[];
@@ -41,7 +41,6 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 	private int indexTabE;
 	private FloatBuffer vboBuffer;
 	private IntBuffer eboBuffer;
-	private long t_start;
 	
 	/**
 	 * Nombre de côtés d'un curseur d'un joueur.
@@ -87,7 +86,7 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 	{
 		
 		System.out.println("Initialisation pour traçage des Lignes...");
-		t_start = System.currentTimeMillis();
+		//t_start = System.currentTimeMillis();
 		
 		glClearColor(0, 0, 0, 0);
 		
@@ -129,7 +128,7 @@ public class DessinLignes  { // peut être instancier un tableau de DessinLigne d
 		
 		projectionUniform = glGetUniformLocation(program, "Projection");
 
-		uniColor = glGetUniformLocation(program, "Color");
+		//uniColor = glGetUniformLocation(program, "Color");
 		posAttrib = glGetAttribLocation(program, "position");
 		colAttrib = glGetAttribLocation(program, "color");
 

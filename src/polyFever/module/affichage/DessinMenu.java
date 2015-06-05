@@ -42,24 +42,14 @@ import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
-
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Iterator;
-
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-
 import polyFever.module.main.PolyFever;
 import polyFever.module.menu.Bouton;
 import polyFever.module.menu.Menu;
@@ -99,7 +89,7 @@ public class DessinMenu {
 	/**
 	 * Variables pour faire le lien avec les attributs du vertex shaders
 	 */
-	private int posAttrib, colAttrib, texAttrib, projectionUniform, uniColor;
+	private int posAttrib, colAttrib, texAttrib, projectionUniform;
 	
 	/**
 	 * Identifiants des différentes textures du menus
@@ -150,9 +140,7 @@ public class DessinMenu {
 	 * par cette martrice afin d'annuler l'effet de distortion qui apparait lorsque la fenêtre devient rectangulaire.
 	 */
 	private FloatBuffer projectionMatrix;
-	
-	private long t_start;
-	
+		
 	/**
 	 * Constructeur de la classe DessinMenu
 	 * Initialisation des attributs. instanciation de 2 tableaux d'un million d'éléments chacun 
@@ -166,7 +154,6 @@ public class DessinMenu {
 	 */
 	public DessinMenu(Affichage a, PolyFever p)
 	{
-		this.t_start = System.currentTimeMillis();
 		this.polyFever = p;
 		this.lenTabV = 0;
 		this.lenTabE = 0;
@@ -258,7 +245,7 @@ public class DessinMenu {
 				projectionUniform = glGetUniformLocation(program, "Projection");
 				System.out.println(projectionUniform);
 
-				uniColor = glGetUniformLocation(program, "Color");
+				//uniColor = glGetUniformLocation(program, "Color");
 				
 				posAttrib = glGetAttribLocation(program, "position");
 				colAttrib = glGetAttribLocation(program, "color");
@@ -547,7 +534,7 @@ public class DessinMenu {
 	 *  <li>On met à jour la matrice de projection du vertex shader.</li>
 	 *  <li>On bind l'ebo et le vbo au contexte openGL pour indiquer à ce dernier qu'il devra les utiliser pour l'affichage.</li>
 	 *  <li>On indique à openGL comment il doit interpréter le buffer de vertex ( 2 premiers floats pour la position, les 3 suivants pour la couleurs et les deux derniers pour la position de la texture.</li>
-	 *  <li>On bind la texture voulue pour indiquer à openGL qui doit utiliser cette texture lors de l'affichage.</li>
+	 *  <li>On bind la texture voulue pour indiquer à openGL qu'il doit utiliser cette texture lors de l'affichage.</li>
 	 *  <li>On trace un certain nombre de vertex avec cette texture (par exemple les vertex d'un bouton)</li>
 	 *  <li>Avant de changer de texture, on l'unbind.</li>
 	 *  <li>On bind une nouvelle texture et on trace d'autres vertices, et ainsi de suite pour tous les éléments du menu.</li>

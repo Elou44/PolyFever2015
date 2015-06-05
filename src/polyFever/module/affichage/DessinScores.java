@@ -1,11 +1,10 @@
 package polyFever.module.affichage;
 
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
-import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
@@ -42,24 +41,15 @@ import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
-
-import java.awt.Rectangle;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Iterator;
-
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-
 import polyFever.module.main.PolyFever;
-import polyFever.module.menu.Bouton;
-import polyFever.module.menu.Menu;
-import polyFever.module.moteurDeJeu.Etat;
 import polyFever.module.moteurDeJeu.Joueur;
 import polyFever.module.moteurDeJeu.Partie;
 import polyFever.module.util.PNGDecoder;
@@ -102,11 +92,7 @@ public class DessinScores {
 	 * Identifiants des différentes textures du menus
 	 */
 	private int idTexFig0, idTexFig1, idTexFig2, idTexFig3, idTexFig4, idTexFig5, idTexFig6, idTexFig7, idTexFig8, idTexFig9, idTexTitle, idTexPlayerLogo;  // indentifiant des textures
-	
-	private int idTexFond, idTexTitre;
-	private int tabIdBoutons[];
-	private int indiceBouton;
-	
+		
 	/**
 	 * Tableau de floats contenant toutes les informations des vertices, soit ici 7 floats par vertex
 	 *  (2 floats pour la position du vertex, 3 floats pour sa couleur (RGB), et 2 floats pour la position de la texture)
@@ -146,9 +132,13 @@ public class DessinScores {
 	private FloatBuffer projectionMatrix;
 	
 	private float[] titleBox;
-	
 	private float yOffSet;
+	
 	private Joueur j;
+	
+	/**
+	 * Liste ordonné (selon le score) des joueurs de la partie. 
+	 */
 	private Joueur[] playerListSortedByScore;
 	
 	
@@ -447,6 +437,26 @@ public class DessinScores {
 	}
 
 	
+	/**
+	 * <p> 
+	 * L'affichage du buffer de vertex se déroule en plusieurs étapes : 
+	 * <ul>
+	 * 	<li>On recharge l'eboBuffer et le vboBuffer dans la VRAM.</li>
+	 *  <li>On efface l'écran.</li>
+	 *  <li>On active le program shader.</li>
+	 *  <li>On met à jour la matrice de projection du vertex shader.</li>
+	 *  <li>On bind l'ebo et le vbo au contexte openGL pour indiquer à ce dernier qu'il devra les utiliser pour l'affichage.</li>
+	 *  <li>On indique à openGL comment il doit interpréter le buffer de vertex ( 2 premiers floats pour la position, les 3 suivants pour la couleurs et les deux derniers pour la position de la texture.</li>
+	 *  <li>On bind la texture voulue pour indiquer à openGL qu'il doit utiliser cette texture lors de l'affichage.</li>
+	 *  <li>La méthode scoreToIdTex permet de renvoyer l'id de la texture à utiliser (pour l'affichage des nombres)
+	 *  <li>On trace un certain nombre de vertex avec cette texture</li>
+	 *  <li>Avant de changer de texture, on l'unbind.</li>
+	 *  <li>On bind une nouvelle texture et on trace d'autres vertices, et ainsi de suite pour tous les éléments du menu.</li>
+	 *  <li>On détache les buffers (ebo et vbo) du contexte openGL.</li>
+	 *  <li>On détache le program shader du contexte openGL.</li>
+	 * </ul>
+	 * </p>
+	 */
 	public void dessiner()
 	{
 		//System.out.println("		dessiner dScores");
@@ -456,9 +466,7 @@ public class DessinScores {
 		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, eboBuffer);
-	
-		
-		//glClear(GL_COLOR_BUFFER_BIT);
+
 		
 		glUseProgram(program);
 		
@@ -478,8 +486,7 @@ public class DessinScores {
 		
 		glEnableVertexAttribArray(texAttrib);
 		glVertexAttribPointer(texAttrib, 2, GL_FLOAT, false, 7*4, 5*4);
-		
-		//updateScores();
+
 		
 		
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitle); // On bind la premiere texture
@@ -506,7 +513,7 @@ public class DessinScores {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0); // On met la texture à NULL
 
 		}
-			//System.out.println("IdBouton :" + tabIdBoutons[i]);
+
 			
 
 		
@@ -522,6 +529,14 @@ public class DessinScores {
 		glUseProgram(0);
 	}
 	
+	
+	/**
+	 * Méthode permettant de mettre à jour les attributs de la classe nécessaires à l'affichage des nouveaux scores.
+	 * Ceci consiste principalement à remettre de nouveaux vertex dans le tableau de vertex afin d'afficher les nouvelles 
+	 * images correspondants aux nouveaux scores.
+	 * 
+	 * @author Elouarn Lainé
+	 */
 	public void updateScores(){
 
 
@@ -575,7 +590,12 @@ public class DessinScores {
 		
 	}
 	
-	
+	/**
+	 * Cette méthode permet d'ajouter les vertices nécessaire à l'affichage du score d'un joueur. 
+	 * (soit les vertices pour une image, et 3 chiffres) 
+	 * @param j
+	 * 		Joueur j : un joueur de la liste des joueurs de la partie.
+	 */
 	public void addScore(Joueur j) {
 		
 		// Ajout d'un carré de couleur
@@ -689,6 +709,13 @@ public class DessinScores {
 		this.yOffSet += 0.1f;
 	}
 	
+	/**
+	 * Cette méthode permet de retourner les identifiants des textures nécessaires à l'affichage du score d'un joueur.
+	 * @param j
+	 * 		Joueur j : un joueur de la liste des joueurs de la partie.
+	 * @return Integer[]
+	 * 		tableau d'identifiants des 3 textures nécessaires à l'affichage du score d'un joueur 
+	 */
 	public Integer[] scoreToIdTex(Joueur j) {
 		
 		Integer[] tab = new Integer[3];
@@ -726,6 +753,9 @@ public class DessinScores {
 		
 	}
 	
+	/**
+	 * Méthode permettant d'initialiser le tableau ordonné des joueurs de la partie.
+	 */
 	public void initListPlayer() {
 		
 		Iterator<Joueur> e = this.partie.getJoueurs().iterator();
@@ -739,6 +769,10 @@ public class DessinScores {
 		
 	}
 	
+	
+	/**
+	 * Méthode permettant de trier par ordre décroissant de score le tableau ordonné des joueurs de la partie.
+	 */
 	public void sortPlayerList() {
 		
 		boolean isSorted = false;
