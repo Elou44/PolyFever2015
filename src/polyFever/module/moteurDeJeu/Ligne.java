@@ -40,7 +40,6 @@ import polyFever.module.main.*;
 public class Ligne {
 
 	// COULEUR AFFECTEE LORS DE L'INSTANCIATION D'UN JOUEUR
-	//private static int couleur = 0;		// Couleur de la ligne
 	private int color;
 	private Joueur joueur;				// Joueur controlant la ligne
 	private float vitesse;  			// Vitesse de la ligne en float
@@ -64,7 +63,6 @@ public class Ligne {
 	{
 		//System.out.println("Instanciation d'un objet Ligne (sp)...");
 		this.color = col;
-		//Ligne.couleur = Ligne.couleur + 1;
 		this.joueur = null;
 		this.vitesse = 0.009f;
 		this.vitesseInit = 0.009f;
@@ -74,19 +72,6 @@ public class Ligne {
 		this.tpsEnVie = 0;
 		this.longueurTrou = (long) (2.3/vitesse);//230;
 	}
-	
-	/**
-	 * Constructeur d'un objet Ligne avec la couleur en paramètres A ENLEVER?
-	 * 
-	 * @param couleur
-	 * @param polyFever
-	 */
-	/*public Ligne(int couleur, PolyFever p)	// Avec paramètres
-	{
-		this(p);
-		//System.out.println("Instanciation d'un objet Ligne (ap)...");
-		this.color = couleur;
-	}*/
 	
 	// Méthodes
 
