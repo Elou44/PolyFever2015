@@ -19,10 +19,16 @@ public class StructureMenu {
 		 * Indice des images : 
 		 * 1 : images/menu_theme_4pipes.png
 		 * 2 : images/menu_theme_2pipes.png
+		 * 3 : Key Binding
+		 * 4 : Menu Vierge
+		 * 5 : Credits
 		 * 
 		 * 1 : images/title_PolyFever.png
 		 * 2 : images/title_Play.png
 		 * 3 : images/title_LAN.png
+		 * 4 : images/title_Settings.png
+		 * 5 : images/title_Credits.png
+		 * 6 : images/title_Local.png
 		 * 
 		 * 1 : images/bouton_play.png
 		 * 2 : images/bouton_settings.png
@@ -42,11 +48,11 @@ public class StructureMenu {
 		m_home.addFils(m_play);
 		m_play.setPere(m_home);
 		
-		Menu m_settings = new Menu(this, p, "Settings", 2, 2);
+		Menu m_settings = new Menu(this, p, "Settings", 4, 3);
 		m_home.addFils(m_settings);
 		m_settings.setPere(m_home);
 		
-		MenuFeuille m_credits = new MenuFeuille(this, p, "Credit","LLORCA Frederic\n LAINE Elouarn\n GITARD Valentin\n PERSON Ambre" , 2, 2);
+		MenuFeuille m_credits = new MenuFeuille(this, p, "Credit","LLORCA Frederic\n LAINE Elouarn\n GITARD Valentin\n PERSON Ambre" , 5, 5);
 		m_home.addFils(m_credits);
 		m_credits.setPere(m_home);
 		
@@ -70,7 +76,7 @@ public class StructureMenu {
 		m_lan.addFils(m_join);
 		m_join.setPere(m_lan);
 		
-		m_partie = new MenuPlay(this, p, "Game", 2, 2);
+		m_partie = new MenuPlay(this, p, "Game", 6, 4);
 		m_play.addFils(m_partie);
 		m_partie.setPere(m_play);
 		
@@ -94,7 +100,7 @@ public class StructureMenu {
 		m_settings.addBouton(bRetSettings);
 
 		BoutonMenu bLocal = new BoutonMenu(m_play,m_partie,0f,0.312f,0.7166f,0.2277f, 6); // Tu as oublié des menu (consulter le document Archive sur le drive)
-		BoutonMenu bLAN = new BoutonMenu(m_play,m_lan,0f,-0.036f,0.7166f,0.2277f, 5);
+		BoutonMenu bLAN = new BoutonMenu(m_play,m_play,0f,-0.036f,0.7166f,0.2277f, 5);
 		BoutonRetour bRetPlay = new BoutonRetour(m_play,0.8f,-0.8f,0.4370f,0.1555f, 8); 
 		
 		m_play.addBouton(bLocal);

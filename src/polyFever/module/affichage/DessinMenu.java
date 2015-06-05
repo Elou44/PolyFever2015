@@ -104,7 +104,8 @@ public class DessinMenu {
 	/**
 	 * Identifiants des différentes textures du menus
 	 */
-	private int idTexMenuTheme4pipes, idTexMenuTheme2pipes, idTexTitlePolyFever, idTexTitlePlay, idTexTitleLAN,
+	private int idTexMenuTheme4pipes, idTexMenuTheme2pipes, idTexMenuKeyBinding, idTexMenuBlank, idTexMenuCredits,
+	idTexTitlePolyFever, idTexTitlePlay, idTexTitleLAN, idTexTitleSettings, idTexTitleCredits, idTexTitleLocal,
 	idTexButtonCredits, idTexButtonHost, idTexButtonLAN, idTexButtonLocal, idTexButtonPlay,
 	idTexButtonQuit, idTexButtonSettings, idTexButtonBack, idTexButtonPlayer;  // indentifiant des textures
 	
@@ -322,6 +323,41 @@ public class DessinMenu {
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuTheme2pipes);
 			    
+				idTexMenuKeyBinding = GL11.glGenTextures(); // 2.1
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuKeyBinding);
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 1080, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/menu_key_binding.png")));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuKeyBinding);
+			    
+				idTexMenuBlank = GL11.glGenTextures(); // 2.2
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuBlank);
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 1080, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/menu_vierge.png")));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuBlank);
+			    
+				idTexMenuCredits = GL11.glGenTextures(); // 2.3
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuCredits);
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 1080, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/menu_vierge.png")));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexMenuCredits);
+			    
+			    
+			    
 			    
 			    // Les titres
 			    
@@ -357,6 +393,41 @@ public class DessinMenu {
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitleLAN);
+			    
+			    idTexTitleSettings = GL11.glGenTextures(); // 5.1
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitleSettings);
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 198, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/title_Settings.png")));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitleSettings);
+			    
+			    idTexTitleCredits = GL11.glGenTextures(); // 5.2
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitleCredits);
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 198, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/title_Credits.png")));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitleCredits);
+			    
+			    idTexTitleLocal = GL11.glGenTextures(); // 5.3
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitleLocal);
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 1080, 198, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/title_Local.png")));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexTitleLocal);
+			    
+			    
 			    
 			    
 			    // Les boutons
@@ -604,6 +675,17 @@ public class DessinMenu {
 			
 			case 2: idTexFond = idTexMenuTheme2pipes;
 					break;
+					
+			case 3: idTexFond = idTexMenuKeyBinding;
+					break;
+				
+			case 4: idTexFond = idTexMenuBlank;
+					break;
+			
+			case 5: idTexFond = idTexMenuCredits;
+					break;
+				
+					
 			
 		}
 		
@@ -618,7 +700,16 @@ public class DessinMenu {
 			
 			case 3: idTexTitre = idTexTitleLAN; 
 					break;
-		
+					
+			case 4: idTexTitre = idTexTitleSettings; 
+					break;
+					
+			case 5: idTexTitre = idTexTitleCredits; 
+					break;
+					
+			case 6: idTexTitre = idTexTitleLocal; 
+					break;
+					
 		}
 		
 		//System.out.println("getImgFond() et getImgTitre()" + m.getImgFond() + " " + m.getImgTitre());
