@@ -77,9 +77,9 @@ public class MenuPlay extends Menu {
 
 					else if(b.getIdColor()==13) { Joueur j14 = new Joueur(partie, "Joueur 14", Keyboard.KEY_B, Keyboard.KEY_N); partie.ajouterJoueur(j14, p, 13); }
 
-					else if(b.getIdColor()==14) { Joueur j15 = new Joueur(partie, "Joueur 15", Keyboard.KEY_6, Keyboard.KEY_9); partie.ajouterJoueur(j15, p, 14); }
+					else if(b.getIdColor()==14) { Joueur j15 = new Joueur(partie, "Joueur 15", Keyboard.KEY_NUMPAD6, Keyboard.KEY_NUMPAD9); partie.ajouterJoueur(j15, p, 14); }
 
-					else if(b.getIdColor()==15) { Joueur j16 = new Joueur(partie, "Joueur 16", Keyboard.KEY_1, Keyboard.KEY_0); partie.ajouterJoueur(j16, p, 15); }
+					else if(b.getIdColor()==15) { Joueur j16 = new Joueur(partie, "Joueur 16", Keyboard.KEY_NUMPAD1, Keyboard.KEY_NUMPAD0); partie.ajouterJoueur(j16, p, 15); }
 
 				
 			}
