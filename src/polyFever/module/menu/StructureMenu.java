@@ -32,6 +32,7 @@ public class StructureMenu {
 		 * 6 : images/bouton_local_multi.png
 		 * 7 : images/bouton_host.png
 		 * 8 : images/bouton_retour.png
+		 * 9 : images/playerLogo.png
 		 */
 		
 		m_home = new Menu(this, p, "Home", 1, 1);
@@ -110,9 +111,45 @@ public class StructureMenu {
 		m_lan.addBouton(bRetLAN);
 		
 		BoutonMenuPlay bLancerPartie = new BoutonMenuPlay(m_play,m_partie,0f,0.312f,0.7166f,0.2277f, 1);
+		float yOffSet = 0.2f;
+		BoutonPlayer bp1 = new BoutonPlayer(m_partie,-0.3f,0.2f-yOffSet,0.1f,0.1f, 9,0);
+		BoutonPlayer bp2 = new BoutonPlayer(m_partie,-0.1f,0.2f-yOffSet,0.1f,0.1f, 9,1);
+		BoutonPlayer bp3 = new BoutonPlayer(m_partie,0.1f,0.2f-yOffSet,0.1f,0.1f, 9,2);
+		BoutonPlayer bp4 = new BoutonPlayer(m_partie,0.3f,0.2f-yOffSet,0.1f,0.1f, 9,3);
+		BoutonPlayer bp5 = new BoutonPlayer(m_partie,-0.3f,0.0f-yOffSet,0.1f,0.1f, 9,4);
+		BoutonPlayer bp6 = new BoutonPlayer(m_partie,-0.1f,0.0f-yOffSet,0.1f,0.1f, 9,5);
+		BoutonPlayer bp7 = new BoutonPlayer(m_partie,0.1f,0.0f-yOffSet,0.1f,0.1f, 9,6);
+		BoutonPlayer bp8 = new BoutonPlayer(m_partie,0.3f,0.0f-yOffSet,0.1f,0.1f, 9,7);
+		BoutonPlayer bp9 = new BoutonPlayer(m_partie,-0.3f,-0.2f-yOffSet,0.1f,0.1f, 9,8);
+		BoutonPlayer bp10 = new BoutonPlayer(m_partie,-0.1f,-0.2f-yOffSet,0.1f,0.1f, 9,9);
+		BoutonPlayer bp11 = new BoutonPlayer(m_partie,0.1f,-0.2f-yOffSet,0.1f,0.1f, 9,10);
+		BoutonPlayer bp12 = new BoutonPlayer(m_partie,0.3f,-0.2f-yOffSet,0.1f,0.1f, 9,11);
+		BoutonPlayer bp13 = new BoutonPlayer(m_partie,-0.3f,-0.4f-yOffSet,0.1f,0.1f, 9,12);
+		BoutonPlayer bp14 = new BoutonPlayer(m_partie,-0.1f,-0.4f-yOffSet,0.1f,0.1f, 9,13);
+		BoutonPlayer bp15 = new BoutonPlayer(m_partie,0.1f,-0.4f-yOffSet,0.1f,0.1f, 9,14);
+		BoutonPlayer bp16 = new BoutonPlayer(m_partie,0.3f,-0.4f-yOffSet,0.1f,0.1f, 9,15);
 		BoutonRetour bRetLancerPartie = new BoutonRetour(m_partie,0.8f,-0.8f,0.4370f,0.1555f, 8); 
+		
 		m_partie.addBouton(bLancerPartie);
+		m_partie.addBouton(bp1);
+		m_partie.addBouton(bp2);
+		m_partie.addBouton(bp3);
+		m_partie.addBouton(bp4);
+		m_partie.addBouton(bp5);
+		m_partie.addBouton(bp6);
+		m_partie.addBouton(bp7);
+		m_partie.addBouton(bp8);
+		m_partie.addBouton(bp9);
+		m_partie.addBouton(bp10);
+		m_partie.addBouton(bp11);
+		m_partie.addBouton(bp12);
+		m_partie.addBouton(bp13);
+		m_partie.addBouton(bp14);
+		m_partie.addBouton(bp15);
+		m_partie.addBouton(bp16);
+		
 		m_partie.addBouton(bRetLancerPartie);
+		
 
 		
 

@@ -1,12 +1,12 @@
 package polyFever.module.menu;
 
 /**
- * Classe correspondant au bouton du menu qui fermera le programme
+ * Classe correspondant au bouton du menu qui permettra de sélectionner un nombre précis de joueurs.
  * @author Elouarn Lainé
  *
  */
 
-public class BoutonQuitter extends Bouton {
+public class BoutonPlayer extends Bouton {
 	protected Menu pere;
 	//protected MenuPlay fils;
 	
@@ -20,9 +20,10 @@ public class BoutonQuitter extends Bouton {
 	 * @param h : Largeur de la hitbox
 	 */
 	
-	public BoutonQuitter(Menu p, float x, float y, float l, float h, int imgB){
+	public BoutonPlayer(Menu p, float x, float y, float l, float h, int imgB, int c){
 		super(x, y, l, h, imgB);
 		this.pere = p;
+		super.idColor = c;
 		
 	}
 	/**
@@ -33,7 +34,7 @@ public class BoutonQuitter extends Bouton {
 	
 	@Override
 	public void action() {
-		pere.p.closeGame();
-		System.out.println("Fermeture du programme, Merci d'avoir joué !");
+		super.select();
+		pere.p.getAffichage().dMenu.updateMenu(pere.structMenu.getCurMenu()); // On appelle la méthode de l'affichage qui va dessiner le nouveau menu
 	}
 }

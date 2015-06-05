@@ -495,15 +495,19 @@ public class DessinScores {
 		for(int i=0; i<this.playerListSortedByScore.length ; i++)
 		{
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexPlayerLogo); // On bind la premiere texture
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 6*4+(18*4*i));  // On trace le carré
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 6*4+(24*4*i));  // On trace le carré
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0); // On met la texture à NULL
 			
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, scoreToIdTex(this.playerListSortedByScore[i])[0]); // On bind la premiere texture
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 12*4+(18*4*i)); 
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 12*4+(24*4*i)); 
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0); // On met la texture à NULL
 			
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, scoreToIdTex(this.playerListSortedByScore[i])[1]); // On bind la premiere texture
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 18*4+(18*4*i)); 
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, scoreToIdTex(this.playerListSortedByScore[i])[1]); // On bind la deuxieme texture
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 18*4+(24*4*i)); 
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0); // On met la texture à NULL
+			
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, scoreToIdTex(this.playerListSortedByScore[i])[2]); // On bind latroisieme texture
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 24*4+(24*4*i)); 
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0); // On met la texture à NULL
 
 		}
@@ -613,7 +617,7 @@ public class DessinScores {
 		
 		float tabVertex1stFig[] = new float[] {
 				
-	    		1.2f,0.7f-yOffSet,1.0f,1.0f,1.0f,0.0f,0.0f, //Square
+	    		1.2f,0.7f-yOffSet,1.0f,1.0f,1.0f,0.0f,0.0f, //1st fig
 	    		1.3f,0.7f-yOffSet,1.0f,1.0f,1.0f,1.0f,0.0f,
 	    		1.3f,0.6f-yOffSet,1.0f,1.0f,1.0f,1.0f,1.0f,
 	    		1.2f,0.6f-yOffSet,1.0f,1.0f,1.0f,0.0f,1.0f,
@@ -639,13 +643,38 @@ public class DessinScores {
 		
 		float tabVertex2ndFig[] = new float[] {
 				
-	    		1.3f,0.7f-yOffSet,1.0f,1.0f,1.0f,0.0f,0.0f, //Square
+	    		1.3f,0.7f-yOffSet,1.0f,1.0f,1.0f,0.0f,0.0f, //2nd fig
 	    		1.4f,0.7f-yOffSet,1.0f,1.0f,1.0f,1.0f,0.0f,
 	    		1.4f,0.6f-yOffSet,1.0f,1.0f,1.0f,1.0f,1.0f,
 	    		1.3f,0.6f-yOffSet,1.0f,1.0f,1.0f,0.0f,1.0f,
 		};
 		
 		addTabToTabVertex(tabVertex2ndFig);
+		
+		this.lenTabV += 28;
+	
+		this.elements[this.lenTabE] = this.indexTabE;
+		this.elements[this.lenTabE+1] = this.indexTabE+1;
+		this.elements[this.lenTabE+2] = this.indexTabE+2;
+		
+		this.elements[this.lenTabE+3] = this.indexTabE;
+		this.elements[this.lenTabE+4] = this.indexTabE+2;
+		this.elements[this.lenTabE+5] = this.indexTabE+3;
+	    
+		this.lenTabE += 6;
+		this.indexTabE += 4;
+		
+		// Ajout du 3eme ciffre
+		
+		float tabVertex3rdFig[] = new float[] {
+				
+	    		1.4f,0.7f-yOffSet,1.0f,1.0f,1.0f,0.0f,0.0f, //3rd fig
+	    		1.5f,0.7f-yOffSet,1.0f,1.0f,1.0f,1.0f,0.0f,
+	    		1.5f,0.6f-yOffSet,1.0f,1.0f,1.0f,1.0f,1.0f,
+	    		1.4f,0.6f-yOffSet,1.0f,1.0f,1.0f,0.0f,1.0f,
+		};
+		
+		addTabToTabVertex(tabVertex3rdFig);
 		
 		this.lenTabV += 28;
 	
@@ -667,11 +696,12 @@ public class DessinScores {
 	
 	public Integer[] scoreToIdTex(Joueur j) {
 		
-		Integer[] tab = new Integer[2];
+		Integer[] tab = new Integer[3];
 		String strScore = String.valueOf(j.getScore());
-		if(strScore.length()<2) strScore = "0" + strScore;
+		if(strScore.length()==1) strScore = "00" + strScore;
+		if(strScore.length()==2) strScore = "0" + strScore;
 		
-		for(int i = 0; i<2 ; i++) { // Pour des scores à 2 chiffres
+		for(int i = 0; i<3 ; i++) { // Pour des scores à 2 chiffres
 			switch(strScore.charAt(i)) {
 				case '0' : tab[i] = idTexFig0;
 					break;

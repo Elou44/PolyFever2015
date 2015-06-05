@@ -13,6 +13,7 @@ public abstract class Bouton {
 	protected Hitbox hitbox;
 	protected boolean isSelected;
 	protected int imgBouton; // Indice de l'image du bouton
+	protected int idColor;
 	
 	/**
 	 * Constructeur de la classe bouton prennant les paramêtres de la hitbox
@@ -26,6 +27,7 @@ public abstract class Bouton {
 		this.hitbox = new Hitbox(x, y, l, h);
 		this.isSelected = false;
 		this.imgBouton = imgB;
+		this.idColor = -1;
 	}
 	
 	
@@ -58,6 +60,10 @@ public abstract class Bouton {
 	public float getH() {
 		return hitbox.hauteur;
 	}
+	
+	public int getIdColor() {
+		return this.idColor;
+	}
 
 	/**
 	 * Methode permettant de récupérer l'état du bouton 
@@ -66,6 +72,17 @@ public abstract class Bouton {
 
 	public boolean isSelected() {
 		return isSelected;
+	}
+	
+	public void select() {
+		if(isSelected)
+		{
+			isSelected = false;
+		}
+		else
+		{
+			isSelected = true;
+		}
 	}
 
 	/**

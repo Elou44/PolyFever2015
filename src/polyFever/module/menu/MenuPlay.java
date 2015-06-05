@@ -1,4 +1,6 @@
 package polyFever.module.menu;
+import java.util.Iterator;
+
 import polyFever.module.main.*;
 
 import org.lwjgl.input.Keyboard;
@@ -7,7 +9,7 @@ import polyFever.module.moteurDeJeu.*;
 
 /**
  * Classe représentant le menu lançant le jeu
- * @author Ambre
+ * @author Ambre et Elouarn Lainé
  *
  */
 
@@ -35,14 +37,64 @@ public class MenuPlay extends Menu {
 		
 		Menu.isMenu = false;
 		partie = new Partie(p, structMenu);
-		Joueur j1 = new Joueur(partie, "Joueur 1", Keyboard.KEY_LEFT, Keyboard.KEY_RIGHT);
-		Joueur j2 = new Joueur(partie, "Joueur 2", Keyboard.KEY_V, Keyboard.KEY_B);
-		Joueur j3 = new Joueur(partie, "Joueur 3", Keyboard.KEY_A, Keyboard.KEY_Z);
-		Joueur j4 = new Joueur(partie, "Joueur 4", Keyboard.KEY_K, Keyboard.KEY_L);
-		partie.ajouterJoueur(j1, p);
-		partie.ajouterJoueur(j2, p);
-		partie.ajouterJoueur(j3, p);
-		partie.ajouterJoueur(j4, p);
+		
+	    Bouton b;
+	    int i = 0;
+	    System.out.println("NBBOUTONS" + this.getBoutons().size());
+	    Iterator<Bouton> ib =this.getBoutons().iterator();
+	    while(ib.hasNext()) //On parcours les Boutons
+	    { 
+			b = ib.next();
+			
+			if(b.isSelected) {
+				System.out.println("HERRRRRRRE" + i);
+				switch(i) {
+					case 0 : Joueur j1 = new Joueur(partie, "Joueur 1", Keyboard.KEY_LEFT, Keyboard.KEY_RIGHT);
+							partie.ajouterJoueur(j1, p);
+							System.out.println("j1");
+						
+						break;
+					case 1 : Joueur j2 = new Joueur(partie, "Joueur 2", Keyboard.KEY_V, Keyboard.KEY_B); partie.ajouterJoueur(j2, p);System.out.println("j2");
+						break;
+					case 2 : Joueur j3 = new Joueur(partie, "Joueur 3", Keyboard.KEY_A, Keyboard.KEY_Z); partie.ajouterJoueur(j3, p);System.out.println("j3");
+						break;
+					case 3 : Joueur j4 = new Joueur(partie, "Joueur 4", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j4, p);System.out.println("j4");
+						break;
+					case 4 : Joueur j5 = new Joueur(partie, "Joueur 5", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j5, p);System.out.println("j4");
+						break;
+					case 5 : Joueur j6 = new Joueur(partie, "Joueur 6", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j6, p);System.out.println("j4");
+						break;
+					case 6 : Joueur j7 = new Joueur(partie, "Joueur 7", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j7, p);System.out.println("j4");
+						break;
+					case 7 : Joueur j8 = new Joueur(partie, "Joueur 8", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j8, p);System.out.println("j4");
+						break;
+					case 8 : Joueur j9 = new Joueur(partie, "Joueur 9", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j9, p);System.out.println("j4");
+						break;
+					case 9 : Joueur j10 = new Joueur(partie, "Joueur 10", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j10, p);System.out.println("j4");
+						break;
+					case 10 : Joueur j11 = new Joueur(partie, "Joueur 11", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j11, p);System.out.println("j4");
+						break;
+					case 11 : Joueur j12 = new Joueur(partie, "Joueur 12", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j12, p);System.out.println("j4");
+						break;
+					case 12 : Joueur j13 = new Joueur(partie, "Joueur 13", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j13, p);System.out.println("j4");
+						break;
+					case 13 : Joueur j14 = new Joueur(partie, "Joueur 14", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j14, p);System.out.println("j4");
+						break;
+					case 14 : Joueur j15 = new Joueur(partie, "Joueur 15", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j15, p);System.out.println("j4");
+						break;
+					case 15 : Joueur j16 = new Joueur(partie, "Joueur 16", Keyboard.KEY_K, Keyboard.KEY_L); partie.ajouterJoueur(j16, p);System.out.println("j4");
+						break;
+				}
+			}
+			
+			if(b.getIdColor() != -1)
+			{
+				i++;
+			}
+			
+			
+		}
+		
 		partie.initialiserPartie();
 		
 		p.getAffichage().initJeu(p, partie);

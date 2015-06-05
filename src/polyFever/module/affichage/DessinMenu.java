@@ -105,7 +105,8 @@ public class DessinMenu {
 	 * Identifiants des différentes textures du menus
 	 */
 	private int idTexMenuTheme4pipes, idTexMenuTheme2pipes, idTexTitlePolyFever, idTexTitlePlay, idTexTitleLAN,
-	idTexButtonCredits, idTexButtonHost, idTexButtonLAN, idTexButtonLocal, idTexButtonPlay, idTexButtonQuit, idTexButtonSettings, idTexButtonBack;  // indentifiant des textures
+	idTexButtonCredits, idTexButtonHost, idTexButtonLAN, idTexButtonLocal, idTexButtonPlay,
+	idTexButtonQuit, idTexButtonSettings, idTexButtonBack, idTexButtonPlayer;  // indentifiant des textures
 	
 	private int idTexFond, idTexTitre;
 	private int tabIdBoutons[];
@@ -453,6 +454,17 @@ public class DessinMenu {
 			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
 			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonBack);
 			    
+			    idTexButtonPlayer = GL11.glGenTextures(); // 14
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonPlayer);
+			        //Upload the buffer's content to the VRAM
+			        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, 50, 50, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, PNGtoTex((InputStream) this.getClass().getClassLoader().getResourceAsStream("polyFever/module/images/playerLogo.png")));
+			        //Apply filters
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idTexButtonPlayer);
+			    
 			    // FIN CHARGEMENT DES TEXTURES // 
 			    
 			    
@@ -563,7 +575,7 @@ public class DessinMenu {
 	public void updateMenu(Menu curMenu){
 
 		this.indiceBouton = 0;
-		this.tabIdBoutons = new int[] {0,0,0,0,0} ;
+		this.tabIdBoutons = new int[] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0} ;
 		this.lenTabV = 0;
 		this.lenTabE = 0;
 		this.indexTabE = 0;
@@ -695,6 +707,9 @@ public class DessinMenu {
 			
 			case 8: tabIdBoutons[this.indiceBouton] = idTexButtonBack;  //System.out.println("case : "+ tabIdBoutons[this.indiceBouton]);
 					break;
+					
+			case 9: tabIdBoutons[this.indiceBouton] = idTexButtonPlayer;
+					break;
 	
 		}
 		
@@ -702,14 +717,30 @@ public class DessinMenu {
 		float y = b.getY();
 		float w = b.getL();
 		float h = b.getH();
+		float[] tabVertexButton; 
 		
-		
-		float tabVertexButton[] = new float [] {
-	    		x-(w/2),y+(h/2),1.0f,1.0f,1.0f,0.0f,0.0f, // Fond menu
-	    		x+(w/2),y+(h/2),1.0f,1.0f,1.0f,1.0f,0.0f,
-	    		x+(w/2),y-(h/2),1.0f,1.0f,1.0f,1.0f,1.0f,
-	    		x-(w/2),y-(h/2),1.0f,1.0f,1.0f,0.0f,1.0f
-		};
+		if(b.getIdColor() != -1 && b.isSelected()) { // Pour repérer les boutons Player
+
+			float r = CouleursLigne.tabCouleurs[b.getIdColor()].x();
+			float g = CouleursLigne.tabCouleurs[b.getIdColor()].y();
+			float bl = CouleursLigne.tabCouleurs[b.getIdColor()].z();
+			
+			tabVertexButton = new float [] {
+		    		x-(w/2),y+(h/2),r,g,bl,0.0f,0.0f, // Fond menu
+		    		x+(w/2),y+(h/2),r,g,bl,1.0f,0.0f,
+		    		x+(w/2),y-(h/2),r,g,bl,1.0f,1.0f,
+		    		x-(w/2),y-(h/2),r,g,bl,0.0f,1.0f
+			};
+			
+		} else {
+			
+			tabVertexButton = new float [] {
+		    		x-(w/2),y+(h/2),1.0f,1.0f,1.0f,0.0f,0.0f, // Fond menu
+		    		x+(w/2),y+(h/2),1.0f,1.0f,1.0f,1.0f,0.0f,
+		    		x+(w/2),y-(h/2),1.0f,1.0f,1.0f,1.0f,1.0f,
+		    		x-(w/2),y-(h/2),1.0f,1.0f,1.0f,0.0f,1.0f
+			};
+		}
 		
 		addTabToTabVertex(tabVertexButton);
 		
